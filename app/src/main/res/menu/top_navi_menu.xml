@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/top_S2T"
+        android:title="@string/top_title_S2T" />
+    <item
+        android:title="@string/top_title_T2S"
+        android:id="@+id/top_T2S"
+        />
+    <item
+        android:title="@string/top_title_setting"
+        android:id="@+id/top_setting"
+        />
+</menu>
