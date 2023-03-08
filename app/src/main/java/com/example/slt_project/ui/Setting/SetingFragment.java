@@ -3,7 +3,7 @@ package com.example.slt_project.ui.Setting;
 import com.example.slt_project.R;
 import com.example.slt_project.ui.base.BaseFragment;
 
-public class SetingFragment extends BaseFragment {
+public class SetingFragment extends BaseFragment implements SettingContract.ISettingFragment {
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_seting;
