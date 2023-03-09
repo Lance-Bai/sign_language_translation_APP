@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -17,8 +18,14 @@ import com.example.slt_project.ui.base.BaseActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends BaseActivity implements NavigationBarView.OnItemSelectedListener {
-    private Fragment[] fragments;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends BaseActivity implements NavigationBarView.OnItemSelectedListener, ViewPager.OnPageChangeListener {
+    private List<Fragment> fragments;
+    private ViewPager viewPage;
+    private BottomNavigationView bottomNavigationView;
+    private MyFragmentAdapter fragmentAdapter;
     private int lastFragmentIndex =0 ;
     @Override
     protected int getLayoutID() {
@@ -27,19 +34,26 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
 
     @Override
     protected void initViews() {
-        BottomNavigationView bottomNavigationView = find(R.id.navigationView);
+        bottomNavigationView = find(R.id.navigationView);
         bottomNavigationView.setOnItemSelectedListener(this);
-        fragments = new Fragment[]{
-                new S2TFragment(),
-                new T2SFragment(),
-                new SetingFragment()
-        };
-        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, fragments[0]).commit();
+
+        viewPage = find(R.id.viewPage);
+        viewPage.setOnPageChangeListener(this);
+
+
+        fragments = new ArrayList<>();
+        fragments.add(new S2TFragment());
+        fragments.add(new T2SFragment());
+        fragments.add(new SetingFragment());
+
+        fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments);
+        viewPage.setAdapter(fragmentAdapter);
+
+        getSupportFragmentManager().beginTransaction().show(fragmentAdapter.getItem(0)).commit();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         setTheme(R.style.Theme_SLT_Project );
         super.onCreate(savedInstanceState);
     }
@@ -49,28 +63,43 @@ public class MainActivity extends BaseActivity implements NavigationBarView.OnIt
         item.setChecked(true);
         switch (item.getItemId()){
             case R.id.top_S2T:
-                switchFragment(0);
+                viewPage.setCurrentItem(0);
                 break;
             case R.id.top_T2S:
-                switchFragment(1);
+                viewPage.setCurrentItem(1);
                 break;
             case R.id.top_setting:
-                switchFragment(2);
+                viewPage.setCurrentItem(2);
                 break;
         }
         return false;
     }
 
-    private void switchFragment(int nextIndex){
-        if(nextIndex == lastFragmentIndex)return;
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if(!fragments[nextIndex].isAdded()){
-            fragmentTransaction.add(R.id.frameLayout, fragments[nextIndex]);
-        }else{
-            fragmentTransaction.show(fragments[nextIndex]);
-        }
-        fragmentTransaction.hide(fragments[lastFragmentIndex]).commitAllowingStateLoss();
 
-        lastFragmentIndex = nextIndex;
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switch (position){
+            case 0:
+                bottomNavigationView.setSelectedItemId(R.id.top_S2T);
+                break;
+            case 1:
+                bottomNavigationView.setSelectedItemId(R.id.top_T2S);
+                break;
+            case 2:
+                bottomNavigationView.setSelectedItemId(R.id.top_setting);
+                break;
+            default:
+        }
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }
