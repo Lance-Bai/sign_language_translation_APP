@@ -3,4 +3,7 @@
     <string name="top_title_S2T">Sign to Text</string>
     <string name="top_title_T2S">Text to Sign</string>
     <string name="top_title_setting">Setting</string>
+    <string name="bottem_title_left">left</string>
+    <string name="bottem_title_center">center</string>
+    <string name="bottem_title_right">right</string>
 </resources>

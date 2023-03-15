@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@id/navigationView"
+    android:layout_marginTop="1300px"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="1"
+
+    app:layout_constraintBottom_toTopOf="@+id/navigationView"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+<!--    android:gravity="center"-->
+    <Button
+        android:id="@+id/album"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_album1" />
+    <!--            android:background="@drawable/round_corner"-->
+        <Button
+            android:id="@+id/start_video"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@android:drawable/radiobutton_on_background"
+            android:layout_gravity="center_horizontal" />
+    <Button
+        android:id="@+id/camera"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@android:drawable/ic_menu_camera"
+        android:layout_gravity="center_horizontal" />
+
+
+</LinearLayout>

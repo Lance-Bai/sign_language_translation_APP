@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/function_line_t2s"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@id/navigationView"
+    android:layout_marginTop="1300px"
+
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="1"
+
+    app:layout_constraintBottom_toTopOf="@+id/navigationView"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+
+    <Button
+        android:id="@+id/voice"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@android:drawable/ic_btn_speak_now" />
+<!--        android:background="@drawable/round_corner"-->
+
+
+    <EditText
+        android:id="@+id/input_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_weight="0.6"
+        android:hint="测试文本"
+        android:windowSoftInputMode="stateVisible|adjustPan" />
+
+    <Button
+        android:id="@+id/button_1"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:text="测试" />
+<!--    <Button-->
+<!--        android:id="@+id/camera_change"-->
+<!--        android:layout_width="20dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="0.1"-->
+<!--        android:background="@android:drawable/ic_menu_camera"/>-->
+</LinearLayout>
