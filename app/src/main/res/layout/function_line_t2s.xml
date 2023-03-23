@@ -4,16 +4,14 @@
     android:id="@+id/function_line_t2s"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_above="@id/navigationView"
-    android:layout_marginTop="1300px"
+    android:layout_gravity="bottom"
 
     android:gravity="center"
     android:orientation="horizontal"
     android:weightSum="1"
-
     app:layout_constraintBottom_toTopOf="@+id/navigationView"
-    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
 
@@ -21,17 +19,20 @@
         android:id="@+id/voice"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@android:drawable/ic_btn_speak_now" />
-<!--        android:background="@drawable/round_corner"-->
+        android:background="@drawable/voice_btn"
+        android:backgroundTint="@color/voice_btn_color" />
+    <!--        android:background="@drawable/round_corner"-->
 
 
     <EditText
         android:id="@+id/input_text"
+        android:focusable="true"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:inputType="text"
+        android:layout_height="60dp"
         android:layout_weight="0.6"
         android:hint="测试文本"
+        android:inputType="text"
+        android:textColorHint="@color/green"
         android:windowSoftInputMode="stateVisible|adjustPan" />
 
     <Button
@@ -40,10 +41,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
         android:text="测试" />
-<!--    <Button-->
-<!--        android:id="@+id/camera_change"-->
-<!--        android:layout_width="20dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_weight="0.1"-->
-<!--        android:background="@android:drawable/ic_menu_camera"/>-->
+    <!--    <Button-->
+    <!--        android:id="@+id/camera_change"-->
+    <!--        android:layout_width="20dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_weight="0.1"-->
+    <!--        android:background="@android:drawable/ic_menu_camera"/>-->
 </LinearLayout>

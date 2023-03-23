@@ -12,13 +12,7 @@
         android:gravity="center"
         android:text="This is Setting page" />
 
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include
+        layout="@layout/function_line_setting" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
