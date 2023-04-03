@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public abstract class BaseFragment extends Fragment {
+
     protected View contentView;
     protected abstract int getLayoutID();
     protected abstract void initViews() ;
+
 
     @Nullable
     @Override
