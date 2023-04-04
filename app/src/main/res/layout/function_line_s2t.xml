@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     android:orientation="vertical">
+    <!--    android:gravity="center"-->
+    <!--            android:background="@drawable/round_corner"-->
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/s2t_recycle"
         android:layout_width="match_parent"
-        android:scrollbars="vertical"
-        android:scrollbarSize="10dp"
-        android:scrollbarFadeDuration="2000"
-        android:scrollbarStyle="outsideOverlay"
+        android:layout_height="170dp"
         android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:layout_height="170dp">
+        android:scrollbarFadeDuration="2000"
+        android:scrollbarSize="10dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -27,8 +33,8 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/album"
+            <ImageView
+                android:id="@+id/s2t_thumbnail"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
@@ -40,15 +46,19 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/start_recording"
+                android:id="@+id/s2t_take_photo_or_video"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/radio_btn"
-                android:backgroundTint="@color/radio_btn_color" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -60,15 +70,17 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/camera"
+                android:id="@+id/s2t_changeCamera"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/ic_camera2" />
+                android:background="@android:drawable/ic_menu_camera" />
 
         </LinearLayout>
 
-
     </LinearLayout>
 
-
 </LinearLayout>
+
+
+
+
