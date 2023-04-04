@@ -26,29 +26,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/t2s_recycle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabGravity="fill"
-        app:tabMode="fixed"
-        app:layout_constraintBottom_toBottomOf="@+id/navigationView"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPage"
         app:layout_constraintEnd_toEndOf="@+id/viewPage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        app:tabGravity="fill"
+        app:tabMode="fixed">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_item_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab1_left"/>
-<!--这里的tab的text因为setwithViewpager那个显示不了-->
+            android:text="@string/tab1_left" />
+        <!--这里的tab的text因为setwithViewpager那个显示不了-->
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_item_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab2_center"/>
+            android:text="@string/tab2_center" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_item_3"

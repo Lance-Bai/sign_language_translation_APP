@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SLT_Project</string>
     <string name="top_title_S2T">Sign to Text</string>
@@ -6,5 +7,7 @@
     <string name="tab1_left">Tab1</string>
     <string name="tab2_center">Tab2</string>
     <string name="tab3_right">Tab3</string>
+    <string name="input_text_hint">请输入文字</string>
+    <string name="send_input_text_button">发送</string>
 
 </resources>
