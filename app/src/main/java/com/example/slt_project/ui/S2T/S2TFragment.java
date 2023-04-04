@@ -1,6 +1,10 @@
 package com.example.slt_project.ui.S2T;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
@@ -28,7 +32,7 @@ import java.util.ArrayList;
 
 public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragment, View.OnClickListener, TextureView.SurfaceTextureListener {
     private TextureView textureView;
-    private Button takePhoto, takeVideo, changeCamera;
+    private Button takePhotoORVideo, changeCamera;
     public S2TContract.IS2TPresenter presenter;
     public Surface previewSurface;
     public SurfaceTexture surfaceTexture;
@@ -36,6 +40,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
     protected ImageView mThumbnail;
 
+    SharedPreferences sp;
 
 
     @Override
@@ -48,14 +53,16 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         presenter = new S2TPresenter(this);
         textureView = find(R.id.previewSurfaceView);
         textureView.setSurfaceTextureListener(this);
-        takePhoto = find(R.id.s2t_take_photo);
-        takePhoto.setOnClickListener(this);
-        takeVideo = find(R.id.s2t_take_video);
-        takeVideo.setOnClickListener(this);
+        takePhotoORVideo = find(R.id.s2t_take_photo_or_video);
+        takePhotoORVideo.setOnClickListener(this);
+
         changeCamera = find(R.id.s2t_changeCamera);
         changeCamera.setOnClickListener(this);
         mThumbnail = find(R.id.s2t_thumbnail);
         mThumbnail.setOnClickListener(this);
+
+        Context ctx = this.getMainActivity();
+        sp = ctx.getSharedPreferences("SLTSetting", MODE_PRIVATE);
     }
 
 
@@ -63,21 +70,25 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.s2t_take_photo:
-                presenter.takePhoto();
+            case R.id.s2t_take_photo_or_video:
+                String t = sp.getString("videoOrPhoto", "video");
+                if(true){
+                    if(!bStop){
+                        presenter.takeVideo();
+                        bStop = true;
+                    }else{
+                        presenter.stopVideo();
+                        bStop = false;
+                    }
+                }else{
+                    presenter.takePhoto();
+                }
+
                 break;
             case R.id.s2t_thumbnail:
                 presenter.goGallery();
                 break;
-            case R.id.s2t_take_video:
-                if(!bStop){
-                    presenter.takeVideo();
-                    bStop = true;
-                }else{
-                    presenter.stopVideo();
-                    bStop = false;
-                }
-                break;
+
             case R.id.s2t_changeCamera:
                 presenter.changeCamera();
             default:
@@ -87,8 +98,9 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
     @Override
     public void onResume() {
+//        super.onResume();
+//        presenter.checkPermission();
         super.onResume();
-        presenter.checkPermission();
     }
 
     @Override
@@ -121,10 +133,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         return previewSurface;
     }
 
-    @Override
-    public FragmentActivity getMainActivity() {
-        return this.getActivity();
-    }
 
     @Override
     public ImageView getThumbnail() {

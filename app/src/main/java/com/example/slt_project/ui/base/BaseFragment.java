@@ -9,6 +9,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -28,4 +29,9 @@ public abstract class BaseFragment extends Fragment {
     protected <T extends View> T find(@IdRes int id){
         return contentView.findViewById(id);
     }
+
+    public FragmentActivity getMainActivity() {
+        return this.getActivity();
+    }
+
 }

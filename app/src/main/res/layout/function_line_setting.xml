@@ -29,11 +29,13 @@
         android:layout_height="70dp"
         android:orientation="horizontal">
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/photo_mode"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Setting_2" />
+            android:text="Photo Mode"
+            android:textStyle="bold"
+            android:textOn="On" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
