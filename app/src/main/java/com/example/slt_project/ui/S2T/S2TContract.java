@@ -14,6 +14,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.slt_project.ui.TextOutputAdapter;
+
 import java.util.ArrayList;
 
 public interface S2TContract {
@@ -27,6 +29,8 @@ public interface S2TContract {
         TextureView getTextureView();
 
         void showThumbnail();
+
+        TextOutputAdapter getAdapter();
     }
 
     interface IS2TPresenter{

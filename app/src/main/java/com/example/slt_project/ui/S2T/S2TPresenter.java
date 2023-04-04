@@ -62,12 +62,16 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     private String cameraId = "0";
     private MediaRecorder mMediaRecorder;
 
+    private long timestemp;
+
 
 
     public S2TPresenter(S2TContract.IS2TFragment fragment){
+        timestemp=System.currentTimeMillis();
         this.fragment = fragment;
         this.model= new S2TModel(this);
         startCameraThread();
+        timestemp=System.currentTimeMillis();
     }
 
     @Override
@@ -264,6 +268,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
             mMediaRecorder.stop();
             mMediaRecorder.release();
             mMediaRecorder=null;
+            timestemp++;
 
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -275,6 +280,8 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
 
         broadcast();
         fragment.createPreview();
+        // TODO: 2023-04-04 connect with deep learning module 
+        fragment.getAdapter().addText("One finished");
 
 
     }
@@ -282,7 +289,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     public void configMediaRecorder() {
 
         File file = new File(Environment.getExternalStorageDirectory() +
-                "/DCIM/Camera/" + System.currentTimeMillis() + ".mp4");
+                "/DCIM/Camera/" + timestemp + ".mp4");
         if (file.exists()) {
             file.delete();
         }

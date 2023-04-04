@@ -9,5 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:textSize="16sp" />
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:background="@color/black"/>
 </LinearLayout>

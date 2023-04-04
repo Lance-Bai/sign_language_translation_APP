@@ -10,40 +10,27 @@ import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.media.MediaMetadataRetriever;
-import android.os.Environment;
+import android.os.Handler;
 import android.util.SparseIntArray;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
-import android.os.Build;
-import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.AutoScrollHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slt_project.R;
-//import com.example.slt_project.ui.DividerItemDecoration;
 import com.example.slt_project.ui.TextOutputAdapter;
 import com.example.slt_project.ui.base.BaseFragment;
-import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragment, View.OnClickListener, TextureView.SurfaceTextureListener {
     private TextureView textureView;
@@ -68,6 +55,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         return R.layout.fragment_s2t;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void initViews() {
         presenter = new S2TPresenter(this);
@@ -112,6 +100,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
                 float scrollPercentage = ((float) lastVisibleItemIndex / (float) itemCount) * 100;
                 recyclerView.setVerticalScrollbarPosition(Math.round(scrollPercentage));
             }
+            });
 
         s2t_recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -128,7 +117,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
                 return false;
             }
         });
-
     }
 
 
@@ -254,6 +242,10 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         }
     }
 
+    @Override
+    public TextOutputAdapter getAdapter() {
+        return adapter;
+    }
 
 
     @Override
