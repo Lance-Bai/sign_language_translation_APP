@@ -14,6 +14,9 @@ import android.os.Environment;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
+import android.os.Build;
+import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,8 +25,20 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.AutoScrollHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.slt_project.R;
+//import com.example.slt_project.ui.DividerItemDecoration;
+import com.example.slt_project.ui.TextOutputAdapter;
 import com.example.slt_project.ui.base.BaseFragment;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +47,11 @@ import java.util.ArrayList;
 
 public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragment, View.OnClickListener, TextureView.SurfaceTextureListener {
     private TextureView textureView;
+    private RecyclerView s2t_recyclerView;
+    private boolean isAutoPlay;
+    private Handler autoScrollHandler;
+    private TextOutputAdapter adapter;
+    List<String> textList = new ArrayList<>();
     private Button takePhotoORVideo, changeCamera;
     public S2TContract.IS2TPresenter presenter;
     public Surface previewSurface;
@@ -63,6 +83,52 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
         Context ctx = this.getMainActivity();
         sp = ctx.getSharedPreferences("SLTSetting", MODE_PRIVATE);
+
+        s2t_recyclerView=find(R.id.s2t_recycle);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        s2t_recyclerView.setLayoutManager(layoutManager);
+        adapter = new TextOutputAdapter(textList);
+        s2t_recyclerView.setAdapter(adapter);
+        autoScrollHandler=null;
+        adapter.addText("Hello, world!");
+        adapter.addText("11111111111111111111111111111111111111111111111111111! world!");
+        adapter.addText("2! world!");
+        adapter.addText("3! world!");
+        adapter.addText("4! world!");
+        adapter.addText("5! world!");
+        adapter.addText("6! world!");
+        adapter.addText("7! world!");
+        adapter.addText("8! world!");
+        adapter.addText("9! world!");
+        adapter.addText("11! world!");
+
+        s2t_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                // 在滚动时更新滚动条的位置
+                int firstVisibleItemIndex = layoutManager.findFirstVisibleItemPosition();
+                int lastVisibleItemIndex = layoutManager.findLastVisibleItemPosition();
+                int itemCount = adapter.getItemCount();
+                float scrollPercentage = ((float) lastVisibleItemIndex / (float) itemCount) * 100;
+                recyclerView.setVerticalScrollbarPosition(Math.round(scrollPercentage));
+            }
+
+        s2t_recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // 判断是否点击了滚动条
+                if (event.getAction() == MotionEvent.ACTION_DOWN && event.getX() >= s2t_recyclerView.getWidth() - 100) {
+                    // 点击滚动条，计算当前位置的内容位置,100是scrollbarWidth，但是不知道是什么单位
+                    float scrollBarPos = event.getY();
+                    int itemCount = adapter.getItemCount();
+                    int contentPos = (int) ((scrollBarPos / s2t_recyclerView.getHeight()) * itemCount);
+                    s2t_recyclerView.scrollToPosition(contentPos);
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
 

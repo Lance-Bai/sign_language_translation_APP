@@ -25,16 +25,20 @@ public class MyFragmentAdapter extends FragmentStatePagerAdapter {
         return fragmentList==null?null:fragmentList.get(position);
     }
 
+
+
+
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "S2T".toLowerCase(Locale.ROOT);
+                return "S2T";
             case 1:
-                return "T2S".toLowerCase(Locale.ROOT);
+                return "T2S";
             case 2:
-                return "setting".toLowerCase(Locale.ROOT);
+                return "settings".toLowerCase();
+                //the toLowerCase is not work!!!!
             default:
                 return null;
         }
@@ -46,3 +50,4 @@ public class MyFragmentAdapter extends FragmentStatePagerAdapter {
         return fragmentList==null?0: fragmentList.size();
     }
 }
+
