@@ -77,6 +77,8 @@ public interface S2TContract {
         void initImageReader();
 
         ImageReader getImageReader();
+
+        void speak(String s);
     }
 
 }

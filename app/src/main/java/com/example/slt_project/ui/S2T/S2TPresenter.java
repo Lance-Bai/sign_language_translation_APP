@@ -62,16 +62,16 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     private String cameraId = "0";
     private MediaRecorder mMediaRecorder;
 
-    private long timestemp;
+    private File SLTVideo;
+
+
 
 
 
     public S2TPresenter(S2TContract.IS2TFragment fragment){
-        timestemp=System.currentTimeMillis();
         this.fragment = fragment;
         this.model= new S2TModel(this);
         startCameraThread();
-        timestemp=System.currentTimeMillis();
     }
 
     @Override
@@ -164,7 +164,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     @Override
     public void goGallery() {
         ArrayList<String> temp = getImageFilePath();
-        String lastPath = temp.get(temp.size() - 1);
+        String lastPath = temp.get(0);
         Uri uri = getMediaUriFromPath(this, lastPath);
         Intent intent = new Intent("com.android.camera.action.REVIEW", uri);
         intent.setData(uri);
@@ -268,7 +268,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
             mMediaRecorder.stop();
             mMediaRecorder.release();
             mMediaRecorder=null;
-            timestemp++;
+
 
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -277,21 +277,25 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        SLTVideo.renameTo(new File(Environment.getExternalStorageDirectory() +
+                "/DCIM/Camera/SLTV_" + System.currentTimeMillis() + ".mp4"));
         broadcast();
         fragment.createPreview();
         // TODO: 2023-04-04 connect with deep learning module 
-        fragment.getAdapter().addText("One finished");
+        fragment.getAdapter().addText("你好");
+        model.speak("你好");
 
 
     }
 
     public void configMediaRecorder() {
-
-        File file = new File(Environment.getExternalStorageDirectory() +
-                "/DCIM/Camera/" + timestemp + ".mp4");
-        if (file.exists()) {
-            file.delete();
+//
+//        File file = new File(Environment.getExternalStorageDirectory() +
+//                "/DCIM/Camera/" + timestemp + ".mp4");
+        SLTVideo = new File(Environment.getExternalStorageDirectory() +
+                "/DCIM/Camera/.SLTVideoCache.mp4");
+        if (SLTVideo.exists()) {
+            SLTVideo.delete();
         }
         if (mMediaRecorder==null) {
             mMediaRecorder = new MediaRecorder();
@@ -317,7 +321,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
             mMediaRecorder.setVideoSize(1920, 1080);
             Surface surface = new Surface(fragment.getTextureView().getSurfaceTexture());
             mMediaRecorder.setPreviewDisplay(surface);
-            mMediaRecorder.setOutputFile(file.getAbsolutePath());
+            mMediaRecorder.setOutputFile(SLTVideo.getAbsolutePath());
             Log.d(null,"configure video taker");
 
             try {
