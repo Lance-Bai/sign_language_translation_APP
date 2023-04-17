@@ -69,6 +69,8 @@ public interface S2TContract {
         void configMediaRecorder();
 
         void changeCamera();
+
+        void speak(String s);
     }
 
     interface IS2TModel{
