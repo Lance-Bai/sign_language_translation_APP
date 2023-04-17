@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slt_project.R;
 
-public class TextOutputViewHolder extends RecyclerView.ViewHolder {
+public class TextOutputViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
     private Button itembutton;
     private TextView textOutput;
 
@@ -23,5 +23,9 @@ public class TextOutputViewHolder extends RecyclerView.ViewHolder {
         textOutput.setText(text);
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        return false;
+    }
 }
 

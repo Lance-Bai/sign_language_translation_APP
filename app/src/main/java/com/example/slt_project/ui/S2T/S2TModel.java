@@ -8,6 +8,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Environment;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Surface;
@@ -21,13 +22,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Locale;
 
-public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvailableListener {
+public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvailableListener, TextToSpeech.OnInitListener {
     private ImageReader imageReader = null;
     private S2TContract.IS2TPresenter presenter;
 
+    private TextToSpeech textToSpeech;
+
     S2TModel(S2TContract.IS2TPresenter presenter){
         this.presenter = presenter;
+        textToSpeech = new TextToSpeech(presenter.getFragment().getMainActivity(), this);
+
     }
 
     protected static final SparseIntArray ORIENTATION = new SparseIntArray();
@@ -85,6 +91,14 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
     }
 
     @Override
+    public void speak(String s) {
+        if (textToSpeech != null && !textToSpeech.isSpeaking()) {
+            textToSpeech.setPitch(1.0f);
+            textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+
+    @Override
     public void onImageAvailable(ImageReader imageReader) {
         Log.d(null,"photo saved");
         Image image = imageReader.acquireNextImage();
@@ -119,4 +133,21 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
             }
         }).start();
     }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.CHINA);
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.d("voice","data lost or not available");
+            }
+        } else {
+            Log.e("TTS", "Initilization Failed!");
+        }
+    }
+
+
+
+
 }
