@@ -51,20 +51,12 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     };
 
     private Handler mCameraHandler;
-
     private CameraDevice mCameraDevice;
-
     private CameraCaptureSession mCameraCaptureSession;
-
     private CaptureRequest.Builder mCaptureRequestBuilder;
-
-
     private String cameraId = "0";
     private MediaRecorder mMediaRecorder;
-
     private long timestemp;
-
-
 
     public S2TPresenter(S2TContract.IS2TFragment fragment){
         timestemp=System.currentTimeMillis();

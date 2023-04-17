@@ -19,4 +19,5 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
+
 </resources>

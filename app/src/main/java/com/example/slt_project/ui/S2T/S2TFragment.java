@@ -18,6 +18,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,7 +40,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     private Handler autoScrollHandler;
     private TextOutputAdapter adapter;
     List<String> textList = new ArrayList<>();
-    private Button takePhotoORVideo, changeCamera;
+    private Button takePhotoORVideo, changeCamera, playSound;
     public S2TContract.IS2TPresenter presenter;
     public Surface previewSurface;
     public SurfaceTexture surfaceTexture;
@@ -59,25 +60,28 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     @Override
     protected void initViews() {
         presenter = new S2TPresenter(this);
-        textureView = find(R.id.previewSurfaceView);
-        textureView.setSurfaceTextureListener(this);
-        takePhotoORVideo = find(R.id.s2t_take_photo_or_video);
-        takePhotoORVideo.setOnClickListener(this);
 
+        takePhotoORVideo = find(R.id.s2t_take_photo_or_video);
+        textureView = find(R.id.previewSurfaceView);
         changeCamera = find(R.id.s2t_changeCamera);
-        changeCamera.setOnClickListener(this);
         mThumbnail = find(R.id.s2t_thumbnail);
+        s2t_recyclerView = find(R.id.s2t_recycle);
+
+        textureView.setSurfaceTextureListener(this);
+        takePhotoORVideo.setOnClickListener(this);
+        changeCamera.setOnClickListener(this);
         mThumbnail.setOnClickListener(this);
 
         Context ctx = this.getMainActivity();
         sp = ctx.getSharedPreferences("SLTSetting", MODE_PRIVATE);
 
-        s2t_recyclerView=find(R.id.s2t_recycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         s2t_recyclerView.setLayoutManager(layoutManager);
         adapter = new TextOutputAdapter(textList);
         s2t_recyclerView.setAdapter(adapter);
-        autoScrollHandler=null;
+
+        autoScrollHandler = null;
+
         adapter.addText("Hello, world!");
         adapter.addText("11111111111111111111111111111111111111111111111111111! world!");
         adapter.addText("2! world!");
@@ -100,7 +104,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
                 float scrollPercentage = ((float) lastVisibleItemIndex / (float) itemCount) * 100;
                 recyclerView.setVerticalScrollbarPosition(Math.round(scrollPercentage));
             }
-            });
+        });
 
         s2t_recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -117,24 +121,52 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
                 return false;
             }
         });
+//        // 定义变量
+//        final long[] startTime = {0};
+//        long durationThreshold = 1000; // 长按时间阈值，单位为毫秒
+//
+//// 设置触摸监听器
+//        takePhotoORVideo.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        startTime[0] = System.currentTimeMillis();
+//                        return true;
+//                    case MotionEvent.ACTION_UP:
+//                        long duration = System.currentTimeMillis() - startTime[0];
+//                        if (duration > durationThreshold) {
+//                            // 进入录制模式
+//                            presenter.takeVideo();
+//                        } else {
+//                            // 进入拍照模式
+//                            presenter.takePhoto();
+//                        }
+//                        return true;
+//                    default:
+//                        return false;
+//                }
+//            }
+//        });
+
     }
 
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.s2t_take_photo_or_video:
                 String t = sp.getString("videoOrPhoto", "video");
-                if(true){
-                    if(!bStop){
+                if (true) {
+                    if (!bStop) {
                         presenter.takeVideo();
                         bStop = true;
-                    }else{
+                    } else {
                         presenter.stopVideo();
                         bStop = false;
                     }
-                }else{
+                } else {
                     presenter.takePhoto();
                 }
 
@@ -145,6 +177,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
             case R.id.s2t_changeCamera:
                 presenter.changeCamera();
+                break;
             default:
                 break;
         }
@@ -175,7 +208,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         presenter.configMediaRecorder();
         try {
             presenter.createSection();
-        }catch (CameraAccessException e) {
+        } catch (CameraAccessException e) {
             throw new RuntimeException(e);
         }
         showThumbnail();
@@ -217,8 +250,8 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
     public void showThumbnail() {
         ArrayList<String> imageList = presenter.getImageFilePath();
-        String path="";
-        for(int i=1;i<imageList.size();i++){
+        String path = "";
+        for (int i = 1; i <= imageList.size(); i++) {
             path = imageList.get(imageList.size() - i);
             long size = 0;
             try {
@@ -226,7 +259,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            if(size>0)break;
+            if (size > 0) break;
         }
 
         if (path.contains("jpg")) {
@@ -234,7 +267,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
             mThumbnail.setImageBitmap(bitmap);
 //            int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
 //            mThumbnail.setRotation(ORIENTATION.get(rotation));
-        } else if(path.contains("mp4")){
+        } else if (path.contains("mp4")) {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(path);
             Bitmap bitmap = retriever.getFrameAtTime(1);

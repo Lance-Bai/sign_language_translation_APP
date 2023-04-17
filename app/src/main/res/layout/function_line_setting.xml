@@ -10,12 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal">
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/light_mode"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Dark Mode"
+            android:text="@string/dark_mode_switch_text"
             android:textStyle="bold"
             android:textOn="On"
 
@@ -28,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal">
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/photo_mode"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -41,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal">
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -57,12 +56,26 @@
             android:layout_width="293dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Choose Language for Sign" />
+            android:text="@string/language_choose_spinner_text" />
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/text_size"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="777"/>
+        <SeekBar
+            android:id="@+id/seekBar_textsize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </SeekBar>
+    </LinearLayout>
 
 </LinearLayout>

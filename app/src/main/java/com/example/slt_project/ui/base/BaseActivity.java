@@ -1,6 +1,9 @@
 package com.example.slt_project.ui.base;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -21,11 +24,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
         initViews();
+
     }
 
     protected <T extends View> T find(@IdRes int id) {
         return findViewById(id);
     }
+
 
 
 //    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
