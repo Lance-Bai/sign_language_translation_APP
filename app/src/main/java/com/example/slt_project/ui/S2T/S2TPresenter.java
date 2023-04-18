@@ -389,7 +389,10 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
 
     }
 
-
+    @Override
+    public void speak(String s) {
+        model.speak(s);
+    }
 
 
 }

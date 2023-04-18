@@ -8,14 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slt_project.R;
+import com.example.slt_project.ui.S2T.S2TContract;
 
 import java.util.List;
 
 public class TextOutputAdapter extends RecyclerView.Adapter<TextOutputViewHolder> {
-
+    private S2TContract.IS2TPresenter presenter;
     private List<String> textList;
 
-    public TextOutputAdapter(List<String> textList) {
+    public TextOutputAdapter(List<String> textList, S2TContract.IS2TPresenter presenter) {
+        this.presenter = presenter;
         this.textList = textList;
     }
 
@@ -23,7 +25,7 @@ public class TextOutputAdapter extends RecyclerView.Adapter<TextOutputViewHolder
     @Override
     public TextOutputViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.s2t_recycler_item, parent, false);
-        return new TextOutputViewHolder(view);
+        return new TextOutputViewHolder(view, presenter);
     }
 
 

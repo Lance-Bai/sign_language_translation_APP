@@ -77,7 +77,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         s2t_recyclerView.setLayoutManager(layoutManager);
-        adapter = new TextOutputAdapter(textList);
+        adapter = new TextOutputAdapter(textList, presenter);
         s2t_recyclerView.setAdapter(adapter);
 
         autoScrollHandler = null;

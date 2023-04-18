@@ -26,7 +26,14 @@ android:layout_height="wrap_content"
     android:paddingBottom="5dp"
     android:orientation="vertical"
     android:layout_marginRight="15dp"
+    android:orientation="horizontal"
     >
+    <Button
+        android:id="@+id/speakButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@android:drawable/ic_menu_camera" />
+
     <TextView
         android:id="@+id/s2t_recyclerItem"
         android:layout_width="wrap_content"
