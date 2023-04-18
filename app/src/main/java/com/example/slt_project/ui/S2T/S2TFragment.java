@@ -185,9 +185,9 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
     @Override
     public void onResume() {
-//        super.onResume();
-//        presenter.checkPermission();
         super.onResume();
+        presenter.checkPermission();
+//        super.onResume();
     }
 
     @Override
@@ -195,6 +195,8 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             presenter.checkPermission();
+             presenter.openCamera();
+
         }
 
     }
@@ -234,6 +236,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     @Override
     public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
         presenter.checkPermission();
+        presenter.openCamera();
         showThumbnail();
         this.createPreview();
 

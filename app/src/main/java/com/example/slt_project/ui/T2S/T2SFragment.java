@@ -45,7 +45,7 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         t2s_recyclerView.setLayoutManager(layoutManager);
-        adapter = new TextOutputAdapter(textList);
+        adapter = new TextOutputAdapter(textList, null);
         t2s_recyclerView.setAdapter(adapter);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);

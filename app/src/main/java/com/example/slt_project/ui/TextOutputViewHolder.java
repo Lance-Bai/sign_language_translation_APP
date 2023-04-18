@@ -22,7 +22,6 @@ public class TextOutputViewHolder extends RecyclerView.ViewHolder implements Vie
         super(itemView);
         textOutput = itemView.findViewById(R.id.s2t_recyclerItem);
         speakButton = itemView.findViewById(R.id.s2t_item_button);
-        speakButton = itemView.findViewById(R.id.speakButton);
         speakButton.setOnClickListener(this);
         this.presenter = presenter;
     }
@@ -31,10 +30,9 @@ public class TextOutputViewHolder extends RecyclerView.ViewHolder implements Vie
         textOutput.setText(text);
     }
 
-
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.speakButton){
+        if(v.getId()==R.id.s2t_item_button){
             presenter.speak((String) textOutput.getText());
         }
     }

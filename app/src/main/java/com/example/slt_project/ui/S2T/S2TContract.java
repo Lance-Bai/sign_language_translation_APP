@@ -1,5 +1,6 @@
 package com.example.slt_project.ui.S2T;
 
+import android.annotation.SuppressLint;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
@@ -38,6 +39,9 @@ public interface S2TContract {
         void checkPermission();
 
         boolean allPermissionsGranted();
+
+        @SuppressLint("MissingPermission")
+        void openCamera();
 
         void createSection() throws CameraAccessException;
 

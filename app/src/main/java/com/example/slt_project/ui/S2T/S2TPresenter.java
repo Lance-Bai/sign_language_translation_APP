@@ -77,8 +77,6 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     public void checkPermission() {
         if (allPermissionsGranted()) {
             Log.d(null, "Permission Granted");
-            openCamera();
-
         } else {
             Log.d(null, "Apply Permission");
             ((Fragment)fragment).requestPermissions(REQUIRED_PERMISSIONS, 1);
@@ -95,6 +93,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
                 Log.d(null,permission+" not granted");
                 return false;
             }
+            Log.d(null, permission + " granted");
         }
         return true;
     }
@@ -106,6 +105,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     }
 
     @SuppressLint("MissingPermission")
+    @Override
     public void openCamera(){
         Log.d(null, "----------openCamera");
         CameraManager cameraManager = (CameraManager) fragment.getMainActivity().getSystemService(CAMERA_SERVICE);
@@ -120,7 +120,6 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
             for (Size size : sizes) {
                 Log.d(null,"size = "+size);
             }
-
             cameraManager.openCamera(valueOf(cameraId),cameraDeviceStateCallback,mCameraHandler);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -271,8 +270,8 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SLTVideo.renameTo(new File(Environment.getExternalStorageDirectory() +
-                "/DCIM/Camera/SLTV_" + System.currentTimeMillis() + ".mp4"));
+        SLTVideo.renameTo(new File(this.getFragment().getMainActivity().getExternalFilesDir(null) +
+                "/SLTV_" + System.currentTimeMillis() + ".mp4"));
         broadcast();
         fragment.createPreview();
         // TODO: 2023-04-04 connect with deep learning module 
@@ -286,8 +285,9 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
 //
 //        File file = new File(Environment.getExternalStorageDirectory() +
 //                "/DCIM/Camera/" + timestemp + ".mp4");
-        SLTVideo = new File(Environment.getExternalStorageDirectory() +
-                "/DCIM/Camera/.SLTVideoCache.mp4");
+        SLTVideo = new File(this.getFragment().getMainActivity().getExternalFilesDir(null) +
+                "/.SLTVideoCache");
+//        this.getFragment().getMainActivity().getExternalFilesDir(null)
         if (SLTVideo.exists()) {
             SLTVideo.delete();
         }
@@ -298,8 +298,9 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
             } else {
                 mMediaRecorder.setOrientationHint(90);
             }
+            Log.d("audio","check done");
             //audio source
-            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
             //video source
             mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
             //output format
@@ -321,7 +322,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
             try {
                 mMediaRecorder.prepare();
             } catch (IOException e) {
-                Log.e(null, "prepare() failed");
+                Log.e(null, "prepare() failed"+ e);
             }
         }
 
@@ -345,7 +346,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     };
     public ArrayList<String> getImageFilePath() {
         ArrayList<String> imageList = new ArrayList<>();
-        File file = new File(Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera");
+        File file = new File(String.valueOf(this.getFragment().getMainActivity().getExternalFilesDir(null)));
         File[] dirEpub = file.listFiles();
         Arrays.sort(dirEpub,new Comparator<File>() {
             public int compare(File f1, File f2) {
@@ -368,7 +369,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
                 String fileName = dirEpub[i].toString();
                 if(!fileName.contains(".jpg")&&!fileName.contains(".mp4"))continue;
                 imageList.add(fileName);
-                Log.i("File", "File name = " + fileName);
+                //Log.i("File", "File name = " + fileName);
             }
         }
         return imageList;
