@@ -7,7 +7,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
 import android.media.ImageReader;
-import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -15,14 +14,13 @@ import android.view.Surface;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.material.tabs.TabLayout;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Locale;
+
+import com.huaweicloud.sdk.nlp.v2.model.*;
 
 public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvailableListener, TextToSpeech.OnInitListener {
     private ImageReader imageReader = null;
@@ -30,9 +28,23 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
 
     private TextToSpeech textToSpeech;
 
+
+
     S2TModel(S2TContract.IS2TPresenter presenter){
         this.presenter = presenter;
         textToSpeech = new TextToSpeech(presenter.getFragment().getMainActivity(), this);
+
+    }
+    @Override
+    public void translateTo(String content, String val) {
+        TextTranslationReq req1 = new TextTranslationReq();
+        req1.setFrom(TextTranslationReq.FromEnum.ZH);
+        req1.setTo(TextTranslationReq.ToEnum.fromValue(val));
+        req1.setText(content);
+        req1.setScene(TextTranslationReq.SceneEnum.COMMON);
+        RunTextTranslationRequest req2 = new RunTextTranslationRequest();
+        req2.setBody(req1);
+        new TranslateModel(this).execute(req2);
 
     }
 
@@ -109,8 +121,8 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
                 ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                 byte[] data = new byte[buffer.remaining()];
                 buffer.get(data);
-                String path = Environment.getExternalStorageDirectory() +  "/DCIM/Camera/"
-                        + System.currentTimeMillis() + ".jpg";
+                String path = presenter.getFragment().getMainActivity().getExternalFilesDir(null) +
+                        "/" + System.currentTimeMillis() + ".jpg";
                 File imageFile = new File(path);
                 FileOutputStream fos = null;
                 try {
@@ -147,7 +159,9 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
         }
     }
 
-
-
+    @Override
+    public S2TContract.IS2TPresenter getPresenter(){
+        return presenter;
+    }
 
 }

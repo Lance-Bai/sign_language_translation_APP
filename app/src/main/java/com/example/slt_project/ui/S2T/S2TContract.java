@@ -11,8 +11,6 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.widget.ImageView;
 
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.slt_project.ui.TextOutputAdapter;
@@ -75,9 +73,13 @@ public interface S2TContract {
         void changeCamera();
 
         void speak(String s);
+
+        void translateTo(String content);
     }
 
     interface IS2TModel{
+        void translateTo(String content, String val);
+
         void takePhoto();
 
         void initImageReader();
@@ -85,6 +87,8 @@ public interface S2TContract {
         ImageReader getImageReader();
 
         void speak(String s);
+
+        IS2TPresenter getPresenter();
     }
 
 }

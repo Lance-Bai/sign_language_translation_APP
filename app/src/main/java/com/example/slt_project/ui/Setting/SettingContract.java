@@ -6,8 +6,8 @@ public interface SettingContract {
     }
 
     interface ISettingPresenter{
-        void setVideoMode();
-        void setPhotoMode();
+        void setNightMode(Boolean b);
+        void setPhotoMode(Boolean b);
 
     }
 

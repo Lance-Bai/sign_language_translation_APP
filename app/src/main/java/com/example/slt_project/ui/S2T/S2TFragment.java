@@ -73,7 +73,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         mThumbnail.setOnClickListener(this);
 
         Context ctx = this.getMainActivity();
-        sp = ctx.getSharedPreferences("SLTSetting", MODE_PRIVATE);
+        sp = ctx.getSharedPreferences("my_prefs", MODE_PRIVATE);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         s2t_recyclerView.setLayoutManager(layoutManager);
@@ -158,7 +158,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         switch (view.getId()) {
             case R.id.s2t_take_photo_or_video:
                 String t = sp.getString("videoOrPhoto", "video");
-                if (true) {
+                if (!sp.getBoolean("photo_mode", false)) {
                     if (!bStop) {
                         presenter.takeVideo();
                         bStop = true;

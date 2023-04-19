@@ -9,16 +9,31 @@ import androidx.annotation.NonNull;
 
 public class SettingPresenter implements SettingContract.ISettingPresenter {
     SettingFragment fragment;
+    private SharedPreferences sharedPreferences;
+
     SettingPresenter(@NonNull SettingFragment fragment){
         this.fragment = fragment;
-
+        sharedPreferences = fragment.getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
     }
 
-    public void setVideoMode(){
-        // TODO: 2023-04-04
+    public void setNightMode(Boolean b){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("night_mode", b);
+        editor.commit();
     }
 
-    public void setPhotoMode(){
-        // TODO: 2023-04-04
+    public void setPhotoMode(Boolean b){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("photo_mode", b);
+        editor.commit();
+    }
+
+
+    public boolean isNightModeOn(){
+        return sharedPreferences.getBoolean("night_mode", false);
+    }
+
+    public boolean isPhotoModeOn(){
+        return sharedPreferences.getBoolean("photo_mode",false);
     }
 }

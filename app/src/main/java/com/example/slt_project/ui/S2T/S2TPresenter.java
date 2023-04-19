@@ -1,11 +1,13 @@
 package com.example.slt_project.ui.S2T;
 
 import static android.content.Context.CAMERA_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
 import static java.lang.String.valueOf;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.ImageFormat;
@@ -47,6 +49,10 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.RECORD_AUDIO",
+            "android.permission.INTERNET",
+            "android.permission.FOREGROUND_SERVICE",
+            "android.permission.ACCESS_NETWORK_STATE",
+            "android.permission.ACCESS_WIFI_STATE"
 
     };
 
@@ -60,12 +66,16 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
 
     private File SLTVideo;
 
+    private SharedPreferences sp;
+
+
 
 
     public S2TPresenter(S2TContract.IS2TFragment fragment){
         this.fragment = fragment;
         this.model= new S2TModel(this);
         startCameraThread();
+        sp = this.getFragment().getMainActivity().getSharedPreferences("my_prefs", MODE_PRIVATE);
     }
 
     @Override
@@ -277,6 +287,8 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
         // TODO: 2023-04-04 connect with deep learning module 
         fragment.getAdapter().addText("你好");
         model.speak("你好");
+        translateTo("你好");
+
 
 
     }
@@ -287,7 +299,6 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
 //                "/DCIM/Camera/" + timestemp + ".mp4");
         SLTVideo = new File(this.getFragment().getMainActivity().getExternalFilesDir(null) +
                 "/.SLTVideoCache");
-//        this.getFragment().getMainActivity().getExternalFilesDir(null)
         if (SLTVideo.exists()) {
             SLTVideo.delete();
         }
@@ -395,5 +406,9 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
         model.speak(s);
     }
 
-
+    @Override
+    public void translateTo(String content){
+       String targetLanguage =  sp.getString("language","en");
+       model.translateTo(content,targetLanguage);
+    }
 }

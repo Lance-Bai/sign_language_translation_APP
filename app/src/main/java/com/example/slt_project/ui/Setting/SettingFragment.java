@@ -24,7 +24,6 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
     private SettingPresenter presenter;
     private SeekBar fontSizeSeekBar;
     private TextView fontSizeTextView;
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected int getLayoutID() {
@@ -43,13 +42,8 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         darkOrLight.setOnCheckedChangeListener(this);
         photoOrVideo.setOnCheckedChangeListener(this);
 
-        sharedPreferences = getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
-
-        boolean isNightModeOn = sharedPreferences.getBoolean("night_mode", false);
-        boolean isPhotoModeOn=sharedPreferences.getBoolean("photo_mode",false);
-
-        darkOrLight.setChecked(isNightModeOn);
-        photoOrVideo.setChecked(isPhotoModeOn);
+        darkOrLight.setChecked(presenter.isNightModeOn());
+        photoOrVideo.setChecked(presenter.isPhotoModeOn());
 
        fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
            @Override
@@ -89,10 +83,9 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         switch (compoundButton.getId()) {
             case R.id.light_mode:
-                editor.putBoolean("night_mode", b);
+                presenter.setNightMode(b);
                 if (b) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 } else {
@@ -101,14 +94,8 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
                 break;
 
             case R.id.photo_mode:
-                editor.putBoolean("photo_mode", b);
-                if (b) {
-                    presenter.setPhotoMode();
-                } else {
-                    presenter.setVideoMode();
-                }
+                presenter.setPhotoMode(b);
         }
-        editor.apply();
 
     }
 
