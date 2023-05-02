@@ -7,6 +7,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.media.MediaMetadataRetriever;
@@ -21,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -185,9 +192,20 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
     @Override
     public void onResume() {
-        super.onResume();
         presenter.checkPermission();
+        super.onResume();
+
+
 //        super.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        if(bStop){
+            presenter.endVideo();
+            bStop = false;
+        }
+        super.onStop();
     }
 
     @Override
@@ -195,11 +213,12 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             presenter.checkPermission();
-             presenter.openCamera();
 
         }
 
     }
+
+
 
     @Override
     public void createPreview() {
@@ -267,16 +286,17 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
         if (path.contains("jpg")) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
-            mThumbnail.setImageBitmap(bitmap);
+            mThumbnail.setImageBitmap(toRoundBitmap(bitmap));
 //            int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
 //            mThumbnail.setRotation(ORIENTATION.get(rotation));
         } else if (path.contains("mp4")) {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(path);
             Bitmap bitmap = retriever.getFrameAtTime(1);
-            mThumbnail.setImageBitmap(bitmap);
+            mThumbnail.setImageBitmap(toRoundBitmap(bitmap));
         }
     }
+
 
     @Override
     public TextOutputAdapter getAdapter() {
@@ -298,4 +318,52 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surfaceTexture) {
 
     }
+    private static Bitmap toRoundBitmap(Bitmap bitmap) {//bitmap图片
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float roundPx;
+        float left, top, right, bottom, dst_left, dst_top, dst_right, dst_bottom;
+        if (width <= height) {
+            roundPx = width / 2;
+            top = 0;
+            bottom = width;
+            left = 0;
+            right = width;
+            height = width;
+            dst_left = 0;
+            dst_top = 0;
+            dst_right = width;
+            dst_bottom = width;
+        } else {
+            roundPx = height / 2;
+            float clip = (width - height) / 2;
+            left = clip;
+            right = width - clip;
+            top = 0;
+            bottom = height;
+            width = height;
+            dst_left = 0;
+            dst_top = 0;
+            dst_right = height;
+            dst_bottom = height;
+        }
+        Bitmap output = Bitmap.createBitmap(width,
+                height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect src;
+        src = new Rect((int) left, (int) top, (int) right, (int) bottom);
+        final Rect dst = new Rect((int) dst_left, (int) dst_top, (int) dst_right, (int) dst_bottom);
+        final RectF rectF = new RectF(dst);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, src, dst, paint);
+        return output;
+    }
+
+
 }

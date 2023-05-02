@@ -138,7 +138,7 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
                             e.printStackTrace();
                         }
                     }
-                    presenter.broadcast();
+                    presenter.broadcastPhoto(path);
                     image.close(); // MUST!!!!!
                     presenter.showThumbnail();
                 }

@@ -21,7 +21,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
@@ -32,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import java.io.File;
@@ -62,7 +62,6 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     private CaptureRequest.Builder mCaptureRequestBuilder;
     private String cameraId = "0";
     private MediaRecorder mMediaRecorder;
-    private long timestemp;
 
     private File SLTVideo;
 
@@ -86,6 +85,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     @Override
     public void checkPermission() {
         if (allPermissionsGranted()) {
+            openCamera();
             Log.d(null, "Permission Granted");
         } else {
             Log.d(null, "Apply Permission");
@@ -167,44 +167,22 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     @Override
     public void goGallery() {
         ArrayList<String> temp = getImageFilePath();
-        String lastPath = temp.get(0);
-        Uri uri = getMediaUriFromPath(this, lastPath);
-        Intent intent = new Intent("com.android.camera.action.REVIEW", uri);
-        intent.setData(uri);
-        fragment.getMainActivity().startActivity(intent);
-    }
+        String lastPath = temp.get(temp.size()-1);
 
-    @SuppressLint("Range")
-    private Uri getMediaUriFromPath(S2TPresenter s2TPresenter, String path) {
-        Uri uri = null;
-        if (path.contains("jpg")) {
-            Uri picUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            Cursor cursor = fragment.getMainActivity().getContentResolver().query(picUri,
-                    null,
-                    MediaStore.Images.Media.DISPLAY_NAME + "= ?",
-                    new String[]{path.substring(path.lastIndexOf("/") + 1)},
-                    null);
-            if (cursor.moveToFirst()) {
-                uri = ContentUris.withAppendedId(picUri,
-                        cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID)));
-            }
-            cursor.close();
-        } else if (path.contains("mp4")) {
-            Uri mediaUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-            Cursor cursor =  fragment.getMainActivity().getContentResolver().query(mediaUri,
-                    null,
-                    MediaStore.Video.Media.DISPLAY_NAME + "= ?",
-                    new String[]{path.substring(path.lastIndexOf("/") + 1)},
-                    null);
-            if (cursor.moveToFirst()) {
-                uri = ContentUris.withAppendedId(mediaUri,
-                        cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media._ID)));
-            }
-            cursor.close();
-        }
-        return uri;
+        Uri uri = FileProvider.getUriForFile(this.getFragment().getMainActivity(), "com.example.slt_project.fileprovider", new File(lastPath));
+        String type="";
+        if(lastPath.contains(".mp4"))type="video/*";
+        if(lastPath.contains(".jpg"))type="image/*";
+
+        Intent it = new Intent(Intent.ACTION_VIEW);
+        it.setDataAndType(uri, type);
+        it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION );
+        fragment.getMainActivity().startActivity(it);
+
 
     }
+
+
 
     @Override
     public void initImageReader() {
@@ -213,12 +191,29 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
 
     @Override
     public void broadcast() {
-        Log.d(null, "--------------------broadcast");
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() +  "/DCIM/Camera";
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri uri = Uri.fromFile(new File(path));
-        intent.setData(uri);
-        fragment.getMainActivity().sendBroadcast(intent);
+
+    }
+
+    @Override
+    public void broadcast(String path) {
+
+    }
+
+    @Override
+    public void broadcastPhoto(String path) {
+        Log.d(null, "--------------------broadcast the photo");
+        AlbumHelper AlbumNotifyHelper = new AlbumHelper();
+        AlbumNotifyHelper.insertImageToMediaStore(this.getFragment().getMainActivity(), path, 0);
+    }
+
+
+    @Override
+    public void broadcastVideo(String path) {
+        Log.d(null, "--------------------broadcast the video");
+        AlbumHelper AlbumNotifyHelper = new AlbumHelper();
+        AlbumNotifyHelper.insertVideoToMediaStore(this.getFragment().getMainActivity(), path, 0, 5000);
+
+
     }
 
 
@@ -280,18 +275,40 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SLTVideo.renameTo(new File(this.getFragment().getMainActivity().getExternalFilesDir(null) +
-                "/SLTV_" + System.currentTimeMillis() + ".mp4"));
-        broadcast();
+        String newPath = this.getFragment().getMainActivity().getExternalFilesDir(null) +
+                "/SLTV_" + System.currentTimeMillis() + ".mp4";
+        SLTVideo.renameTo(new File(newPath));
+        broadcastVideo(newPath);
+        AlbumHelper.insertVideoToMediaStore(this.getFragment().getMainActivity(), newPath, 0, 5000);
         fragment.createPreview();
         // TODO: 2023-04-04 connect with deep learning module 
         fragment.getAdapter().addText("你好");
         model.speak("你好");
         translateTo("你好");
 
-
-
     }
+
+    @Override
+    public void endVideo(){
+        //without saving or translating it
+        Log.d(null, "stopVideo: end");
+        mMediaRecorder.setOnErrorListener(null);
+        mMediaRecorder.setOnInfoListener(null);
+        mMediaRecorder.setPreviewDisplay(null);
+        try {
+            mMediaRecorder.stop();
+            mMediaRecorder.release();
+            mMediaRecorder=null;
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void configMediaRecorder() {
 //

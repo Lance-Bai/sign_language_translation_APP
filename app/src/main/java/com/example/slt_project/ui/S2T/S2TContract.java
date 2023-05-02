@@ -50,6 +50,12 @@ public interface S2TContract {
         void broadcast();
 
 
+        void broadcast(String path);
+
+        void broadcastPhoto(String path);
+
+        void broadcastVideo(String path);
+
         CameraDevice getCameraDevice();
 
         CameraCaptureSession getCameraCaptureSession();
@@ -67,6 +73,8 @@ public interface S2TContract {
         void takeVideo();
 
         void stopVideo();
+
+        void endVideo();
 
         void configMediaRecorder();
 
