@@ -21,10 +21,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button skipButton, loginButton, registerButton;
     private TextInputEditText email, password;
     AppDataBase db;
+    private final String[] REQUIRED_PERMISSIONS = new String[]{
+            "android.permission.CAMERA",
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.RECORD_AUDIO",
+            "android.permission.INTERNET",
+            "android.permission.FOREGROUND_SERVICE",
+            "android.permission.ACCESS_NETWORK_STATE",
+            "android.permission.ACCESS_WIFI_STATE"
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestPermissions(REQUIRED_PERMISSIONS, 2);
         setContentView(R.layout.activity_login);
         skipButton = findViewById(R.id.skip_button);
         loginButton = findViewById(R.id.login_button);

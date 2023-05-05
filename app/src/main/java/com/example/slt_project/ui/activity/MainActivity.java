@@ -32,7 +32,17 @@ public class MainActivity extends BaseActivity   {
 private List<Fragment> fragments;
     private ViewPager viewPage;
     private TabLayout tabLayout;
+    private final String[] REQUIRED_PERMISSIONS = new String[]{
+            "android.permission.CAMERA",
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.RECORD_AUDIO",
+            "android.permission.INTERNET",
+            "android.permission.FOREGROUND_SERVICE",
+            "android.permission.ACCESS_NETWORK_STATE",
+            "android.permission.ACCESS_WIFI_STATE"
 
+    };
 //    private TabItem tabItem1,tabItem2,tabItem3;
 //    private BottomNavigationView bottomNavigationView;
     private MyFragmentAdapter fragmentAdapter;
@@ -44,6 +54,7 @@ private List<Fragment> fragments;
 
     @Override
     protected void initViews() {
+        requestPermissions(REQUIRED_PERMISSIONS, 0);
 //        bottomNavigationView = find(R.id.navigationView);
 //        bottomNavigationView.setOnItemSelectedListener(this);
         tabLayout=findViewById(R.id.tab_layout);

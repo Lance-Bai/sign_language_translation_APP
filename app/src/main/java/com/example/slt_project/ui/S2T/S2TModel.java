@@ -15,24 +15,14 @@ import android.view.Surface;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.material.tabs.TabLayout;
+import com.huaweicloud.sdk.nlp.v2.model.RunTextTranslationRequest;
+import com.huaweicloud.sdk.nlp.v2.model.TextTranslationReq;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.util.Locale;
-
-import com.huaweicloud.sdk.nlp.v2.model.*;
 
 public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvailableListener, TextToSpeech.OnInitListener {
     private ImageReader imageReader = null;

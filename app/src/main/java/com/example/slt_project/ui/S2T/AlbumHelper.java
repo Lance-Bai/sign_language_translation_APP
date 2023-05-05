@@ -15,10 +15,6 @@ public class AlbumHelper {
     public static final String TAG = AlbumHelper.class.getSimpleName();
 
 
-    ///
-    // 下面是对外公开的重载的方法
-    ///
-
     public static void notifyScanDcim(Context context, String filePath) {
         scanFile(context, filePath);
     }
@@ -31,17 +27,6 @@ public class AlbumHelper {
         insertImageToMediaStore(context, filePath, createTime, 0, 0);
     }
 
-
-    ///
-    // 扫描系统相册核心方法
-    ///
-
-    /**
-     * 针对系统文件夹只需要扫描,不用插入内容提供者,不然会重复
-     *
-     * @param context  上下文
-     * @param filePath 文件路径
-     */
     public static void scanFile(Context context, String filePath) {
         if (!checkFile(filePath)) {
             return;
@@ -52,18 +37,6 @@ public class AlbumHelper {
     }
 
 
-    ///
-    // 非系统相册向MediaContent中插入数据，核心方法
-    ///
-
-    /**
-     * 针对非系统文件夹下的文件,使用该方法
-     * 插入时初始化公共字段
-     *
-     * @param filePath 文件
-     * @param time     ms
-     * @return ContentValues
-     */
     private static ContentValues initCommonContentValues(String filePath, long time) {
         ContentValues values = new ContentValues();
         File saveFile = new File(filePath);
@@ -77,15 +50,6 @@ public class AlbumHelper {
         return values;
     }
 
-    /**
-     * 保存到照片到本地，并插入MediaStore以保证相册可以查看到,这是更优化的方法，防止读取的照片获取不到宽高
-     *
-     * @param context    上下文
-     * @param filePath   文件路径
-     * @param createTime 创建时间 <=0时为当前时间 ms
-     * @param width      宽度
-     * @param height     高度
-     */
     public static void insertImageToMediaStore(Context context, String filePath, long createTime, int width, int height) {
         if (!checkFile(filePath))
             return;
@@ -102,16 +66,7 @@ public class AlbumHelper {
         context.getApplicationContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
-    /**
-     * 保存到视频到本地，并插入MediaStore以保证相册可以查看到,这是更优化的方法，防止读取的视频获取不到宽高
-     *
-     * @param context    上下文
-     * @param filePath   文件路径
-     * @param createTime 创建时间 <=0时为当前时间 ms
-     * @param duration   视频长度 ms
-     * @param width      宽度
-     * @param height     高度
-     */
+
     public static void insertVideoToMediaStore(Context context, String filePath, long createTime, int width, int height, long duration) {
         if (!checkFile(filePath))
             return;
@@ -129,22 +84,12 @@ public class AlbumHelper {
     }
 
 
-    /**
-     * 是不是系统相册
-     *
-     * @param path
-     * @return
-     */
+
     private static boolean isSystemDcim(String path) {
         return path.toLowerCase().contains("dcim") || path.toLowerCase().contains("camera");
     }
 
-    /**
-     * 获取照片的mine_type
-     *
-     * @param path
-     * @return
-     */
+
     private static String getPhotoMimeType(String path) {
         String lowerPath = path.toLowerCase();
         if (lowerPath.endsWith("jpg") || lowerPath.endsWith("jpeg")) {
@@ -157,12 +102,7 @@ public class AlbumHelper {
         return "image/jpeg";
     }
 
-    /**
-     * 获取video的mine_type,暂时只支持mp4,3gp
-     *
-     * @param path
-     * @return
-     */
+
     private static String getVideoMimeType(String path) {
         String lowerPath = path.toLowerCase();
         if (lowerPath.endsWith("mp4") || lowerPath.endsWith("mpeg4")) {
@@ -173,12 +113,6 @@ public class AlbumHelper {
         return "video/mp4";
     }
 
-    /**
-     * 获得转化后的时间
-     *
-     * @param time
-     * @return
-     */
     private static long getTimeWrap(long time) {
         if (time <= 0) {
             return System.currentTimeMillis();
@@ -186,12 +120,7 @@ public class AlbumHelper {
         return time;
     }
 
-    /**
-     * 检测文件存在
-     *
-     * @param filePath
-     * @return
-     */
+
     private static boolean checkFile(String filePath) {
         //boolean result = FileUtil.fileIsExist(filePath);
         boolean result = false;
@@ -199,7 +128,7 @@ public class AlbumHelper {
         if (mFile.exists()) {
             result = true;
         }
-        Log.e(TAG, "文件不存在 path = " + filePath);
+        Log.e(TAG, "no file. path = " + filePath);
         return result;
     }
 }

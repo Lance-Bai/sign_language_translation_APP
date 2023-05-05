@@ -91,8 +91,10 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
             openCamera();
             Log.d(null, "Permission Granted");
         } else {
+
             Log.d(null, "Apply Permission");
             ((Fragment)fragment).requestPermissions(REQUIRED_PERMISSIONS, 1);
+
         }
 
 
@@ -299,9 +301,9 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
 
         //add complete
 
-        fragment.getAdapter().addText("你好");
-        model.speak("你好");
-        translateTo("你好");
+//        fragment.getAdapter().addText("你好");
+//        model.speak("你好");
+//        translateTo("你好");
 
     }
 
@@ -442,7 +444,13 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
 
     @Override
     public void translateTo(String content){
-       String targetLanguage =  sp.getString("language","en");
-       model.translateTo(content,targetLanguage);
+       String targetLanguage =  sp.getString("language","zh");
+       if(targetLanguage.equals("zh")){
+           this.getFragment().getAdapter().addText(content);
+           model.speak(content);
+       }else{
+           model.translateTo(content,targetLanguage);
+       }
+
     }
 }

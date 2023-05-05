@@ -9,6 +9,9 @@ public interface SettingContract {
         void setNightMode(Boolean b);
         void setPhotoMode(Boolean b);
 
+        void setLanguage(String s);
+
+        String reSetLabelLanguage();
     }
 
     interface ISettingModel{

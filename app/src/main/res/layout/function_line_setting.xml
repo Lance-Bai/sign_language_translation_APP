@@ -53,14 +53,17 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="293dp"
+            android:layout_width="159dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="@string/language_choose_spinner_text" />
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:entries="@array/language"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,11 +74,14 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="777"/>
+
         <SeekBar
             android:id="@+id/seekBar_textsize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </SeekBar>
     </LinearLayout>
+
+
 
 </LinearLayout>

@@ -23,15 +23,21 @@ public class PostData extends AsyncTask<Map<String, String>,Void,String> {
 
     @Override
     protected String doInBackground(Map<String, String>... hashMaps) {
+        String post_result = null;
         try {
-            String post_result = null;
             post_result = submitPostData(hashMaps[0], "utf-8");
             Log.i("POST_RESULT", post_result);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
 
-        return null;
+        return post_result;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        PRESENTER.translateTo(s);
     }
 
     public static String submitPostData(Map<String, String> params, String encode) throws MalformedURLException {
@@ -42,7 +48,7 @@ public class PostData extends AsyncTask<Map<String, String>,Void,String> {
          * @return 服务器返回信息
          */
         byte[] data = getRequestData(params, encode).toString().getBytes();
-        URL url = new URL("http://192.168.233.118:8000/");
+        URL url = new URL("http://192.168.1.140:5000");
         HttpURLConnection httpURLConnection = null;
         try{
             httpURLConnection = (HttpURLConnection)url.openConnection();

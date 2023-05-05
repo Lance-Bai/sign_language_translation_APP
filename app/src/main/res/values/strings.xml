@@ -10,6 +10,38 @@
     <string name="input_text_hint">请输入文字</string>
     <string name="send_input_text_button">发送</string>
     <string name="dark_mode_switch_text">Dark Mode</string>
-    <string name="language_choose_spinner_text">Choose Language for Sign</string>
+    <string name="language_choose_spinner_text">选择输出语言</string>
 
+    <string-array name="language">
+        <item>阿拉伯语</item>
+        <item>德语</item>
+        <item>俄语</item>
+        <item>法语</item>
+        <item>韩语</item>
+        <item>葡萄牙语</item>
+        <item>日语</item>
+        <item>泰语</item>
+        <item>土耳其语</item>
+        <item>西班牙语</item>
+        <item>英语</item>
+        <item>越南语</item>
+        <item>中文简体</item>
+        <item>中文繁体</item>
+    </string-array>
+    <string-array name="language_label">
+        <item>ar</item>
+        <item>de</item>
+        <item>ru</item>
+        <item>fr</item>
+        <item>ko</item>
+        <item>pt</item>
+        <item>ja</item>
+        <item>th</item>
+        <item>tr</item>
+        <item>es</item>
+        <item>en</item>
+        <item>vi</item>
+        <item>zh</item>
+        <item>zh-tw</item>
+    </string-array>
 </resources>

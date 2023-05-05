@@ -5,8 +5,11 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -25,6 +28,8 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
     private SeekBar fontSizeSeekBar;
     private TextView fontSizeTextView;
 
+    private Spinner languageSpinner;
+
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_setting;
@@ -38,9 +43,25 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         photoOrVideo = find(R.id.photo_mode);
         fontSizeSeekBar = find(R.id.seekBar_textsize);
         fontSizeTextView=find(R.id.text_size);
+        languageSpinner=find(R.id.spinner);
 
         darkOrLight.setOnCheckedChangeListener(this);
         photoOrVideo.setOnCheckedChangeListener(this);
+        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(
+
+        ) {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String label = getMainActivity().getResources().getStringArray(R.array.language_label)[position];
+                presenter.setLanguage(label);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         darkOrLight.setChecked(presenter.isNightModeOn());
         photoOrVideo.setChecked(presenter.isPhotoModeOn());

@@ -44,8 +44,6 @@ import java.util.List;
 public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragment, View.OnClickListener, TextureView.SurfaceTextureListener {
     private TextureView textureView;
     private RecyclerView s2t_recyclerView;
-    private boolean isAutoPlay;
-    private Handler autoScrollHandler;
     private TextOutputAdapter adapter;
     List<String> textList = new ArrayList<>();
     private Button takePhotoORVideo, changeCamera, playSound;
@@ -88,19 +86,8 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         adapter = new TextOutputAdapter(textList, presenter);
         s2t_recyclerView.setAdapter(adapter);
 
-        autoScrollHandler = null;
 
-        adapter.addText("Hello, world!");
-        adapter.addText("11111111111111111111111111111111111111111111111111111! world!");
-        adapter.addText("2! world!");
-        adapter.addText("3! world!");
-        adapter.addText("4! world!");
-        adapter.addText("5! world!");
-        adapter.addText("6! world!");
-        adapter.addText("7! world!");
-        adapter.addText("8! world!");
-        adapter.addText("9! world!");
-        adapter.addText("11! world!");
+
 
         s2t_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -197,11 +184,12 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
     @Override
     public void onResume() {
-        presenter.checkPermission();
         super.onResume();
+        //presenter.checkPermission();
+//        createPreview();
 
 
-//        super.onResume();
+
     }
 
     @Override
@@ -218,7 +206,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             presenter.checkPermission();
-
+            presenter.openCamera();
         }
 
     }
@@ -260,7 +248,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     @Override
     public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
         presenter.checkPermission();
-        presenter.openCamera();
         showThumbnail();
         this.createPreview();
 
