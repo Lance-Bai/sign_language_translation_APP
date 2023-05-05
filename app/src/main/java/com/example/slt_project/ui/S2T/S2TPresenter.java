@@ -36,9 +36,12 @@ import androidx.fragment.app.Fragment;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class S2TPresenter implements S2TContract.IS2TPresenter {
@@ -257,7 +260,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
     }
 
     @Override
-    public void stopVideo() {
+    public void stopVideo() throws MalformedURLException {
         Log.d(null, "stopVideo: stop");
         mMediaRecorder.setOnErrorListener(null);
         mMediaRecorder.setOnInfoListener(null);
@@ -281,7 +284,21 @@ public class S2TPresenter implements S2TContract.IS2TPresenter {
         broadcastVideo(newPath);
         AlbumHelper.insertVideoToMediaStore(this.getFragment().getMainActivity(), newPath, 0, 5000);
         fragment.createPreview();
-        // TODO: 2023-04-04 connect with deep learning module 
+        // TODO: 2023-04-04 connect with deep learning module
+
+        // wyt add
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put("uid", "001");
+        params.put("name", "g2ex");
+        new PostData(this).execute(params);
+
+
+
+
+
+        //add complete
+
         fragment.getAdapter().addText("你好");
         model.speak("你好");
         translateTo("你好");

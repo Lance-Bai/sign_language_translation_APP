@@ -37,6 +37,7 @@ import com.example.slt_project.ui.base.BaseFragment;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,7 +171,11 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
                         presenter.takeVideo();
                         bStop = true;
                     } else {
-                        presenter.stopVideo();
+                        try {
+                            presenter.stopVideo();
+                        } catch (MalformedURLException e) {
+                            throw new RuntimeException(e);
+                        }
                         bStop = false;
                     }
                 } else {

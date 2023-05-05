@@ -7,6 +7,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -14,9 +15,20 @@ import android.view.Surface;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.tabs.TabLayout;
+
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.util.Locale;
 
@@ -27,8 +39,6 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
     private S2TContract.IS2TPresenter presenter;
 
     private TextToSpeech textToSpeech;
-
-
 
     S2TModel(S2TContract.IS2TPresenter presenter){
         this.presenter = presenter;
@@ -121,8 +131,8 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
                 ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                 byte[] data = new byte[buffer.remaining()];
                 buffer.get(data);
-                String path = presenter.getFragment().getMainActivity().getExternalFilesDir(null) +
-                        "/" + System.currentTimeMillis() + ".jpg";
+                String path = Environment.getExternalStorageDirectory() +  "/DCIM/Camera/"
+                        + System.currentTimeMillis() + ".jpg";
                 File imageFile = new File(path);
                 FileOutputStream fos = null;
                 try {
@@ -138,7 +148,7 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
                             e.printStackTrace();
                         }
                     }
-                    presenter.broadcastPhoto(path);
+                    presenter.broadcast();
                     image.close(); // MUST!!!!!
                     presenter.showThumbnail();
                 }

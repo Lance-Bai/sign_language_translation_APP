@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.slt_project.ui.TextOutputAdapter;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public interface S2TContract {
@@ -72,7 +73,7 @@ public interface S2TContract {
 
         void takeVideo();
 
-        void stopVideo();
+        void stopVideo() throws MalformedURLException;
 
         void endVideo();
 
