@@ -3,6 +3,7 @@ package com.example.slt_project.ui.T2S;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,13 +25,13 @@ import java.util.stream.Collectors;
 
 public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragment {
     List<String> textList = new ArrayList<>();
-    private RecyclerView t2s_recyclerView, t2s_imageRecycler;
+    private RecyclerView t2s_recyclerView;
     private TextOutputAdapter adapter;
     private Button sendButton;
     private EditText editText;
     List<Term> terms = new ArrayList<>();
-    private ImageAdapter imageAdapter;
 
+    private ImageView signImage;
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_t2s;
@@ -39,7 +40,8 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
     @Override
     protected void initViews() {
         t2s_recyclerView = find(R.id.t2s_recycle);
-        t2s_imageRecycler = find(R.id.t2s_imageRecycler);
+        signImage = find(R.id.t2s_imageView);
+//        t2s_imageRecycler = find(R.id.t2s_imageRecycler);
         sendButton = find(R.id.send_input_text_button);
         editText = find(R.id.input_text);
 
@@ -49,12 +51,14 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
         t2s_recyclerView.setAdapter(adapter);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-        t2s_imageRecycler.setLayoutManager(gridLayoutManager);
-        imageAdapter = new ImageAdapter(getImageUrls()); // 创建适配器，并传入图片 URL 集合
-        t2s_imageRecycler.setAdapter(imageAdapter); // 设置适配器
+//        t2s_imageRecycler.setLayoutManager(gridLayoutManager);
+//        imageAdapter = new ImageAdapter(getImageUrls()); // 创建适配器，并传入图片 URL 集合
+//        t2s_imageRecycler.setAdapter(imageAdapter); // 设置适配器
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int id = getResources().getIdentifier("com.example.slt_project:drawable/" + "signA.png", null, null);
+                signImage.setImageResource(id);
                 String message = editText.getText().toString();
                 String word[] = new String[100], natureStr;
                 if (!message.isEmpty()) {
