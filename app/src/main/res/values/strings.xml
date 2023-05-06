@@ -44,4 +44,6 @@
         <item>zh</item>
         <item>zh-tw</item>
     </string-array>
+    <string name="login_button_text">未登录？点击登录ba</string>
+    <string name="logout_button_text">退出账户</string>
 </resources>

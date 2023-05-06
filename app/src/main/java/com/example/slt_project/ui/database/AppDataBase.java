@@ -7,7 +7,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {UserPO.class}, version = 1, exportSchema = false)
+@Database(entities = {UserPO.class}, version = 2, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
     public abstract UserDao userDao();
     private static final String DATABASE_NAME = "/mydatabase.db";
@@ -24,6 +24,7 @@ public abstract class AppDataBase extends RoomDatabase {
 //                }
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDataBase.class, context.getFilesDir() + DATABASE_NAME)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

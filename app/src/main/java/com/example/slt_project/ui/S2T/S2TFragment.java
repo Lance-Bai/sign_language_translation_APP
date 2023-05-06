@@ -22,6 +22,8 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.slt_project.R;
 import com.example.slt_project.ui.TextOutputAdapter;
 import com.example.slt_project.ui.base.BaseFragment;
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -116,31 +119,26 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
                 return false;
             }
         });
-//        // 定义变量
-//        final long[] startTime = {0};
-//        long durationThreshold = 1000; // 长按时间阈值，单位为毫秒
 //
-//// 设置触摸监听器
-//        takePhotoORVideo.setOnTouchListener(new View.OnTouchListener() {
+//        // 加载布局文件
+//        View mainLayout = getLayoutInflater().inflate(R.layout.activity_main, null);
+//// 查找其中的视图
+//        TabLayout tabLayout = mainLayout.findViewById(R.id.tab_layout);
+//
+//        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 //            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        startTime[0] = System.currentTimeMillis();
-//                        return true;
-//                    case MotionEvent.ACTION_UP:
-//                        long duration = System.currentTimeMillis() - startTime[0];
-//                        if (duration > durationThreshold) {
-//                            // 进入录制模式
-//                            presenter.takeVideo();
-//                        } else {
-//                            // 进入拍照模式
-//                            presenter.takePhoto();
-//                        }
-//                        return true;
-//                    default:
-//                        return false;
-//                }
+//            public void onGlobalLayout() {
+//                // 获取 TabLayout 的高度
+//                int height = tabLayout.getHeight();
+//
+//                // 将高度存储在变量中，供别的 XML 文件使用
+//                // ...
+//textureView.setPadding(0,height,0,0);
+//                ViewGroup.LayoutParams layoutParams = textureView.getLayoutParams();
+//                layoutParams.height = layoutParams.height + height;
+//                textureView.setLayoutParams(layoutParams);
+//                // 取消监听器
+//                tabLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 //            }
 //        });
 

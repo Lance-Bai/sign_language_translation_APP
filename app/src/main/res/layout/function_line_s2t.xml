@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
+    android:background="@color/grey_300"
+    android:clickable="true"
     android:orientation="vertical">
     <!--    android:gravity="center"-->
     <!--            android:background="@drawable/round_corner"-->
@@ -14,6 +15,7 @@
         android:id="@+id/s2t_recycle"
         android:layout_width="match_parent"
         android:layout_height="170dp"
+        android:clickable="true"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarFadeDuration="2000"
         android:scrollbarSize="10dp"
@@ -37,8 +39,7 @@
                 android:id="@+id/s2t_thumbnail"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/ic_album2" />
+                android:layout_gravity="center_vertical" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,6 +54,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/radio_btn"
+                android:backgroundTint="@color/radio_btn_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

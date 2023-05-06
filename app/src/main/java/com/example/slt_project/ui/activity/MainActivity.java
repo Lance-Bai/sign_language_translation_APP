@@ -1,15 +1,14 @@
 package com.example.slt_project.ui.activity;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.example.slt_project.R;
 import com.example.slt_project.ui.MyFragmentAdapter;
@@ -17,19 +16,15 @@ import com.example.slt_project.ui.S2T.S2TFragment;
 import com.example.slt_project.ui.Setting.SettingFragment;
 import com.example.slt_project.ui.T2S.T2SFragment;
 import com.example.slt_project.ui.base.BaseActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity   {
+public class MainActivity extends BaseActivity {
 
-private List<Fragment> fragments;
+    private List<Fragment> fragments;
     private ViewPager viewPage;
     private TabLayout tabLayout;
     private final String[] REQUIRED_PERMISSIONS = new String[]{
@@ -46,7 +41,8 @@ private List<Fragment> fragments;
 //    private TabItem tabItem1,tabItem2,tabItem3;
 //    private BottomNavigationView bottomNavigationView;
     private MyFragmentAdapter fragmentAdapter;
-    private int lastFragmentIndex =0 ;
+    private int lastFragmentIndex = 0;
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_main;
@@ -59,25 +55,63 @@ private List<Fragment> fragments;
 //        bottomNavigationView.setOnItemSelectedListener(this);
         tabLayout=findViewById(R.id.tab_layout);
         viewPage = find(R.id.viewPage);
-       // viewPage.addOnPageChangeListener(this);
-//        tabLayout.addTab(tabItem1);
+
         tabLayout.setupWithViewPager(viewPage);
-        //   tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPage));
-//        tabLayout.getTabAt(0).setText("tab 1");
-//        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+
         fragments = new ArrayList<>();
         fragments.add(new S2TFragment());
         fragments.add(new T2SFragment());
         fragments.add(new SettingFragment());
         fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments);
         viewPage.setAdapter(fragmentAdapter);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.s2t_tab_icon_warm);
+        tabLayout.getTabAt(1).setIcon(R.drawable.t2s_tab_icon1_cool);
+        tabLayout.getTabAt(2).setIcon(R.drawable.setting_cool);
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // 修改选中的 Tab 的图标
+                switch (tab.getPosition()) {
+                    case 0:
+                        tab.setIcon(R.drawable.s2t_tab_icon_warm);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.t2s_tab_icon_warm);
+                        break;
+                    case 2:
+                        tab.setIcon(R.drawable.setting_warm);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // 恢复未选中的 Tab 的图标
+                switch (tab.getPosition()) {
+                    case 0:
+                        tab.setIcon(R.drawable.s2t_tab_icon_warm);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.t2s_tab_icon1_cool);
+                        break;
+                    case 2:
+                        tab.setIcon(R.drawable.setting_cool);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // do nothing
+            }
+        });
+
         getSupportFragmentManager().beginTransaction().show(fragmentAdapter.getItem(0)).commit();
-
-
-
-
-
 
     }
 
@@ -85,52 +119,5 @@ private List<Fragment> fragments;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-////这个是click的
-//        item.setChecked(true);
-//        switch (item.getItemId()){
-//                case R.id.top_S2T:
-//                viewPage.setCurrentItem(0);
-//                break;
-//            case R.id.top_T2S:
-//                    viewPage.setCurrentItem(1);
-//                break;
-//            case R.id.top_setting:
-//                    viewPage.setCurrentItem(2);
-//                break;
-//        }
-//        return false;
-//    }
-
-
-//    @Override
-//    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//    }
-
-//    @Override
-//    public void onPageSelected(int position) {
-//        switch (position){
-//            case 0:
-//                bottomNavigationView.setSelectedItemId(R.id.top_S2T);
-//                break;
-//            case 1:
-//                bottomNavigationView.setSelectedItemId(R.id.top_T2S);
-//                break;
-//            case 2:
-//                bottomNavigationView.setSelectedItemId(R.id.top_setting);
-//                break;
-//            default:
-//        }
-//
-//    }
-
-//    @Override
-//    public void onPageScrollStateChanged(int state) {
-//
-//    }
-
 
 }

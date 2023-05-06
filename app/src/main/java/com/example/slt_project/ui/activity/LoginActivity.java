@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.slt_project.R;
+import com.example.slt_project.ui.UserManager;
 import com.example.slt_project.ui.base.BaseActivity;
 import com.example.slt_project.ui.database.AppDataBase;
 import com.example.slt_project.ui.database.UserDao;
@@ -21,22 +22,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button skipButton, loginButton, registerButton;
     private TextInputEditText email, password;
     AppDataBase db;
-    private final String[] REQUIRED_PERMISSIONS = new String[]{
-            "android.permission.CAMERA",
-            "android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.WRITE_EXTERNAL_STORAGE",
-            "android.permission.RECORD_AUDIO",
-            "android.permission.INTERNET",
-            "android.permission.FOREGROUND_SERVICE",
-            "android.permission.ACCESS_NETWORK_STATE",
-            "android.permission.ACCESS_WIFI_STATE"
-
-    };
-
+    UserManager userManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestPermissions(REQUIRED_PERMISSIONS, 2);
+        userManager = new UserManager(this);
+
         setContentView(R.layout.activity_login);
         skipButton = findViewById(R.id.skip_button);
         loginButton = findViewById(R.id.login_button);
@@ -78,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     // 密码正确，执行相应操作
                                     Toast.makeText(LoginActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
                                     Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-
+                                    userManager.setLoggedIn(true);
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
