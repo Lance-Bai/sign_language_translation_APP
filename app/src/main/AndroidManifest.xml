@@ -42,9 +42,9 @@
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.SLT_Project" >
-            <intent-filter android:priority="19" >
+            <intent-filter android:priority="21" >
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.LAUNCHER" />
                 <!-- 因为是LAUNCHER，所以是启动页面      <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
@@ -54,21 +54,17 @@
             android:name=".ui.activity.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.SLT_Project" >
-            <intent-filter android:priority="20" >
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter android:priority="20" >-->
+<!--&lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.SLT_Project">
-            <intent-filter android:priority="18" >
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter android:priority="19" >-->
+<!--                &lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 

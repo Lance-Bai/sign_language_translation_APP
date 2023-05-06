@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_image_2"
     android:orientation="vertical"
     >
     <LinearLayout
@@ -46,6 +47,7 @@
             android:id="@+id/register_password_textLayout_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:hint="password">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -58,6 +60,7 @@
             android:id="@+id/register_password_textLayout_input_Reconfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:hint="Reconfirm password">
 
             <com.google.android.material.textfield.TextInputEditText

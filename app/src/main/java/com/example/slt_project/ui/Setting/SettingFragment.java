@@ -2,9 +2,14 @@ package com.example.slt_project.ui.Setting;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -14,10 +19,13 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.slt_project.R;
+import com.example.slt_project.ui.UserManager;
+import com.example.slt_project.ui.activity.LoginActivity;
 import com.example.slt_project.ui.activity.MainActivity;
+import com.example.slt_project.ui.activity.RegisterActivity;
 import com.example.slt_project.ui.base.BaseFragment;
 
-public class SettingFragment extends BaseFragment implements SettingContract.ISettingFragment, CompoundButton.OnCheckedChangeListener{
+public class SettingFragment extends BaseFragment implements SettingContract.ISettingFragment, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     // TODO: 2023-04-04 加一个switch， 用于选择是拍照模式或者摄像模式（默认摄像）
     private SwitchCompat photoOrVideo;
     private SwitchCompat darkOrLight;
@@ -25,7 +33,11 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
     private SeekBar fontSizeSeekBar;
     private TextView fontSizeTextView;
     private SharedPreferences sharedPreferences;
-
+    private SharedPreferences.Editor editor;
+    private Button logoutButton;
+    private static final String PREF_NAME = "user_pref";
+    private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+    UserManager userManager;
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_setting;
@@ -33,63 +45,59 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
 
     @Override
     protected void initViews() {
+        userManager = new UserManager(getContext());
+
+
         presenter = new SettingPresenter(this);
 
         darkOrLight = find(R.id.light_mode);
         photoOrVideo = find(R.id.photo_mode);
         fontSizeSeekBar = find(R.id.seekBar_textsize);
-        fontSizeTextView=find(R.id.text_size);
+        fontSizeTextView = find(R.id.text_size);
+        logoutButton = find(R.id.log_out_button);
 
         darkOrLight.setOnCheckedChangeListener(this);
         photoOrVideo.setOnCheckedChangeListener(this);
+        logoutButton.setOnClickListener(this);
 
         sharedPreferences = getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         boolean isNightModeOn = sharedPreferences.getBoolean("night_mode", false);
-        boolean isPhotoModeOn=sharedPreferences.getBoolean("photo_mode",false);
+        boolean isPhotoModeOn = sharedPreferences.getBoolean("photo_mode", false);
 
         darkOrLight.setChecked(isNightModeOn);
         photoOrVideo.setChecked(isPhotoModeOn);
 
-       fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-           @Override
-           public void onProgressChanged(SeekBar seekBar, int process, boolean b) {
-               fontSizeTextView.setTextSize(process);
-               fontSizeTextView.setText("Font Size = "+ TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, process, getResources().getDisplayMetrics()));
-           }
+        fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int process, boolean b) {
+                fontSizeTextView.setTextSize(process);
+                fontSizeTextView.setText("Font Size = " + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, process, getResources().getDisplayMetrics()));
+            }
 
-           @Override
-           public void onStartTrackingTouch(SeekBar seekBar) {
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-           }
+            }
 
-           @Override
-           public void onStopTrackingTouch(SeekBar seekBar) {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
-           }
-       });
-//        darkOrLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                if(b){
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                   // Toast.makeText(getContext(),"Dark Mode ON",Toast.LENGTH_SHORT).show();
-//                    //加了一直闪的原因
-//                } else{
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                   // Toast.makeText(getContext(),"Dark Mode OFF",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//        这块稍微调整了一下，按下面那样再加新switch可以通过添加不同的case解决，就不用每个都要单独的listener了
-
+            }
+        });
+        if (userManager.isLoggedIn()) {
+            logoutButton.setText(R.string.logout_button_text);
+        }else{
+            logoutButton.setText(R.string.login_button_text);
+        }
 
     }
 
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+
         switch (compoundButton.getId()) {
             case R.id.light_mode:
                 editor.putBoolean("night_mode", b);
@@ -113,4 +121,29 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
     }
 
 
+    @Override
+    public void onClick(View view) {
+        Log.d("shenme", "onClick: ");
+        switch (view.getId()) {
+            case R.id.log_out_button:
+
+                if (userManager.isLoggedIn()) {
+                    userManager.setLoggedIn(false);
+                break;
+                } else {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+                }
+        }
+    }
+
+
+    public void setLoggedIn(boolean isLoggedIn) {
+        editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn);
+        editor.apply();
+    }
+
+    public boolean isLoggedIn() {
+        return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
+    }
 }

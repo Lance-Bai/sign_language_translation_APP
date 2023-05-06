@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.slt_project.R;
+import com.example.slt_project.ui.UserManager;
 import com.example.slt_project.ui.base.BaseActivity;
 import com.example.slt_project.ui.database.AppDataBase;
 import com.example.slt_project.ui.database.UserDao;
@@ -21,10 +22,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button skipButton, loginButton, registerButton;
     private TextInputEditText email, password;
     AppDataBase db;
-
+    UserManager userManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userManager = new UserManager(this);
+
         setContentView(R.layout.activity_login);
         skipButton = findViewById(R.id.skip_button);
         loginButton = findViewById(R.id.login_button);
@@ -66,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     // 密码正确，执行相应操作
                                     Toast.makeText(LoginActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
                                     Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-
+                                    userManager.setLoggedIn(true);
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();

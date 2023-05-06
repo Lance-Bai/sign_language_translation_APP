@@ -11,5 +11,6 @@
     <string name="send_input_text_button">发送</string>
     <string name="dark_mode_switch_text">Dark Mode</string>
     <string name="language_choose_spinner_text">Choose Language for Sign</string>
-
+    <string name="login_button_text">未登录？点击登录ba</string>
+    <string name="logout_button_text">退出账户</string>
 </resources>

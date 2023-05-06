@@ -22,7 +22,6 @@
 
 
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -76,6 +75,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </SeekBar>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/log_out_button"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center|center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Setting_3" />
     </LinearLayout>
 
 </LinearLayout>

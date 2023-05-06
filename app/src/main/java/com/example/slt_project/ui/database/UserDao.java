@@ -15,7 +15,7 @@ public interface UserDao {
 
     @Query("SELECT id FROM users WHERE username=:username")
    //wyt add here
-    UserPO getUserByUsername(String username);
+    int getUserByUsername(String username);
     // 其他操作
     // ...
 }

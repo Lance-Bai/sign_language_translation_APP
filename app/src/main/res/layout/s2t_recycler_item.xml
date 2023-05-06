@@ -4,12 +4,14 @@
 android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="horizontal"
+    android:clickable="true"
     >
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        android:clickable="true"
         >
     <Button
         android:id="@+id/s2t_item_button"
@@ -17,8 +19,11 @@ android:layout_height="wrap_content"
         android:layout_height="25dp"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
-
-        android:background="@drawable/s2t_item_button"/>
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:background="@drawable/s2t_item_button"
+        android:backgroundTint="@color/grey_300"/>
     </LinearLayout>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
