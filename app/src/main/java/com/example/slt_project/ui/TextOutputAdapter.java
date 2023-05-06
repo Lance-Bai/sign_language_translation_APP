@@ -9,23 +9,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slt_project.R;
 import com.example.slt_project.ui.S2T.S2TContract;
+import com.example.slt_project.ui.T2S.T2SContract;
+import com.example.slt_project.ui.T2S.T2SPresenter;
 
 import java.util.List;
 
 public class TextOutputAdapter extends RecyclerView.Adapter<TextOutputViewHolder> {
     private S2TContract.IS2TPresenter presenter;
+    private T2SContract.IT2SPresenter it2SPresenter;
     private List<String> textList;
 
     public TextOutputAdapter(List<String> textList, S2TContract.IS2TPresenter presenter) {
         this.presenter = presenter;
         this.textList = textList;
+
     }
+
+    public TextOutputAdapter(List<String> textList, T2SContract.IT2SPresenter it2SPresenter) {
+        this.it2SPresenter = it2SPresenter;
+        this.textList = textList;
+    }
+
 
     @NonNull
     @Override
     public TextOutputViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.s2t_recycler_item, parent, false);
-        return new TextOutputViewHolder(view, presenter);
+        if(presenter!=null){
+            return new TextOutputViewHolder(view, presenter);
+        }else{
+            return new TextOutputViewHolder(view, it2SPresenter);
+        }
     }
 
 

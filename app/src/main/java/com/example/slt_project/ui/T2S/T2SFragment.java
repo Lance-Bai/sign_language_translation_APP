@@ -1,5 +1,6 @@
 package com.example.slt_project.ui.T2S;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +33,8 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
     List<Term> terms = new ArrayList<>();
 
     private ImageView signImage;
+
+    private T2SContract.IT2SPresenter presenter;
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_t2s;
@@ -39,26 +42,29 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
 
     @Override
     protected void initViews() {
+        presenter = new T2SPresenter(this);
         t2s_recyclerView = find(R.id.t2s_recycle);
         signImage = find(R.id.t2s_imageView);
 //        t2s_imageRecycler = find(R.id.t2s_imageRecycler);
         sendButton = find(R.id.send_input_text_button);
         editText = find(R.id.input_text);
 
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         t2s_recyclerView.setLayoutManager(layoutManager);
-        adapter = new TextOutputAdapter(textList, null);
+        adapter = new TextOutputAdapter(textList, presenter);
         t2s_recyclerView.setAdapter(adapter);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
 //        t2s_imageRecycler.setLayoutManager(gridLayoutManager);
 //        imageAdapter = new ImageAdapter(getImageUrls()); // 创建适配器，并传入图片 URL 集合
 //        t2s_imageRecycler.setAdapter(imageAdapter); // 设置适配器
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = getResources().getIdentifier("com.example.slt_project:drawable/" + "signA.png", null, null);
-                signImage.setImageResource(id);
+                Drawable db = getResources().getDrawable(R.drawable.sign_a);
+                signImage.setImageDrawable(db);
+
                 String message = editText.getText().toString();
                 String word[] = new String[100], natureStr;
                 if (!message.isEmpty()) {
