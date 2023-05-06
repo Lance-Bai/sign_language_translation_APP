@@ -48,7 +48,7 @@ public class PostData extends AsyncTask<Map<String, String>,Void,String> {
          * @return 服务器返回信息
          */
         byte[] data = getRequestData(params, encode).toString().getBytes();
-        URL url = new URL("http://192.168.1.140:5000");
+        URL url = new URL("http://10.19.35.46:5000");
         HttpURLConnection httpURLConnection = null;
         try{
             httpURLConnection = (HttpURLConnection)url.openConnection();

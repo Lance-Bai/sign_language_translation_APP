@@ -29,7 +29,6 @@ import com.example.slt_project.ui.activity.RegisterActivity;
 import com.example.slt_project.ui.base.BaseFragment;
 
 public class SettingFragment extends BaseFragment implements SettingContract.ISettingFragment, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
-    // TODO: 2023-04-04 加一个switch， 用于选择是拍照模式或者摄像模式（默认摄像）
     private SwitchCompat photoOrVideo;
     private SwitchCompat darkOrLight;
     private SettingPresenter presenter;
@@ -66,6 +65,12 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
 
         darkOrLight.setOnCheckedChangeListener(this);
         photoOrVideo.setOnCheckedChangeListener(this);
+        logoutButton.setOnClickListener(this);
+
+        sharedPreferences = getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(
 
         ) {
@@ -73,19 +78,17 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String label = getMainActivity().getResources().getStringArray(R.array.language_label)[position];
                 presenter.setLanguage(label);
-        logoutButton.setOnClickListener(this);
 
-        sharedPreferences = getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
             }
 
-        boolean isNightModeOn = sharedPreferences.getBoolean("night_mode", false);
-        boolean isPhotoModeOn = sharedPreferences.getBoolean("photo_mode", false);
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
+//        boolean isNightModeOn = sharedPreferences.getBoolean("night_mode", false);
+//        boolean isPhotoModeOn = sharedPreferences.getBoolean("photo_mode", false);
 
         darkOrLight.setChecked(presenter.isNightModeOn());
         photoOrVideo.setChecked(presenter.isPhotoModeOn());
