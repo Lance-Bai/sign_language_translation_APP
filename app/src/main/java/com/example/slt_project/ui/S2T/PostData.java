@@ -19,7 +19,7 @@ import java.util.Map;
 public class PostData extends AsyncTask<Map<String, String>,Void,String> {
     SendAble PRESENTER;
 
-   public PostData(SendAble PRESENTER){this.PRESENTER=PRESENTER;}
+    public PostData(SendAble PRESENTER){this.PRESENTER=  PRESENTER;}
 
 
 
@@ -113,4 +113,6 @@ public class PostData extends AsyncTask<Map<String, String>,Void,String> {
         resultData = new String(byteArrayOutputStream.toByteArray());
         return resultData;
     }
+
+
 }

@@ -296,7 +296,9 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
 
         params.put("uid", "001");
         params.put("name", "g2ex");
-        new PostData(this).execute(params);
+//        new PostData(this).execute(params);
+//
+        new SendVideo(this).execute(new File(newPath));
 
 
 
