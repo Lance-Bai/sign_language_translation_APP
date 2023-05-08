@@ -27,12 +27,15 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
+import com.example.slt_project.ui.SendAble;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class S2TPresenter implements S2TContract.IS2TPresenter {
+public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
     private S2TContract.IS2TFragment fragment;
     private S2TContract.IS2TModel model;
     private final String[] REQUIRED_PERMISSIONS = new String[]{

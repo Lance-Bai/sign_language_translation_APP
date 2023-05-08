@@ -91,12 +91,12 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
             }
         });
     }
-    private List<String> getImageUrls() {
-        // 根据需要动态生成图片 URL 集合
-        List<String> imageUrls = new ArrayList<>();
-        imageUrls.add("https://t7.baidu.com/it/u=825057118,3516313570&fm=193&f=GIF");
-        imageUrls.add("https://t7.baidu.com/it/u=825057118,3516313570&fm=193&f=GIF");
-        return imageUrls;
-    }
+//    private List<String> getImageUrls() {
+//        // 根据需要动态生成图片 URL 集合
+//        List<String> imageUrls = new ArrayList<>();
+//        imageUrls.add("https://t7.baidu.com/it/u=825057118,3516313570&fm=193&f=GIF");
+//        imageUrls.add("https://t7.baidu.com/it/u=825057118,3516313570&fm=193&f=GIF");
+//        return imageUrls;
+//    }
 
 }

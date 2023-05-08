@@ -1,5 +1,6 @@
-package com.example.slt_project.ui.S2T;
+package com.example.slt_project.ui.activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,10 +17,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-public class PostData extends AsyncTask<Map<String, String>,Void,String> {
-    SendAble PRESENTER;
+public class PostLogin extends AsyncTask<Map<String, String>,Void,String> {
+    LoginActivity activity;
 
-   public PostData(SendAble PRESENTER){this.PRESENTER=PRESENTER;}
+    public PostLogin(LoginActivity activity){this.activity=activity;}
 
 
 
@@ -39,7 +40,9 @@ public class PostData extends AsyncTask<Map<String, String>,Void,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        PRESENTER.translateTo(s);
+        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     public static String submitPostData(Map<String, String> params, String encode) throws MalformedURLException {
@@ -50,7 +53,7 @@ public class PostData extends AsyncTask<Map<String, String>,Void,String> {
          * @return 服务器返回信息
          */
         byte[] data = getRequestData(params, encode).toString().getBytes();
-        URL url = new URL("http://10.19.35.46:5000");
+        URL url = new URL("http://10.19.45.53:5000/login");
         HttpURLConnection httpURLConnection = null;
         try{
             httpURLConnection = (HttpURLConnection)url.openConnection();

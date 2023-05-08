@@ -147,6 +147,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
 
                 if (userManager.isLoggedIn()) {
                     userManager.setLoggedIn(false);
+                    logoutButton.setText(R.string.login_button_text);
                 break;
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
