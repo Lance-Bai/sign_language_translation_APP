@@ -4,19 +4,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CaptureRequest;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.slt_project.R;
+import com.example.slt_project.ui.S2T.PostData;
+import com.example.slt_project.ui.S2T.S2TContract;
+import com.example.slt_project.ui.S2T.S2TPresenter;
+import com.example.slt_project.ui.SendAble;
 import com.example.slt_project.ui.UserManager;
 import com.example.slt_project.ui.base.BaseActivity;
 import com.example.slt_project.ui.database.AppDataBase;
 import com.example.slt_project.ui.database.UserDao;
 import com.example.slt_project.ui.database.UserPO;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Button skipButton, loginButton, registerButton;
@@ -100,6 +112,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 finish();
         }
+        new PostData(new NotTranslateSend()).execute();
     }
 
 
@@ -142,3 +155,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 }
+
+class NotTranslateSend implements SendAble{
+    @Override
+    public void translateTo(String s) {
+
+    }
+}
+
+
+

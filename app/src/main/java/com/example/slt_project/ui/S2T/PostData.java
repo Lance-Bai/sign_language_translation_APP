@@ -3,6 +3,8 @@ package com.example.slt_project.ui.S2T;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.slt_project.ui.SendAble;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,9 +17,9 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 public class PostData extends AsyncTask<Map<String, String>,Void,String> {
-    S2TContract.IS2TPresenter PRESENTER;
+    SendAble PRESENTER;
 
-    PostData(S2TContract.IS2TPresenter PRESENTER){this.PRESENTER=PRESENTER;}
+    public PostData(SendAble PRESENTER){this.PRESENTER=  PRESENTER;}
 
 
 
@@ -111,4 +113,6 @@ public class PostData extends AsyncTask<Map<String, String>,Void,String> {
         resultData = new String(byteArrayOutputStream.toByteArray());
         return resultData;
     }
+
+
 }
