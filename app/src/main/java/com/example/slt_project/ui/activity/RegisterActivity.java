@@ -19,12 +19,15 @@ import com.example.slt_project.ui.database.UserDao;
 import com.example.slt_project.ui.database.UserPO;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private Button backLogin, haveAccout, signUp;
     private TextInputEditText registerEmail, registerPassword, registerPasswordConfirm;
     private UserPO userPO;
     private AppDataBase dataBase;
-
+    Map<String, String> params = new HashMap<String, String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (!register_email.isEmpty() && !register_password.isEmpty() && !register_confirmPassword.isEmpty()) {
                     //TODO:应该有用户名重复的提示
                     if (register_password.equals(register_confirmPassword)) {
+                        params.put("username", register_email);
+                        params.put("password", register_password);
+                        new PostRegister(this).execute(params);
                         userPO.setUsername(register_email);
                         userPO.setPassword(register_password);
                         new InsertAsyncTask(dataBase.userDao()).execute(userPO);

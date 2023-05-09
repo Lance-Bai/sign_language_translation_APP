@@ -120,10 +120,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.login_button:
                 String username_info = email.getText().toString();
                 String password_info = password.getText().toString();
-                params.put("username", username_info);
-                params.put("password", password_info);
-                new PostLogin(this).execute(params);
+
                 if (!username_info.isEmpty() && !password_info.isEmpty()) {
+                    params.put("username", username_info);
+                    params.put("password", password_info);
+                    new PostLogin(this).execute(params);
                     new QueryAsyncTask(userDao, new OnUsernameLoadedListener() {
                         @Override
                         public void onUsernameLoaded(String username) {
