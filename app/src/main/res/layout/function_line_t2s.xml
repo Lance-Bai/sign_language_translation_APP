@@ -45,7 +45,7 @@
         android:focusable="true"
         android:hint="@string/input_text_hint"
         android:inputType="text"
-        android:textColorHint="@color/green"
+        android:textColorHint="@color/green_700"
         android:windowSoftInputMode="stateVisible|adjustPan" />
 
     <Button

@@ -41,9 +41,9 @@ private Context contextCompat;
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Sign to Text, take a photo please";
+                return "Sign to Text";
             case 1:
-                return "T2S";
+                return "Text to Sign";
             case 2:
                 return "settings".toLowerCase();
             //the toLowerCase is not work!!!!

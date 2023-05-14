@@ -33,13 +33,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         signUp = findViewById(R.id.register_signup_button);
-        backLogin = findViewById(R.id.register_backtoLogin);
+//        backLogin = findViewById(R.id.register_backtoLogin);
         haveAccout = findViewById(R.id.register_account_had_button);
         registerEmail = findViewById(R.id.register_email_edittext);
         registerPassword = findViewById(R.id.register_password_edittext);
         registerPasswordConfirm = findViewById(R.id.register_password_edittext_confirm);
         signUp.setOnClickListener(this::onClick);
-        backLogin.setOnClickListener(this::onClick);
+//        backLogin.setOnClickListener(this::onClick);
         haveAccout.setOnClickListener(this::onClick);
         userPO = new UserPO();
 //        dataBase = Room.databaseBuilder(getApplicationContext(), AppDataBase.class, "mydatabase").build();
@@ -76,13 +76,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                 }
                 break;
-            case R.id.register_backtoLogin:
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-                break;
+//            case R.id.register_backtoLogin:
+//                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//                finish();
+//                break;
             case R.id.register_account_had_button:
-                intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
                 break;

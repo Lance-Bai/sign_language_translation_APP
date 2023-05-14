@@ -9,8 +9,9 @@
     <string name="tab3_right">Tab3</string>
     <string name="input_text_hint">请输入文字</string>
     <string name="send_input_text_button">发送</string>
-    <string name="dark_mode_switch_text">Dark Mode</string>
+    <string name="dark_mode_switch_text">夜间模式</string>
     <string name="language_choose_spinner_text">选择输出语言</string>
+    <string name="photo_mode">照片/视频</string>
 
     <string-array name="language">
         <item>阿拉伯语</item>

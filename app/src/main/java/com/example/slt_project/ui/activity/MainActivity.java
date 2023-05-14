@@ -1,9 +1,13 @@
 package com.example.slt_project.ui.activity;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -11,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.example.slt_project.R;
+import com.example.slt_project.ui.Mode;
 import com.example.slt_project.ui.MyFragmentAdapter;
 import com.example.slt_project.ui.S2T.S2TFragment;
 import com.example.slt_project.ui.Setting.SettingFragment;
@@ -27,6 +32,7 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> fragments;
     private ViewPager viewPage;
     private TabLayout tabLayout;
+    Mode mode;
     private final String[] REQUIRED_PERMISSIONS = new String[]{
             "android.permission.CAMERA",
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -38,7 +44,7 @@ public class MainActivity extends BaseActivity {
             "android.permission.ACCESS_WIFI_STATE"
 
     };
-//    private TabItem tabItem1,tabItem2,tabItem3;
+    //    private TabItem tabItem1,tabItem2,tabItem3;
 //    private BottomNavigationView bottomNavigationView;
     private MyFragmentAdapter fragmentAdapter;
     private int lastFragmentIndex = 0;
@@ -53,7 +59,7 @@ public class MainActivity extends BaseActivity {
         requestPermissions(REQUIRED_PERMISSIONS, 0);
 //        bottomNavigationView = find(R.id.navigationView);
 //        bottomNavigationView.setOnItemSelectedListener(this);
-        tabLayout=findViewById(R.id.tab_layout);
+        tabLayout = findViewById(R.id.tab_layout);
         viewPage = find(R.id.viewPage);
 
         tabLayout.setupWithViewPager(viewPage);
@@ -71,7 +77,13 @@ public class MainActivity extends BaseActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.t2s_tab_icon1_cool);
         tabLayout.getTabAt(2).setIcon(R.drawable.setting_cool);
 
-
+        mode = new Mode(this);
+        if (mode.isModeon()) {
+            tabLayout.setBackgroundResource(R.color.grey_DarkGrey);
+//            DrawableCompat.setTint(drawable, Color.WHITE);
+        } else {
+            tabLayout.setBackgroundResource(R.color.grey_300);
+        }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
