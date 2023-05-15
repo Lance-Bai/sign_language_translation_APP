@@ -1,5 +1,7 @@
 package com.example.slt_project.ui.activity;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -36,10 +38,8 @@ public class MainActivity extends BaseActivity {
             "android.permission.FOREGROUND_SERVICE",
             "android.permission.ACCESS_NETWORK_STATE",
             "android.permission.ACCESS_WIFI_STATE"
-
     };
-//    private TabItem tabItem1,tabItem2,tabItem3;
-//    private BottomNavigationView bottomNavigationView;
+
     private MyFragmentAdapter fragmentAdapter;
     private int lastFragmentIndex = 0;
 
@@ -47,71 +47,74 @@ public class MainActivity extends BaseActivity {
     protected int getLayoutID() {
         return R.layout.activity_main;
     }
-
     @Override
     protected void initViews() {
-        requestPermissions(REQUIRED_PERMISSIONS, 0);
-//        bottomNavigationView = find(R.id.navigationView);
-//        bottomNavigationView.setOnItemSelectedListener(this);
-        tabLayout=findViewById(R.id.tab_layout);
-        viewPage = find(R.id.viewPage);
+        requestPermissions(REQUIRED_PERMISSIONS, 2);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 2) {
+            tabLayout=findViewById(R.id.tab_layout);
+            viewPage = find(R.id.viewPage);
 
-        tabLayout.setupWithViewPager(viewPage);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-
-
-        fragments = new ArrayList<>();
-        fragments.add(new S2TFragment());
-        fragments.add(new T2SFragment());
-        fragments.add(new SettingFragment());
-        fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments);
-        viewPage.setAdapter(fragmentAdapter);
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.s2t_tab_icon_warm);
-        tabLayout.getTabAt(1).setIcon(R.drawable.t2s_tab_icon1_cool);
-        tabLayout.getTabAt(2).setIcon(R.drawable.setting_cool);
+            tabLayout.setupWithViewPager(viewPage);
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // 修改选中的 Tab 的图标
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.s2t_tab_icon_warm);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.t2s_tab_icon_warm);
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.setting_warm);
-                        break;
+            fragments = new ArrayList<>();
+            fragments.add(new S2TFragment());
+            fragments.add(new T2SFragment());
+            fragments.add(new SettingFragment());
+            fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments);
+            viewPage.setAdapter(fragmentAdapter);
+
+            tabLayout.getTabAt(0).setIcon(R.drawable.s2t_tab_icon_warm);
+            tabLayout.getTabAt(1).setIcon(R.drawable.t2s_tab_icon1_cool);
+            tabLayout.getTabAt(2).setIcon(R.drawable.setting_cool);
+
+
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    // 修改选中的 Tab 的图标
+                    switch (tab.getPosition()) {
+                        case 0:
+                            tab.setIcon(R.drawable.s2t_tab_icon_warm);
+                            break;
+                        case 1:
+                            tab.setIcon(R.drawable.t2s_tab_icon_warm);
+                            break;
+                        case 2:
+                            tab.setIcon(R.drawable.setting_warm);
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // 恢复未选中的 Tab 的图标
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.s2t_tab_icon_warm);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.t2s_tab_icon1_cool);
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.setting_cool);
-                        break;
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    // 恢复未选中的 Tab 的图标
+                    switch (tab.getPosition()) {
+                        case 0:
+                            tab.setIcon(R.drawable.s2t_tab_icon_warm);
+                            break;
+                        case 1:
+                            tab.setIcon(R.drawable.t2s_tab_icon1_cool);
+                            break;
+                        case 2:
+                            tab.setIcon(R.drawable.setting_cool);
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // do nothing
-            }
-        });
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                    // do nothing
+                }
+            });
 
-        getSupportFragmentManager().beginTransaction().show(fragmentAdapter.getItem(0)).commit();
+            getSupportFragmentManager().beginTransaction().show(fragmentAdapter.getItem(0)).commit();
+        }
 
     }
 
