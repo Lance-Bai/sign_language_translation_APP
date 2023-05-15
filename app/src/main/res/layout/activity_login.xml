@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:focusableInTouchMode="true"
-    android:background="@drawable/background_image_1"
+    android:background="@drawable/background_bluesky"
     android:padding="16dp">
     <Button
         android:id="@+id/skip_button"
@@ -16,32 +16,34 @@
         android:layout_gravity="right"/>
 <!--        android:layout_marginTop="1dp"-->
     <!-- App Logo -->
-    <ImageView
-        android:id="@+id/logo_imageview"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/app_logo_3" />
+<!--    <ImageView-->
+<!--        android:id="@+id/logo_imageview"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:src="@drawable/app_logo_3" />-->
 
     <!-- Login Form -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="140dp"
         android:orientation="vertical">
 
         <!-- Email -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_textLayout_input"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
+            android:layout_gravity="center"
+
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Email">
+            android:hint="username">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_edittext"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,8 +56,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:layout_gravity="center"
+                android:layout_height="50dp"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
         <Button
@@ -69,18 +72,26 @@
         <!-- Login Button -->
         <Button
             android:id="@+id/login_button"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:typeface="monospace"
+            android:background="@drawable/optimizedbutton"
             android:text="login"/>
     </LinearLayout>
 
     <!-- Register Button -->
     <Button
         android:id="@+id/login_register_button"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="register"
+        android:textColor="@color/DeepSkyBlue"
+        android:background="@drawable/optimizedbutton0"
         android:layout_marginTop="16dp"/>
 
 </LinearLayout>

@@ -4,21 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CaptureRequest;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.slt_project.R;
 import com.example.slt_project.ui.S2T.PostData;
-import com.example.slt_project.ui.S2T.S2TContract;
-import com.example.slt_project.ui.S2T.S2TPresenter;
 import com.example.slt_project.ui.SendAble;
 import com.example.slt_project.ui.UserManager;
 import com.example.slt_project.ui.base.BaseActivity;
@@ -27,14 +20,16 @@ import com.example.slt_project.ui.database.UserDao;
 import com.example.slt_project.ui.database.UserPO;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.net.MalformedURLException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Button skipButton, loginButton, registerButton;
     private TextInputEditText email, password;
     AppDataBase db;
+    UserDao userDao;
     UserManager userManager;
+    Map<String, String> params = new HashMap<String, String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,54 +46,64 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         skipButton.setOnClickListener(this::onClick);
         db = AppDataBase.getInstance(this);
 //        db = Room.databaseBuilder(getApplicationContext(), AppDataBase.class, "mydatabase").build();
-        UserDao userDao = db.userDao();
+        userDao = db.userDao();
 
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username_info = email.getText().toString();
-                String password_info = password.getText().toString();
-                if (!username_info.isEmpty() && !password_info.isEmpty()) {
-                        new QueryAsyncTask(userDao, new OnUsernameLoadedListener() {
-                            @Override
-                            public void onUsernameLoaded(String username) {
-                                // 在这里处理查询结果，例如判断用户名是否正确
-                                if (username.equals(username_info)) {
-                                    // 用户名正确，执行相应操作
-                                    Toast.makeText(LoginActivity.this, "用户名正确！", Toast.LENGTH_SHORT).show();
 
-                                } else {
-                                    // 用户名错误，执行相应操作
-                                    Toast.makeText(LoginActivity.this, "用户名错误！", Toast.LENGTH_SHORT).show();
 
-                                }
-                            }
-                            @Override
-                            public void onUserPasswordLoaded(String password) {
-                                // 在这里处理查询结果，例如判断密码是否正确
-                                if (password.equals(password_info)) {
-                                    // 密码正确，执行相应操作
-                                    Toast.makeText(LoginActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-                                    userManager.setLoggedIn(true);
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    // 密码错误，执行相应操作
-                                    Toast.makeText(LoginActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        }).execute(email.getText().toString(), password.getText().toString());
-                } else {
-                    Toast.makeText(LoginActivity.this, "用户名或密码不能为空!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        loginButton.setOnClickListener(this);
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String username_info = email.getText().toString();
+//                String password_info = password.getText().toString();
+//                params.put("username", username_info);
+//                params.put("password", password_info);
+//                new PostLogin(null).execute(params);
+//                if (!username_info.isEmpty() && !password_info.isEmpty()) {
+//                        new QueryAsyncTask(userDao, new OnUsernameLoadedListener() {
+//                            @Override
+//                            public void onUsernameLoaded(String username) {
+//                                // 在这里处理查询结果，例如判断用户名是否正确
+//                                if (username.equals(username_info)) {
+//                                    // 用户名正确，执行相应操作
+//                                    Toast.makeText(LoginActivity.this, "用户名正确！", Toast.LENGTH_SHORT).show();
+//
+//                                } else {
+//                                    // 用户名错误，执行相应操作
+//                                    Toast.makeText(LoginActivity.this, "用户名错误！", Toast.LENGTH_SHORT).show();
+//
+//                                }
+//                            }
+//                            @Override
+//                            public void onUserPasswordLoaded(String password) {
+//                                // 在这里处理查询结果，例如判断密码是否正确
+//                                if (password.equals(password_info)) {
+//                                    // 密码正确，执行相应操作
+//                                    Toast.makeText(LoginActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+//                                    userManager.setLoggedIn(true);
+//                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                    startActivity(intent);
+//                                    finish();
+//                                } else {
+//                                    // 密码错误，执行相应操作
+//                                    Toast.makeText(LoginActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();
+//
+//                                }
+//                            }
+//                        }).execute(email.getText().toString(), password.getText().toString());
+//                } else {
+//                    Toast.makeText(LoginActivity.this, "用户名或密码不能为空!", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
-
+    class NotTranslateSend implements SendAble {
+    @Override
+    public void translateTo(String s) {
+    }
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -111,8 +116,51 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+                break;
+            case R.id.login_button:
+                String username_info = email.getText().toString();
+                String password_info = password.getText().toString();
+
+                if (!username_info.isEmpty() && !password_info.isEmpty()) {
+                    params.put("username", username_info);
+                    params.put("password", password_info);
+                    new PostLogin(this).execute(params);
+                    new QueryAsyncTask(userDao, new OnUsernameLoadedListener() {
+                        @Override
+                        public void onUsernameLoaded(String username) {
+                            // 在这里处理查询结果，例如判断用户名是否正确
+                            if (username.equals(username_info)) {
+                                // 用户名正确，执行相应操作
+                                Toast.makeText(LoginActivity.this, "用户名正确！", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                // 用户名错误，执行相应操作
+                                Toast.makeText(LoginActivity.this, "用户名错误！", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        @Override
+                        public void onUserPasswordLoaded(String password) {
+                            // 在这里处理查询结果，例如判断密码是否正确
+                            if (password.equals(password_info)) {
+                                // 密码正确，执行相应操作
+                                Toast.makeText(LoginActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                                userManager.setLoggedIn(true);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // 密码错误，执行相应操作
+                                Toast.makeText(LoginActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    }).execute(email.getText().toString(), password.getText().toString());
+                } else {
+                    Toast.makeText(LoginActivity.this, "用户名或密码不能为空!", Toast.LENGTH_SHORT).show();
+                }
         }
-        new PostData(new NotTranslateSend()).execute();
     }
 
 
@@ -155,13 +203,3 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 }
-
-class NotTranslateSend implements SendAble{
-    @Override
-    public void translateTo(String s) {
-
-    }
-}
-
-
-

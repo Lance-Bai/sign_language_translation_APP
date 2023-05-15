@@ -31,30 +31,33 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Photo Mode"
+            android:text="@string/photo_mode"
             android:textStyle="bold"
             android:textOn="On" />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal">
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Setting_3" />
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:orientation="horizontal">-->
+<!--        <androidx.appcompat.widget.SwitchCompat-->
+<!--            android:id="@+id/switch3"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Setting_3" />-->
+<!--    </LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="159dp"
+            android:id="@+id/selectLanguage"
+            android:layout_width="230dp"
             android:layout_height="match_parent"
+            android:textStyle="bold"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
             android:text="@string/language_choose_spinner_text" />
 
         <Spinner
@@ -66,18 +69,28 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="90dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/text_size"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="777"/>
+            android:layout_height="50dp"
+            android:paddingTop="15dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="文字大小=默认"/>
 
         <SeekBar
             android:id="@+id/seekBar_textsize"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:max="5"
+            android:progress="1"
+            android:thumb="@drawable/ic_thumb"
+            android:tickMark="@drawable/ic_tick_mark"
+            android:tickMarkTint="@color/grey_DarkGrey"
+            android:tickMarkTintMode="src_in"
+            >
         </SeekBar>
     </LinearLayout>
     <LinearLayout

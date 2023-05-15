@@ -27,6 +27,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
