@@ -5,29 +5,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:focusableInTouchMode="true"
-    android:background="@drawable/background_bluesky"
+    android:background="@color/Ivory"
     android:padding="16dp">
     <Button
         android:id="@+id/skip_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="跳过"
-        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:background="@drawable/optimizedbutton0"
+        android:textColor="@color/Burlywood4"
         android:layout_gravity="right"/>
 <!--        android:layout_marginTop="1dp"-->
-    <!-- App Logo -->
-<!--    <ImageView-->
-<!--        android:id="@+id/logo_imageview"-->
-<!--        android:layout_width="200dp"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:src="@drawable/app_logo_3" />-->
+<!--     App Logo -->
+    <ImageView
+        android:id="@+id/logo_imageview"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/app_logo_3" />
 
     <!-- Login Form -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <!-- Email -->
@@ -64,34 +66,37 @@
         <Button
             android:id="@+id/forget_button"
             android:layout_width="wrap_content"
+            android:textColor="@color/Burlywood4"
             android:layout_height="30dp"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
             android:textSize="15sp"
             android:text="forget password?"/>
         <!-- Login Button -->
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="200dp"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:typeface="monospace"
-            android:background="@drawable/optimizedbutton"
-            android:text="login"/>
-    </LinearLayout>
 
+    </LinearLayout>
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/Burlywood4"
+        android:typeface="monospace"
+        android:background="@drawable/optimizedbutton"
+        android:text="login"/>
     <!-- Register Button -->
     <Button
         android:id="@+id/login_register_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/optimizedbutton"
         android:text="register"
-        android:textColor="@color/DeepSkyBlue"
-        android:background="@drawable/optimizedbutton0"
-        android:layout_marginTop="16dp"/>
+        android:textColor="@color/Burlywood4"
+        android:textSize="20sp" />
 
 </LinearLayout>

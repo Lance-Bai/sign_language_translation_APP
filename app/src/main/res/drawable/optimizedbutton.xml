@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners
-        android:bottomLeftRadius="15dp"
-        android:bottomRightRadius="15dp"
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp" />
+<!--    <corners-->
+<!--        android:bottomLeftRadius="15dp"-->
+<!--        android:bottomRightRadius="15dp"-->
+<!--        android:topLeftRadius="15dp"-->
+<!--        android:topRightRadius="15dp" />-->
     <!-- 设置填充颜色 -->
-    <solid android:color="@color/DeepSkyBlue" />
+    <solid android:color="@color/Wheat" />
+    <gradient android:startColor="#CDAA7D"
+        android:angle="0"
+        android:type="linear">
+
+    </gradient>
     <!-- 设置边框颜色 -->
-    <stroke android:width="2dp" android:color="#03A9F4"/>
+    <stroke android:width="4dp" android:color="@color/Burlywood4"/>
 </shape>

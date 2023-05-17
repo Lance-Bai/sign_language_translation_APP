@@ -47,57 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         db = AppDataBase.getInstance(this);
 //        db = Room.databaseBuilder(getApplicationContext(), AppDataBase.class, "mydatabase").build();
         userDao = db.userDao();
-
-
-
-
         loginButton.setOnClickListener(this);
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String username_info = email.getText().toString();
-//                String password_info = password.getText().toString();
-//                params.put("username", username_info);
-//                params.put("password", password_info);
-//                new PostLogin(null).execute(params);
-//                if (!username_info.isEmpty() && !password_info.isEmpty()) {
-//                        new QueryAsyncTask(userDao, new OnUsernameLoadedListener() {
-//                            @Override
-//                            public void onUsernameLoaded(String username) {
-//                                // 在这里处理查询结果，例如判断用户名是否正确
-//                                if (username.equals(username_info)) {
-//                                    // 用户名正确，执行相应操作
-//                                    Toast.makeText(LoginActivity.this, "用户名正确！", Toast.LENGTH_SHORT).show();
-//
-//                                } else {
-//                                    // 用户名错误，执行相应操作
-//                                    Toast.makeText(LoginActivity.this, "用户名错误！", Toast.LENGTH_SHORT).show();
-//
-//                                }
-//                            }
-//                            @Override
-//                            public void onUserPasswordLoaded(String password) {
-//                                // 在这里处理查询结果，例如判断密码是否正确
-//                                if (password.equals(password_info)) {
-//                                    // 密码正确，执行相应操作
-//                                    Toast.makeText(LoginActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
-//                                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-//                                    userManager.setLoggedIn(true);
-//                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                                    startActivity(intent);
-//                                    finish();
-//                                } else {
-//                                    // 密码错误，执行相应操作
-//                                    Toast.makeText(LoginActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();
-//
-//                                }
-//                            }
-//                        }).execute(email.getText().toString(), password.getText().toString());
-//                } else {
-//                    Toast.makeText(LoginActivity.this, "用户名或密码不能为空!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
     }
     class NotTranslateSend implements SendAble {
     @Override
