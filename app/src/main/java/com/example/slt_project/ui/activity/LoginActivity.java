@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (!username_info.isEmpty() && !password_info.isEmpty()) {
                     params.put("username", username_info);
                     params.put("password", password_info);
-                    new PostLogin(this).execute(params);
+                    new PostLogin(this, userManager).execute(params);
                     new QueryAsyncTask(userDao, new OnUsernameLoadedListener() {
                         @Override
                         public void onUsernameLoaded(String username) {
@@ -144,12 +144,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // 在这里处理查询结果，例如判断密码是否正确
                             if (password.equals(password_info)) {
                                 // 密码正确，执行相应操作
-                                Toast.makeText(LoginActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(LoginActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                                 userManager.setLoggedIn(true);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
+//                                startActivity(intent);
+//                                finish();
                             } else {
                                 // 密码错误，执行相应操作
                                 Toast.makeText(LoginActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();

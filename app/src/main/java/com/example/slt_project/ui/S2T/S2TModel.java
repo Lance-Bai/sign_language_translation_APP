@@ -117,11 +117,11 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //字节缓冲
                 ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                 byte[] data = new byte[buffer.remaining()];
                 buffer.get(data);
-                String path = Environment.getExternalStorageDirectory() +  "/DCIM/Camera/"
+                String path = presenter.getFragment().getMainActivity().getExternalFilesDir(null) +
+                        "/"
                         + System.currentTimeMillis() + ".jpg";
                 File imageFile = new File(path);
                 FileOutputStream fos = null;

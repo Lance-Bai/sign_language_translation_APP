@@ -3,6 +3,7 @@ package com.example.slt_project.ui.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.slt_project.ui.SendAble;
 
@@ -40,9 +41,14 @@ public class PostRegister extends AsyncTask<Map<String, String>,Void,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Intent intent = new Intent(activity.getApplicationContext(), LoginActivity.class);
-        activity.startActivity(intent);
-        activity.finish();
+        if(s.equals("User registered successfully")){
+            Intent intent = new Intent(activity.getApplicationContext(), LoginActivity.class);
+            activity.startActivity(intent);
+            activity.finish();
+        } else {
+            Toast.makeText(activity.getApplicationContext(),"Register error", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public static String submitPostData(Map<String, String> params, String encode) throws MalformedURLException {
@@ -53,7 +59,7 @@ public class PostRegister extends AsyncTask<Map<String, String>,Void,String> {
          * @return 服务器返回信息
          */
         byte[] data = getRequestData(params, encode).toString().getBytes();
-        URL url = new URL("http://10.19.45.53:5000/register");
+        URL url = new URL("http://192.168.137.47:8000/register");
         HttpURLConnection httpURLConnection = null;
         try{
             httpURLConnection = (HttpURLConnection)url.openConnection();

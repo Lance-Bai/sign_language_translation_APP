@@ -3,8 +3,10 @@ package com.example.slt_project.ui.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.slt_project.ui.SendAble;
+import com.example.slt_project.ui.UserManager;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,8 +21,12 @@ import java.util.Map;
 
 public class PostLogin extends AsyncTask<Map<String, String>,Void,String> {
     LoginActivity activity;
+    UserManager manager;
 
-    public PostLogin(LoginActivity activity){this.activity=activity;}
+    public PostLogin(LoginActivity activity, UserManager manager){
+        this.activity=activity;
+        this.manager=manager;
+    }
 
 
 
@@ -40,9 +46,17 @@ public class PostLogin extends AsyncTask<Map<String, String>,Void,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
-        activity.startActivity(intent);
-        activity.finish();
+        if(s.equals("Login failed")){
+            Toast.makeText(activity.getApplicationContext(),"Login failed", Toast.LENGTH_SHORT).show();
+        } else if (s.equals("Login success")) {
+            Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+            manager.setLoggedIn(true);
+            activity.startActivity(intent);
+            activity.finish();
+        }else{
+            Toast.makeText(activity.getApplicationContext(),"Login error", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public static String submitPostData(Map<String, String> params, String encode) throws MalformedURLException {
@@ -53,7 +67,7 @@ public class PostLogin extends AsyncTask<Map<String, String>,Void,String> {
          * @return 服务器返回信息
          */
         byte[] data = getRequestData(params, encode).toString().getBytes();
-        URL url = new URL("http://10.19.45.53:5000/login");
+        URL url = new URL("http://192.168.137.47:8000/login");
         HttpURLConnection httpURLConnection = null;
         try{
             httpURLConnection = (HttpURLConnection)url.openConnection();

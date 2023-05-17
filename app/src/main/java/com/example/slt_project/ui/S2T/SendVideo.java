@@ -34,7 +34,7 @@ public class SendVideo extends AsyncTask<File,Void,String> {
     protected String doInBackground(File... files) {
         String post_result = null;
         try {
-            post_result = submitPostData(files[0], "http://10.19.35.46:5000/upload");
+            post_result = submitPostData(files[0], "http://192.168.137.47:8000/upload");
             Log.i("POST_RESULT", post_result);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -61,8 +61,8 @@ public class SendVideo extends AsyncTask<File,Void,String> {
         try {
             URL url = new URL(serverUrl);
             httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setReadTimeout(60 * 1000);
-            httpURLConnection.setConnectTimeout(60 * 1000);
+            httpURLConnection.setReadTimeout(600 * 1000);
+            httpURLConnection.setConnectTimeout(600 * 1000);
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setUseCaches(false);
             httpURLConnection.setDoInput(true);

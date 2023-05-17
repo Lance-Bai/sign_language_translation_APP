@@ -1,20 +1,10 @@
 package com.example.slt_project.ui.activity;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.example.slt_project.R;
 import com.example.slt_project.ui.Mode;
@@ -90,23 +80,6 @@ public class MainActivity extends BaseActivity {
             tabLayout.setBackgroundResource(R.color.grey_300);
         }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // 修改选中的 Tab 的图标
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.s2t_tab_icon_warm);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.t2s_tab_icon_warm);
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.setting_warm);
-                        break;
-                }
-            }
-
-            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     // 修改选中的 Tab 的图标
