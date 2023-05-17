@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SLT_Project</string>
+    <string name="top_title_S2T">Sign to Text</string>
+    <string name="top_title_T2S">Text to Sign</string>
+    <string name="top_title_setting">Setting</string>
+    <string name="tab1_left">sign→text</string>
+    <string name="tab2_center">text→sign</string>
+    <string name="tab3_right">settings</string>
+    <string name="input_text_hint">please enter text</string>
+    <string name="send_input_text_button">send</string>
+    <string name="dark_mode_switch_text">darkmode</string>
+    <string name="language_choose_spinner_text">select output language</string>
+    <string name="photo_mode">photo/video</string>
+    <string name="login_skip">skip</string>
+    <string name="login_loginbutton">login</string>
+    <string name="login_registerbutton">register</string>
+    <string name="login_username">username</string>
+    <string name="login_password">password</string>
+    <string name="login_forgetpassword">forget password？click here</string>
+    <string name="login_button_text">not log in？click here</string>
+    <string name="logout_button_text">logged，click to logout</string>
+
+    <string name="register_username">username</string>
+    <string name="register_password">password</string>
+    <string name="register_confirmpassword">confirm password</string>
+    <string name="register_signup">sign up</string>
+    <string name="register_tologin">already sign up？click login</string>
+    <string name="setting_fontsize"> font size = default</string>
+
+
+
+
+
+
+
+    <string-array name="language">
+        <item>Arabic</item>
+        <item>German</item>
+        <item>Russian</item>
+        <item>French</item>
+        <item>Korean</item>
+        <item>Portuguese</item>
+        <item>Japanese</item>
+        <item>Thai</item>
+        <item>Turkish</item>
+        <item>Spanish</item>
+        <item>English</item>
+        <item>Vietnamese</item>
+        <item>Chinese-Simple</item>
+        <item>Chinese-Traditonal</item>
+    </string-array>
+    <string-array name="language_label">
+        <item>ar</item>
+        <item>de</item>
+        <item>ru</item>
+        <item>fr</item>
+        <item>ko</item>
+        <item>pt</item>
+        <item>ja</item>
+        <item>th</item>
+        <item>tr</item>
+        <item>es</item>
+        <item>en</item>
+        <item>vi</item>
+        <item>zh</item>
+        <item>zh-tw</item>
+    </string-array>
+</resources>

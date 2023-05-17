@@ -21,10 +21,11 @@ import java.util.Locale;
 public class MyFragmentAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> fragmentList;
     private List<String>titleList;
-private Context contextCompat;
-    public MyFragmentAdapter(@NonNull FragmentManager fm, List<Fragment> fragmentList) {
+    private Context contextCompat;
+    public MyFragmentAdapter(@NonNull FragmentManager fm, List<Fragment> fragmentList, Context contextCompat) {
         super(fm);
         this.fragmentList = fragmentList;
+        this.contextCompat=contextCompat;
     }
 
     @NonNull
@@ -41,11 +42,13 @@ private Context contextCompat;
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Sign to Text";
+//                return ();
+                return contextCompat.getResources().getString(R.string.tab1_left);
+
             case 1:
-                return "Text to Sign";
+                return contextCompat.getResources().getString(R.string.tab2_center);
             case 2:
-                return "settings".toLowerCase();
+                return contextCompat.getResources().getString(R.string.tab3_right);
             //the toLowerCase is not work!!!!
             default:
                 return null;

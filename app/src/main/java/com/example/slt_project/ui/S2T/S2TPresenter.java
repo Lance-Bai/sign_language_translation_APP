@@ -362,10 +362,10 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
             //video coding format, using H264
             mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
             //Bit rate
-            mMediaRecorder.setVideoEncodingBitRate(10 * 1080 * 1920);
+            mMediaRecorder.setVideoEncodingBitRate(30 * 1080 * 1080);
             //fragment rate
-            mMediaRecorder.setVideoFrameRate(10);
-            mMediaRecorder.setVideoSize(1920, 1080);
+            mMediaRecorder.setVideoFrameRate(30);
+            mMediaRecorder.setVideoSize(1080, 1080);
             Surface surface = new Surface(fragment.getTextureView().getSurfaceTexture());
             mMediaRecorder.setPreviewDisplay(surface);
             mMediaRecorder.setOutputFile(SLTVideo.getAbsolutePath());

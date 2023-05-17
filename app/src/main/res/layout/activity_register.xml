@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_bluesky0"
+    android:background="@color/Ivory"
     android:orientation="vertical"
     >
 <!--    <LinearLayout-->
@@ -35,7 +35,7 @@
 
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="username">
+            android:hint="@string/register_username">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_email_edittext"
@@ -51,7 +51,7 @@
             android:layout_width="300dp"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:hint="password">
+            android:hint="@string/register_password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_password_edittext"
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="reconfirm password">
+            android:hint="@string/register_confirmpassword">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_password_edittext_confirm"
@@ -80,7 +80,7 @@
             android:layout_gravity="right"
             android:background="@android:color/transparent"
             android:textSize="15sp"
-            android:text="已有账号？点击登录"/>
+            android:text="@string/register_tologin"/>
         <!-- Sign up Button -->
         <Button
             android:id="@+id/register_signup_button"
@@ -91,6 +91,6 @@
             android:textSize="25sp"
             android:textColor="@color/white"
             android:background="@drawable/optimizedbutton"
-            android:text="Sign up"/>
+            android:text="@string/register_signup"/>
     </LinearLayout>
 </LinearLayout>

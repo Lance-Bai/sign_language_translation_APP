@@ -26,8 +26,9 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_weight="0.6"
-        android:focusable="true"
         android:hint="@string/input_text_hint"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:inputType="text"
         android:textColorHint="@color/green_700"
         android:windowSoftInputMode="stateVisible|adjustPan" />

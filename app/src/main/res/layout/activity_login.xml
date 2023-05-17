@@ -11,7 +11,7 @@
         android:id="@+id/skip_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="跳过"
+        android:text="@string/login_skip"
         android:textStyle="bold"
         android:background="@drawable/optimizedbutton0"
         android:textColor="@color/Burlywood4"
@@ -40,7 +40,7 @@
 
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="username">
+            android:hint="@string/login_username">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_edittext"
@@ -54,7 +54,7 @@
             android:id="@+id/password_textLayout_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password">
+            android:hint="@string/login_registerbutton">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_edittext"
@@ -71,7 +71,7 @@
             android:layout_gravity="right"
             android:background="@android:color/transparent"
             android:textSize="15sp"
-            android:text="forget password?"/>
+            android:text="@string/login_forgetpassword"/>
         <!-- Login Button -->
 
     </LinearLayout>
@@ -86,7 +86,7 @@
         android:textColor="@color/Burlywood4"
         android:typeface="monospace"
         android:background="@drawable/optimizedbutton"
-        android:text="login"/>
+        android:text="@string/login_loginbutton"/>
     <!-- Register Button -->
     <Button
         android:id="@+id/login_register_button"
@@ -95,7 +95,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="@drawable/optimizedbutton"
-        android:text="register"
+        android:text="@string/login_registerbutton"
         android:textColor="@color/Burlywood4"
         android:textSize="20sp" />
 

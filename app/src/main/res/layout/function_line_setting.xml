@@ -53,7 +53,7 @@
 
         <TextView
             android:id="@+id/selectLanguage"
-            android:layout_width="230dp"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
             android:textStyle="bold"
             android:gravity="center_vertical"
@@ -78,7 +78,7 @@
             android:paddingTop="15dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="文字大小=默认"/>
+            android:text="@string/setting_fontsize"/>
 
         <SeekBar
             android:id="@+id/seekBar_textsize"

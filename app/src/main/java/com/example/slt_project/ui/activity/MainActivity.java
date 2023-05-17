@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity {
             fragments.add(new S2TFragment());
             fragments.add(new T2SFragment());
             fragments.add(new SettingFragment());
-            fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments);
+            fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, this);
             viewPage.setAdapter(fragmentAdapter);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.s2t_tab_icon_warm);

@@ -95,6 +95,8 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
             }
         });
 
+
+
         darkOrLight.setChecked(presenter.isNightModeOn());
         photoOrVideo.setChecked(presenter.isPhotoModeOn());
 

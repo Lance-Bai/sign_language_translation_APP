@@ -1,8 +1,11 @@
 package com.example.slt_project.ui.T2S;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,7 +43,9 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
     protected void initViews() {
         presenter = new T2SPresenter(this);
         t2s_recyclerView = find(R.id.t2s_recycle);
+        t2s_recyclerView.setOnClickListener(this);
         signImage = find(R.id.t2s_imageView);
+        signImage.setOnClickListener(this);
 //        t2s_imageRecycler = find(R.id.t2s_imageRecycler);
         sendButton = find(R.id.send_input_text_button);
         editText = find(R.id.input_text);
@@ -52,6 +57,21 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
         t2s_recyclerView.setAdapter(adapter);
 
         sendButton.setOnClickListener(this);
+
+
+
+
+    }
+    private void hideKeyboard() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            View view = activity.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                view.clearFocus();
+            }
+        }
     }
 
 
@@ -73,6 +93,8 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
                 layoutManager.scrollToPositionWithOffset(itemCount - 1, 0);
             }
         }
+        hideKeyboard();
+
     }
     @Override
     public void showImage(Character c){
