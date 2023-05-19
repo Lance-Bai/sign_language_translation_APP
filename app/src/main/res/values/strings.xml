@@ -13,26 +13,35 @@
     <string name="language_choose_spinner_text">选择输出语言</string>
     <string name="photo_mode">照片/视频</string>
     <string name="login_skip">跳过</string>
-    <string name="login_loginbutton">点击登录</string>
-    <string name="login_registerbutton">点击注册</string>
+    <string name="login_loginbutton">登录</string>
+    <string name="login_registerbutton">注册</string>
     <string name="login_username">请输入用户名称或邮箱</string>
     <string name="login_password">请输入密码</string>
     <string name="login_forgetpassword">忘记密码？点击此处</string>
     <string name="login_button_text">未登录？点击此处登录</string>
     <string name="logout_button_text">已登录，退出当前账户</string>
+    <string name="language_app_choose_spinner_text">选择应用语言</string>
 
     <string name="register_username">请输入用户名称</string>
     <string name="register_password">请设置密码</string>
     <string name="register_confirmpassword">请再次确认设置密码</string>
     <string name="register_signup">注册</string>
     <string name="register_tologin">已注册？点击登录</string>
-    <string name="setting_fontsize"> 文字大小=默认</string>
+    <string name="setting_fontsize"> 文字大小=</string>
 
 
 
 
-
-
+    <string-array name="applanguage">
+        <item>Language</item>
+        <item>中文简体</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="applanguagelabel">
+        <item>de</item>
+        <item>zh</item>
+        <item>en</item>
+    </string-array>
 
     <string-array name="language">
         <item>阿拉伯语</item>

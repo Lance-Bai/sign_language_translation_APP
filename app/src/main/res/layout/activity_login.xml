@@ -19,6 +19,7 @@
 <!--        android:layout_marginTop="1dp"-->
 <!--     App Logo -->
     <ImageView
+        android:layout_marginTop="20dp"
         android:id="@+id/logo_imageview"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -54,7 +55,7 @@
             android:id="@+id/password_textLayout_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login_registerbutton">
+            android:hint="@string/login_password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_edittext"
@@ -97,6 +98,7 @@
         android:background="@drawable/optimizedbutton"
         android:text="@string/login_registerbutton"
         android:textColor="@color/Burlywood4"
+        android:textStyle="bold"
         android:textSize="20sp" />
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -31,23 +32,26 @@ import com.example.slt_project.ui.activity.RegisterActivity;
 import com.example.slt_project.ui.base.BaseFragment;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Locale;
+
 public class SettingFragment extends BaseFragment implements SettingContract.ISettingFragment, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private SwitchCompat photoOrVideo;
     private SwitchCompat darkOrLight;
     private SettingPresenter presenter;
     private SeekBar fontSizeSeekBar;
-    private TextView fontSizeTextView, selectLanguage;
+    private TextView fontSizeTextView, selectoutputLanguage, selectAppLanguage;
 
-    private Spinner languageSpinner;
+    private Spinner languageSpinner, appLanguageSpinner;
 
     private SharedPreferences sharedPreferences;
     public Mode mode;
     private SharedPreferences.Editor editor;
-//    private int textSize;
+    //    private int textSize;
     private Button logoutButton;
     private static final String PREF_NAME = "user_pref";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     UserManager userManager;
+
 
     @Override
     protected int getLayoutID() {
@@ -64,11 +68,13 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         darkOrLight = find(R.id.light_mode);
         photoOrVideo = find(R.id.photo_mode);
         fontSizeSeekBar = find(R.id.seekBar_textsize);
-        fontSizeTextView=find(R.id.text_size);
-        languageSpinner=find(R.id.spinner);
+        fontSizeTextView = find(R.id.text_size);
+        languageSpinner = find(R.id.spinner);
         fontSizeTextView = find(R.id.text_size);
         logoutButton = find(R.id.log_out_button);
-        selectLanguage = find(R.id.selectLanguage);
+        selectoutputLanguage = find(R.id.selectLanguage);
+        selectAppLanguage = find(R.id.select_app_Language);
+        appLanguageSpinner = find(R.id.spinner_app_language);
 
         darkOrLight.setOnCheckedChangeListener(this);
         photoOrVideo.setOnCheckedChangeListener(this);
@@ -76,8 +82,41 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
 
         sharedPreferences = getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        mode=new Mode(getContext());
+        mode = new Mode(getContext());
         int textSize = sharedPreferences.getInt("text_size", 0);
+        appLanguageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+//                Locale locale ;
+                String now = sharedPreferences.getString("applanguage", "");
+                if (position==0){
+                    if (now.equals("chinese")){
+                        changeLanguage(Locale.CHINESE);
+                        editor.putString("applanguage", "");
+                        getActivity().recreate();
+                    }else if (now.equals("english")){
+                        changeLanguage(Locale.ENGLISH);
+                        editor.putString("applanguage", "");
+                        getActivity().recreate();
+                    }
+                }
+                else if (position == 1) {
+                    changeLanguage(Locale.CHINESE);
+                    editor.putString("applanguage", "chinese");
+                    getActivity().recreate();
+                } else if (position == 2) {
+                    changeLanguage(Locale.ENGLISH);
+                    editor.putString("applanguage", "english");
+                    getActivity().recreate();
+                }
+                editor.apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(
 
@@ -96,7 +135,6 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         });
 
 
-
         darkOrLight.setChecked(presenter.isNightModeOn());
         photoOrVideo.setChecked(presenter.isPhotoModeOn());
 
@@ -104,7 +142,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
 
-                int textSize=0;
+                int textSize = 0;
                 switch (progress) {
                     case 0:
                         textSize = 14;
@@ -126,7 +164,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
                         break;
                 }
 //                textSize=sharedPreferences.getInt("text_size",14);
-                fontSizeTextView.setText("文字大小="+textSize);
+                fontSizeTextView.setText(getString(R.string.setting_fontsize) + textSize);
                 updateViewTextSize(requireActivity().getWindow().getDecorView().getRootView(), textSize);
             }
 
@@ -145,11 +183,12 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         });
         if (userManager.isLoggedIn()) {
             logoutButton.setText(R.string.logout_button_text);
-        }else{
+        } else {
             logoutButton.setText(R.string.login_button_text);
         }
 
     }
+
     private void updateViewTextSize(View view, float textSize) {
         if (view instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) view;
@@ -163,6 +202,15 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         }
     }
 
+
+
+    private void changeLanguage(Locale locale) {
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -171,7 +219,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         // 如果已经保存了设置，则更新SeekBar和文本字体大小
         if (fontSize > 0) {
             fontSizeSeekBar.setProgress(fontSize);
-            fontSizeTextView.setText("文字大小=" + (14 + fontSize * 3));
+            fontSizeTextView.setText(getString(R.string.setting_fontsize) + (14 + fontSize * 3));
             updateViewTextSize(requireActivity().getWindow().getDecorView().getRootView(), 14 + fontSize * 3);
         }
     }
@@ -185,11 +233,13 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
                 mode.setModeon(b);
                 if (b) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    selectLanguage.setTextColor(getResources().getColor(R.color.white));
+                    selectoutputLanguage.setTextColor(getResources().getColor(R.color.white));
+                    selectAppLanguage.setTextColor(getResources().getColor(R.color.white));
                     fontSizeTextView.setTextColor(getResources().getColor(R.color.white));
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    selectLanguage.setTextColor(getResources().getColor(R.color.black));
+                    selectoutputLanguage.setTextColor(getResources().getColor(R.color.black));
+                    selectAppLanguage.setTextColor(getResources().getColor(R.color.black));
                     fontSizeTextView.setTextColor(getResources().getColor(R.color.black));
                 }
                 break;
@@ -210,7 +260,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
                 if (userManager.isLoggedIn()) {
                     userManager.setLoggedIn(false);
                     logoutButton.setText(R.string.login_button_text);
-                break;
+                    break;
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     getActivity().finish();

@@ -20,13 +20,14 @@
     <string name="login_forgetpassword">forget password？click here</string>
     <string name="login_button_text">not log in？click here</string>
     <string name="logout_button_text">logged，click to logout</string>
+    <string name="language_app_choose_spinner_text">select app language</string>
 
     <string name="register_username">username</string>
     <string name="register_password">password</string>
     <string name="register_confirmpassword">confirm password</string>
     <string name="register_signup">sign up</string>
     <string name="register_tologin">already sign up？click login</string>
-    <string name="setting_fontsize"> font size = default</string>
+    <string name="setting_fontsize">font size = </string>
 
 
 

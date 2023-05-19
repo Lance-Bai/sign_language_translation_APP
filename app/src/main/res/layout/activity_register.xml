@@ -89,7 +89,7 @@
 
             android:layout_height="wrap_content"
             android:textSize="25sp"
-            android:textColor="@color/white"
+            android:textColor="@color/Burlywood4"
             android:background="@drawable/optimizedbutton"
             android:text="@string/register_signup"/>
     </LinearLayout>
