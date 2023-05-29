@@ -1,9 +1,11 @@
 package com.example.slt_project.ui.S2T;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,16 +37,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slt_project.R;
 import com.example.slt_project.ui.TextOutputAdapter;
+import com.example.slt_project.ui.activity.SendPreviousActivity;
 import com.example.slt_project.ui.base.BaseFragment;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragment, View.OnClickListener, TextureView.SurfaceTextureListener {
+public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragment, View.OnClickListener, TextureView.SurfaceTextureListener, View.OnLongClickListener {
     private TextureView textureView;
     private RecyclerView s2t_recyclerView;
     private TextOutputAdapter adapter;
@@ -80,6 +84,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         takePhotoORVideo.setOnClickListener(this);
         changeCamera.setOnClickListener(this);
         mThumbnail.setOnClickListener(this);
+        mThumbnail.setOnLongClickListener(this);
 
         Context ctx = this.getMainActivity();
         sp = ctx.getSharedPreferences("my_prefs", MODE_PRIVATE);
@@ -141,7 +146,8 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 //                tabLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 //            }
 //        });
-
+//        adapter.addText("识别结果: 5 \n翻译结果:  五。");
+//        presenter.translateTo("识别结果: 5 \n翻译结果:  五。");
     }
 
 
@@ -356,4 +362,28 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     }
 
 
+    @Override
+    public boolean onLongClick(View v) {
+        if(v.getId()==R.id.s2t_thumbnail){
+            Intent intent = new Intent(this.getMainActivity(), SendPreviousActivity.class);
+            startActivityForResult(intent, 100);
+        }
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==100){
+            if(resultCode==RESULT_OK){
+                String name = data.getStringExtra("data_return");
+                File file = new File(this.getMainActivity().getExternalFilesDir(null).toString()+"/"+name);
+                if(name.contains(".jpg")){
+                    new SendPhoto(presenter).execute(file);
+                } else if (name.contains(".mp4")) {
+                    new SendVideo(presenter).execute(file);
+                }
+            }
+        }
+    }
 }

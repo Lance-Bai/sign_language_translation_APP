@@ -37,6 +37,8 @@ import java.util.Locale;
 public class SettingFragment extends BaseFragment implements SettingContract.ISettingFragment, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private SwitchCompat photoOrVideo;
     private SwitchCompat darkOrLight;
+
+    private SwitchCompat translateMode;
     private SettingPresenter presenter;
     private SeekBar fontSizeSeekBar;
     private TextView fontSizeTextView, selectoutputLanguage, selectAppLanguage;
@@ -67,6 +69,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
 
         darkOrLight = find(R.id.light_mode);
         photoOrVideo = find(R.id.photo_mode);
+        translateMode = find(R.id.translate_mode);
         fontSizeSeekBar = find(R.id.seekBar_textsize);
         fontSizeTextView = find(R.id.text_size);
         languageSpinner = find(R.id.spinner);
@@ -79,6 +82,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         darkOrLight.setOnCheckedChangeListener(this);
         photoOrVideo.setOnCheckedChangeListener(this);
         logoutButton.setOnClickListener(this);
+        translateMode.setOnCheckedChangeListener(this);
 
         sharedPreferences = getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -89,29 +93,45 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
 //                Locale locale ;
                 String now = sharedPreferences.getString("applanguage", "");
-                if (position==0){
-                    if (now.equals("chinese")){
-                        changeLanguage(Locale.CHINESE);
-                        editor.putString("applanguage", "");
-                        getActivity().recreate();
-                    }else if (now.equals("english")){
-                        changeLanguage(Locale.ENGLISH);
-                        editor.putString("applanguage", "");
-                        getActivity().recreate();
+                String save = sharedPreferences.getString("savelanguage","");
+
+                if (position==0) {
+                    if (now.equals("chinese")) {
+                        if (!save.equals(now)) {
+                            changeLanguage(Locale.CHINESE);
+                            editor.putString("applanguage", "chinese");
+                            editor.putString("savelanguage", "chinese");
+                            editor.apply();
+                            getActivity().recreate();
+                        } else {
+                        }
+                    } else if (now.equals("english")) {
+                        if (!save.equals(now)) {
+                            changeLanguage(Locale.ENGLISH);
+                            editor.putString("applanguage", "english");
+                            editor.putString("savelanguage", "english");
+                            editor.apply();
+                            getActivity().recreate();
+                        } else {
+
+                        }
                     }
                 }
                 else if (position == 1) {
                     changeLanguage(Locale.CHINESE);
                     editor.putString("applanguage", "chinese");
+                    editor.putString("savelanguage","");
+                    editor.apply();
                     getActivity().recreate();
                 } else if (position == 2) {
                     changeLanguage(Locale.ENGLISH);
                     editor.putString("applanguage", "english");
+                    editor.putString("savelanguage","");
+                    editor.apply();
                     getActivity().recreate();
                 }
-                editor.apply();
-            }
 
+            }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -246,6 +266,10 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
 
             case R.id.photo_mode:
                 presenter.setPhotoMode(b);
+                break;
+            case R.id.translate_mode:
+                presenter.setTranslateMode(b);
+                break;
         }
 
     }

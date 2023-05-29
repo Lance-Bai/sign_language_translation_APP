@@ -29,6 +29,12 @@ public class SettingPresenter implements SettingContract.ISettingPresenter {
         editor.commit();
     }
 
+    public void setTranslateMode(Boolean b){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("translate_mode", b);
+        editor.commit();
+    }
+
 
     public boolean isNightModeOn(){
         return sharedPreferences.getBoolean("night_mode", false);

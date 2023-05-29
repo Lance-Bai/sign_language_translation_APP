@@ -1,9 +1,6 @@
 package com.example.slt_project.ui;
 
-import android.app.Activity;
-import android.content.Context;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -12,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.slt_project.R;
 import com.example.slt_project.ui.S2T.S2TContract;
-import com.example.slt_project.ui.S2T.S2TPresenter;
 import com.example.slt_project.ui.T2S.T2SContract;
 
 public class TextOutputViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

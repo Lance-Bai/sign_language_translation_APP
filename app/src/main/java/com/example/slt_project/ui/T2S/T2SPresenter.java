@@ -1,4 +1,5 @@
 package com.example.slt_project.ui.T2S;
+import android.net.Uri;
 import android.util.Log;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -6,6 +7,8 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
+import java.io.File;
 
 public class T2SPresenter implements T2SContract.IT2SPresenter {
     private T2SContract.IT2SModel model;
@@ -45,5 +48,14 @@ public class T2SPresenter implements T2SContract.IT2SPresenter {
         return out;
     }
 
+    @Override
+    public void Voice2Text(Uri uri){
+        File file = new File(String.valueOf(uri));
+        new SendVoice(this).execute(file);
+    }
+    @Override
+    public T2SContract.IT2SFragment getFragment(){
+        return fragment;
+    }
 
 }

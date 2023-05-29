@@ -1,4 +1,4 @@
-package com.example.slt_project.ui.S2T;
+package com.example.slt_project.ui.T2S;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -6,9 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.slt_project.ui.SendAble;
-
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,29 +15,23 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.util.Base64;
-import java.util.Map;
-import java.util.UUID;
 
-public class SendVideo extends AsyncTask<File,Void,String> {
-    S2TContract.IS2TPresenter PRESENTER;
-
-    public SendVideo(S2TContract.IS2TPresenter PRESENTER){this.PRESENTER=  PRESENTER;}
+public class SendVoice extends AsyncTask<File,Void,String> {
+    T2SContract.IT2SPresenter PRESENTER;
+    File theFile;
+    public SendVoice(T2SContract.IT2SPresenter PRESENTER){this.PRESENTER =  PRESENTER;}
 
 
 
     @Override
     protected String doInBackground(File... files) {
         String post_result = null;
-        SharedPreferences sharedPreferences = PRESENTER.getFragment().getMainActivity().getSharedPreferences("my_prefs", MODE_PRIVATE);
         String surl = "http://192.168.137.47:8000/";
-        String node = sharedPreferences.getBoolean("translate_mode",false)?"model":"upload";
+        String node = "voice";
+        theFile = files[0];
         try {
-            post_result = submitPostData(files[0], surl+node);
+            post_result = submitPostData(theFile, surl+node);
             Log.i("POST_RESULT", post_result);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -52,8 +43,9 @@ public class SendVideo extends AsyncTask<File,Void,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Log.d("network", "video send");
-        PRESENTER.translateTo(s);
+        Log.d("voice", "voice2text");
+        PRESENTER.getFragment().setText(s);
+        theFile.delete();
     }
 
 
@@ -81,7 +73,7 @@ public class SendVideo extends AsyncTask<File,Void,String> {
             // 添加文件部分
             writer.append("--").append(boundary).append(end);
             writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"").append(end);
-            writer.append("Content-Type: video/mp4").append(end);
+            writer.append("Content-Type: image/jpg").append(end);
             writer.append(end).flush();
 
             FileInputStream fileInputStream = new FileInputStream(file);

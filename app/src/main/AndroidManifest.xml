@@ -67,6 +67,12 @@
 <!--                &lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
 <!--            </intent-filter>-->
         </activity>
+        <activity
+            android:name=".ui.activity.SendPreviousActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SLT_Project">
+
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -84,6 +90,12 @@
     <queries>
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
 

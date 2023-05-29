@@ -10,6 +10,7 @@
     <string name="input_text_hint">please enter text</string>
     <string name="send_input_text_button">send</string>
     <string name="dark_mode_switch_text">darkmode</string>
+    <string name="translate_mode_text">Gloss2Text model</string>
     <string name="language_choose_spinner_text">select output language</string>
     <string name="photo_mode">photo/video</string>
     <string name="login_skip">skip</string>

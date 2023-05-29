@@ -42,10 +42,9 @@ public class TranslateModel extends AsyncTask<RunTextTranslationRequest, Void, S
             .withSk("8BjR2JDq4DEVEKTpnLXENrLDadhiHIeUXjAZKB9D")
             .withProjectId("db2c5bc7cffb4b07a4650260d6051cf9");
 
-    //网络设置，如您无需设置代理或跳过证书校验，本配置可跳过或删除部分配置项
 
     private static NlpClient client = NlpClient.newBuilder().withCredential(auth)
-            .withRegion(NlpRegion.valueOf("cn-north-4"))//配置region信息，目前只支持北京四 cn-north-4
+            .withRegion(NlpRegion.valueOf("cn-north-4"))
             .withEndpoints(Collections.singletonList("nlp-ext.cn-north-4.myhuaweicloud.com"))
             .build();
 

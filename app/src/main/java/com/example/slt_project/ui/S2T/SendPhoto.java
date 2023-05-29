@@ -6,9 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.slt_project.ui.SendAble;
-
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,18 +15,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.util.Base64;
-import java.util.Map;
-import java.util.UUID;
 
-public class SendVideo extends AsyncTask<File,Void,String> {
+public class SendPhoto extends AsyncTask<File,Void,String> {
     S2TContract.IS2TPresenter PRESENTER;
 
-    public SendVideo(S2TContract.IS2TPresenter PRESENTER){this.PRESENTER=  PRESENTER;}
+    public SendPhoto(S2TContract.IS2TPresenter PRESENTER){this.PRESENTER=  PRESENTER;}
 
 
 
@@ -52,7 +43,7 @@ public class SendVideo extends AsyncTask<File,Void,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Log.d("network", "video send");
+        Log.d("network", "photo send");
         PRESENTER.translateTo(s);
     }
 
@@ -81,7 +72,7 @@ public class SendVideo extends AsyncTask<File,Void,String> {
             // 添加文件部分
             writer.append("--").append(boundary).append(end);
             writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"").append(end);
-            writer.append("Content-Type: video/mp4").append(end);
+            writer.append("Content-Type: image/jpg").append(end);
             writer.append(end).flush();
 
             FileInputStream fileInputStream = new FileInputStream(file);

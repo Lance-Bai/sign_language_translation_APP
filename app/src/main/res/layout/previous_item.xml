@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/previous_imgView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <TextView
+        android:id="@+id/previous_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:background="@color/grey_300"
+
+        />
+
+<!--    <Button-->
+<!--        android:id="@+id/previous_send_button"-->
+<!--        android:text="Send"-->
+<!--        android:textSize="16sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true"-->
+<!--        android:foreground="?android:attr/selectableItemBackground"-->
+<!--        />-->
+
+
+</LinearLayout>

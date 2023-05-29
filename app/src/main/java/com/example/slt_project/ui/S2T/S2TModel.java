@@ -3,6 +3,7 @@ package com.example.slt_project.ui.S2T;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
@@ -66,6 +67,10 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
             CaptureRequest.Builder captureBuilder = presenter.getCameraDevice().createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(imageReader.getSurface());
             int rotation = presenter.getFragment().getMainActivity().getWindowManager().getDefaultDisplay().getRotation();
+
+            if(presenter.getCameraDevice().getId().equals(String.valueOf(CameraCharacteristics.LENS_FACING_BACK))){
+                rotation= (rotation+2)%4;
+            }
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATION.get(rotation));
             presenter.getCameraCaptureSession().stopRepeating();
 
@@ -91,7 +96,7 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
     @Override
     public void initImageReader() {
         Log.d(null,"init image reader");
-        imageReader = ImageReader.newInstance(1920, 1080, ImageFormat.JPEG, 1);
+        imageReader = ImageReader.newInstance(1080, 1080, ImageFormat.JPEG, 1);
         imageReader.setOnImageAvailableListener(this, null);
 
 
@@ -141,6 +146,12 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
                     presenter.broadcast();
                     image.close(); // MUST!!!!!
                     presenter.showThumbnail();
+                    presenter.getFragment().getMainActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new SendPhoto(presenter).execute(imageFile);
+                        }
+                    });
                 }
             }
         }).start();
