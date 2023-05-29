@@ -6,7 +6,7 @@ import android.net.Uri;
 public interface T2SContract {
     interface IT2SFragment{
 
-        void showImage(Character c);
+        void showImage(String s);
 
         void setText(String s);
     }

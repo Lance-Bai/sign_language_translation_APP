@@ -118,8 +118,8 @@ public class T2SFragment extends BaseFragment implements T2SContract.IT2SFragmen
     }
 
     @Override
-    public void showImage(Character c){
-        String imageName="sign_"+c.toString();
+    public void showImage(String s){
+        String imageName="sign_"+s;
         @SuppressLint("DiscouragedApi") int imageId = getResources().getIdentifier(imageName, "drawable", this.getMainActivity().getPackageName());
         @SuppressLint("UseCompatLoadingForDrawables") Drawable image = getResources().getDrawable(imageId);
         signImage.setImageDrawable(image);
