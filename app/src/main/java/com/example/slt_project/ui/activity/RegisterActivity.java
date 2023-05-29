@@ -1,5 +1,6 @@
 package com.example.slt_project.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,39 +19,40 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button backLogin, haveAccout, signUp;
     private TextInputEditText registerEmail, registerPassword, registerPasswordConfirm;
     private UserPO userPO;
     private AppDataBase dataBase;
-    Map<String, String> params = new HashMap<String, String>();
+    Map<String, String> params = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        signUp = findViewById(R.id.register_signup_button);
+        Button signUp = findViewById(R.id.register_signup_button);
 //        backLogin = findViewById(R.id.register_backtoLogin);
-        haveAccout = findViewById(R.id.register_account_had_button);
+        Button haveAccout = findViewById(R.id.register_account_had_button);
         registerEmail = findViewById(R.id.register_email_edittext);
         registerPassword = findViewById(R.id.register_password_edittext);
         registerPasswordConfirm = findViewById(R.id.register_password_edittext_confirm);
-        signUp.setOnClickListener(this::onClick);
+        signUp.setOnClickListener(this);
 //        backLogin.setOnClickListener(this::onClick);
-        haveAccout.setOnClickListener(this::onClick);
+        haveAccout.setOnClickListener(this);
         userPO = new UserPO();
 //        dataBase = Room.databaseBuilder(getApplicationContext(), AppDataBase.class, "mydatabase").build();
         dataBase = AppDataBase.getInstance(this);
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.register_signup_button:
-                String register_email = registerEmail.getText().toString();
-                String register_password = registerPassword.getText().toString();
-                String register_confirmPassword = registerPasswordConfirm.getText().toString();
+                String register_email = Objects.requireNonNull(registerEmail.getText()).toString();
+                String register_password = Objects.requireNonNull(registerPassword.getText()).toString();
+                String register_confirmPassword = Objects.requireNonNull(registerPasswordConfirm.getText()).toString();
                 if (!register_email.isEmpty() && !register_password.isEmpty() && !register_confirmPassword.isEmpty()) {
                     //TODO:应该有用户名重复的提示
                     if (register_password.equals(register_confirmPassword)) {
@@ -73,11 +75,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                 }
                 break;
-//            case R.id.register_backtoLogin:
-//                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//                finish();
-//                break;
+
             case R.id.register_account_had_button:
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
@@ -88,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     // 在 RegisterActivity 中创建一个异步任务用于执行数据库插入操作
     private static class InsertAsyncTask extends AsyncTask<UserPO, Void, Void> {
-        private UserDao userDao;
+        private final UserDao userDao;
 
         public InsertAsyncTask(UserDao userDao) {
             this.userDao = userDao;

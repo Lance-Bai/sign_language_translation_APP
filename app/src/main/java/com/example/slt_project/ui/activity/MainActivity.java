@@ -19,13 +19,11 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class MainActivity extends BaseActivity {
 
-    private List<Fragment> fragments;
-    private ViewPager viewPage;
-    private TabLayout tabLayout;
     Mode mode;
     private final String[] REQUIRED_PERMISSIONS = new String[]{
             "android.permission.CAMERA",
@@ -38,10 +36,6 @@ public class MainActivity extends BaseActivity {
             "android.permission.ACCESS_WIFI_STATE"
 
     };
-    //    private TabItem tabItem1,tabItem2,tabItem3;
-//    private BottomNavigationView bottomNavigationView;
-    private MyFragmentAdapter fragmentAdapter;
-    private int lastFragmentIndex = 0;
 
     @Override
     protected int getLayoutID() {
@@ -57,8 +51,8 @@ public class MainActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 2) {
-            tabLayout = findViewById(R.id.tab_layout);
-            viewPage = find(R.id.viewPage);
+            TabLayout tabLayout = findViewById(R.id.tab_layout);
+            ViewPager viewPage = find(R.id.viewPage);
 
             tabLayout.setupWithViewPager(viewPage);
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -71,21 +65,21 @@ public class MainActivity extends BaseActivity {
                 }
             }
 
-            fragments = new ArrayList<>();
+            List<Fragment> fragments = new ArrayList<>();
             fragments.add(new S2TFragment());
             fragments.add(new T2SFragment());
             fragments.add(new SettingFragment());
-            fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, this);
+
+            MyFragmentAdapter fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, this);
             viewPage.setAdapter(fragmentAdapter);
 
-            tabLayout.getTabAt(0).setIcon(R.drawable.s2t_tab_icon_warm);
-            tabLayout.getTabAt(1).setIcon(R.drawable.t2s_tab_icon_warm);
-            tabLayout.getTabAt(2).setIcon(R.drawable.setting_cool);
+            Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.s2t_tab_icon_warm);
+            Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.t2s_tab_icon_warm);
+            Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(R.drawable.setting_cool);
 
 
             if (mode.isModeon()) {
                 tabLayout.setBackgroundResource(R.color.grey_DarkGrey);
-//            DrawableCompat.setTint(drawable, Color.WHITE);
             } else {
                 tabLayout.setBackgroundResource(R.color.grey_300);
             }

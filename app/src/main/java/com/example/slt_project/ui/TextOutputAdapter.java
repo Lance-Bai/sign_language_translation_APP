@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.slt_project.R;
 import com.example.slt_project.ui.S2T.S2TContract;
 import com.example.slt_project.ui.T2S.T2SContract;
-import com.example.slt_project.ui.T2S.T2SPresenter;
 
 import java.util.List;
 
 public class TextOutputAdapter extends RecyclerView.Adapter<TextOutputViewHolder> {
     private S2TContract.IS2TPresenter presenter;
     private T2SContract.IT2SPresenter it2SPresenter;
-    private List<String> textList;
+    private final List<String> textList;
 
     public TextOutputAdapter(List<String> textList, S2TContract.IS2TPresenter presenter) {
         this.presenter = presenter;
@@ -38,7 +37,7 @@ public class TextOutputAdapter extends RecyclerView.Adapter<TextOutputViewHolder
         if(presenter!=null){
             return new TextOutputViewHolder(view, presenter);
         }else{
-            return new TextOutputViewHolder(view, it2SPresenter);
+            return new TextOutputViewHolder(view);
         }
     }
 
@@ -56,12 +55,6 @@ public class TextOutputAdapter extends RecyclerView.Adapter<TextOutputViewHolder
     public void addText(String text) {
         textList.add(text);
         notifyItemInserted(textList.size() - 1);
-    }
-
-    public void clearText() {
-        int size = textList.size();
-        textList.clear();
-        notifyItemRangeRemoved(0, size);
     }
 
 }

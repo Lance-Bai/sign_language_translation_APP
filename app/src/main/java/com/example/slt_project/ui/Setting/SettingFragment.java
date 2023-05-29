@@ -2,23 +2,19 @@ package com.example.slt_project.ui.Setting;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.app.Activity;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -29,33 +25,23 @@ import com.example.slt_project.ui.Mode;
 import com.example.slt_project.ui.UserManager;
 import com.example.slt_project.ui.activity.LanguageActivity;
 import com.example.slt_project.ui.activity.LoginActivity;
-import com.example.slt_project.ui.activity.MainActivity;
-import com.example.slt_project.ui.activity.RegisterActivity;
 import com.example.slt_project.ui.base.BaseFragment;
-import com.google.android.material.tabs.TabLayout;
-
-import java.util.Locale;
 
 public class SettingFragment extends BaseFragment implements SettingContract.ISettingFragment, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
-    private SwitchCompat photoOrVideo;
-    private SwitchCompat darkOrLight;
 
-    private SwitchCompat translateMode;
     private SettingPresenter presenter;
     private SeekBar fontSizeSeekBar;
     private TextView fontSizeTextView, selectoutputLanguage, selectAppLanguage;
-
-    private Spinner languageSpinner, appLanguageSpinner;
 
     private SharedPreferences sharedPreferences;
     public Mode mode;
     private SharedPreferences.Editor editor;
     //    private int textSize;
     private Button logoutButton;
-    private ImageButton arrowButton;
-    private static final String PREF_NAME = "user_pref";
-    private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     UserManager userManager;
+
+    public SettingFragment() {
+    }
 
 
     @Override
@@ -65,23 +51,23 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
 
     @Override
     protected void initViews() {
-        userManager = new UserManager(getContext());
+        userManager = new UserManager(requireContext());
 
 
         presenter = new SettingPresenter(this);
 
-        darkOrLight = find(R.id.light_mode);
-        photoOrVideo = find(R.id.photo_mode);
-        translateMode = find(R.id.translate_mode);
+        SwitchCompat darkOrLight = find(R.id.light_mode);
+        SwitchCompat photoOrVideo = find(R.id.photo_mode);
+        SwitchCompat translateMode = find(R.id.translate_mode);
         fontSizeSeekBar = find(R.id.seekBar_textsize);
         fontSizeTextView = find(R.id.text_size);
-        languageSpinner = find(R.id.spinner);
+        Spinner languageSpinner = find(R.id.spinner);
         fontSizeTextView = find(R.id.text_size);
         logoutButton = find(R.id.log_out_button);
         selectoutputLanguage = find(R.id.selectLanguage);
         selectAppLanguage = find(R.id.select_app_Language);
 //        appLanguageSpinner = find(R.id.spinner_app_language);
-        arrowButton=find(R.id.arrowButton);
+        ImageButton arrowButton = find(R.id.arrowButton);
 
         darkOrLight.setOnCheckedChangeListener(this);
         photoOrVideo.setOnCheckedChangeListener(this);
@@ -89,96 +75,9 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         translateMode.setOnCheckedChangeListener(this);
         arrowButton.setOnClickListener(this);
 
-        sharedPreferences = getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        mode = new Mode(getContext());
-        int textSize = sharedPreferences.getInt("text_size", 0);
-        appLanguageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-//                Locale locale ;
-                String now = sharedPreferences.getString("applanguage", "");
-                String save = sharedPreferences.getString("savelanguage","");
-
-                if (position==0) {
-                    if (now.equals("chinese")) {
-                        if (!save.equals(now)) {
-                            changeLanguage(Locale.CHINESE);
-                            editor.putString("applanguage", "chinese");
-                            editor.putString("savelanguage", "chinese");
-                            editor.apply();
-                            getActivity().recreate();
-                        } else {
-                        }
-                    } else if (now.equals("english")) {
-                        if (!save.equals(now)) {
-                            changeLanguage(Locale.ENGLISH);
-                            editor.putString("applanguage", "english");
-                            editor.putString("savelanguage", "english");
-                            editor.apply();
-                            getActivity().recreate();
-                        } else {
-
-                        }
-                    }
-                }
-                else if (position == 1) {
-                    changeLanguage(Locale.CHINESE);
-                    editor.putString("applanguage", "chinese");
-                    editor.putString("savelanguage","");
-                    editor.apply();
-                    getActivity().recreate();
-                } else if (position == 2) {
-                    changeLanguage(Locale.ENGLISH);
-                    editor.putString("applanguage", "english");
-                    editor.putString("savelanguage","");
-                    editor.apply();
-                    getActivity().recreate();
-                }
-//        appLanguageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-//                String now = sharedPreferences.getString("applanguage", "");
-//                String selectedLanguage = "";
-//                switch (position) {
-//                    case 0:
-//                        selectedLanguage = now.equals("chinese") ? "" : "chinese";
-////
-//                        break;
-//                    case 1:
-//                        selectedLanguage = "chinese";
-//                        break;
-//                    case 2:
-//                        selectedLanguage = "english";
-//                        break;
-//                }
-//
-//                if (!selectedLanguage.isEmpty()) {
-//                    changeLanguage(selectedLanguage);
-//                    editor.putString("applanguage", selectedLanguage);
-//                    editor.apply();
-//                    if (!selectedLanguage.equals(now)) {
-////                        changeLanguage(now);
-//                        editor.putString("savelanguage", selectedLanguage);
-//                        editor.apply();
-//                        getActivity().recreate();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
+        mode = new Mode(requireContext());
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(
 
         ) {
@@ -200,6 +99,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         photoOrVideo.setChecked(presenter.isPhotoModeOn());
 
         fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
 
@@ -263,30 +163,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         }
     }
 
-
-    private void changeLanguage(String languageCode) {
-        Locale locale;
-        if (languageCode.equals("chinese")) {
-            locale = new Locale("zh");
-        } else if (languageCode.equals("english")) {
-            locale = new Locale("en");
-        } else {
-            locale = Locale.getDefault();
-        }
-
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-    }
-
-//    private void changeLanguage(Locale locale) {
-//        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.setLocale(locale);
-//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-//    }
-
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() {
         super.onResume();
@@ -300,6 +177,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
@@ -331,6 +209,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         Log.d("shenme", "onClick: ");
@@ -340,11 +219,12 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
                 if (userManager.isLoggedIn()) {
                     userManager.setLoggedIn(false);
                     logoutButton.setText(R.string.login_button_text);
-                    break;
+
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
-                    getActivity().finish();
+                    requireActivity().finish();
                 }
+                break;
             case R.id.arrowButton:
                 startActivity(new Intent(getActivity(), LanguageActivity.class));
                 getActivity().finish();

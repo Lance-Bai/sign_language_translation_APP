@@ -1,7 +1,6 @@
 package com.example.slt_project.ui.database;
 
 import androidx.room.Dao;
-import androidx.room.Ignore;
 import androidx.room.Insert;
 import androidx.room.Query;
 

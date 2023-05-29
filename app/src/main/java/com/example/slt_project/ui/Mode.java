@@ -5,9 +5,8 @@ import android.content.SharedPreferences;
 
 public class Mode {
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
-    private Context context;
+    private final SharedPreferences pref;
+    private final SharedPreferences.Editor editor;
 
     private static final String PREF_NAME = "user_pref";
 
@@ -15,7 +14,6 @@ public class Mode {
     private static final String APP_LAN = "lan";
 
     public Mode(Context context) {
-        this.context = context;
         pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }

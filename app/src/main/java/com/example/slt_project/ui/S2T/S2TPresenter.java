@@ -5,11 +5,9 @@ import static android.content.Context.MODE_PRIVATE;
 import static java.lang.String.valueOf;
 
 import android.annotation.SuppressLint;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -23,11 +21,9 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,17 +35,14 @@ import com.example.slt_project.ui.SendAble;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
-    private S2TContract.IS2TFragment fragment;
-    private S2TContract.IS2TModel model;
+    private final S2TContract.IS2TFragment fragment;
+    private final S2TContract.IS2TModel model;
     private final String[] REQUIRED_PERMISSIONS = new String[]{
             "android.permission.CAMERA",
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -71,7 +64,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
 
     private File SLTVideo;
 
-    private SharedPreferences sp;
+    private final SharedPreferences sp;
 
 
 
@@ -175,6 +168,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
     @Override
     public void goGallery() {
         ArrayList<String> temp = getImageFilePath();
+        if(temp.isEmpty())return;
         String lastPath = temp.get(temp.size()-1);
 
         Uri uri = FileProvider.getUriForFile(this.getFragment().getMainActivity(), "com.example.slt_project.fileprovider", new File(lastPath));
@@ -202,24 +196,11 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
 
     }
 
-    @Override
-    public void broadcast(String path) {
-
-    }
-
-    @Override
-    public void broadcastPhoto(String path) {
-        Log.d(null, "--------------------broadcast the photo");
-        AlbumHelper AlbumNotifyHelper = new AlbumHelper();
-        AlbumNotifyHelper.insertImageToMediaStore(this.getFragment().getMainActivity(), path, 0);
-    }
-
 
     @Override
     public void broadcastVideo(String path) {
         Log.d(null, "--------------------broadcast the video");
-        AlbumHelper AlbumNotifyHelper = new AlbumHelper();
-        AlbumNotifyHelper.insertVideoToMediaStore(this.getFragment().getMainActivity(), path, 0, 5000);
+        AlbumHelper.insertVideoToMediaStore(this.getFragment().getMainActivity(), path, 0, 5000);
 
 
     }
@@ -265,7 +246,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
     }
 
     @Override
-    public void stopVideo() throws MalformedURLException {
+    public void stopVideo() {
         Log.d(null, "stopVideo: stop");
         mMediaRecorder.setOnErrorListener(null);
         mMediaRecorder.setOnInfoListener(null);
@@ -276,10 +257,6 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
             mMediaRecorder=null;
 
 
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -289,27 +266,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
         broadcastVideo(newPath);
         AlbumHelper.insertVideoToMediaStore(this.getFragment().getMainActivity(), newPath, 0, 5000);
         fragment.createPreview();
-        // TODO: 2023-04-04 connect with deep learning module
-
-        // wyt add
-        Map<String, String> params = new HashMap<String, String>();
-
-        params.put("uid", "001");
-        params.put("name", "g2ex");
-//        new PostData(this).execute(params);
-//
         new SendVideo(this).execute(new File(newPath));
-
-
-
-
-
-        //add complete
-
-//        fragment.getAdapter().addText("你好");
-//        model.speak("你好");
-//        translateTo("你好");
-
     }
 
     @Override
@@ -323,10 +280,6 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
             mMediaRecorder.stop();
             mMediaRecorder.release();
             mMediaRecorder=null;
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -335,9 +288,6 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
 
 
     public void configMediaRecorder() {
-//
-//        File file = new File(Environment.getExternalStorageDirectory() +
-//                "/DCIM/Camera/" + timestemp + ".mp4");
         SLTVideo = new File(this.getFragment().getMainActivity().getExternalFilesDir(null) +
                 "/.SLTVideoCache");
         if (SLTVideo.exists()) {
@@ -345,10 +295,10 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
         }
         if (mMediaRecorder==null) {
             mMediaRecorder = new MediaRecorder();
-            if (cameraId.equals("1")) {
+            if (cameraId.equals(String.valueOf(CameraCharacteristics.LENS_FACING_FRONT))) {
                 mMediaRecorder.setOrientationHint(90);
             } else {
-                mMediaRecorder.setOrientationHint(90);
+                mMediaRecorder.setOrientationHint(270);
             }
             Log.d("audio","check done");
             //audio source
@@ -361,6 +311,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
             //video coding format, using H264
             mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+
             //Bit rate
             mMediaRecorder.setVideoEncodingBitRate(30 * 1080 * 1080);
             //fragment rate
@@ -400,6 +351,7 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
         ArrayList<String> imageList = new ArrayList<>();
         File file = new File(String.valueOf(this.getFragment().getMainActivity().getExternalFilesDir(null)));
         File[] dirEpub = file.listFiles();
+        assert dirEpub != null;
         Arrays.sort(dirEpub,new Comparator<File>() {
             public int compare(File f1, File f2) {
                 long diff = f1.lastModified() - f2.lastModified();
@@ -417,9 +369,9 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
         });
 
         if (dirEpub.length != 0) {
-            for (int i = 0; i < dirEpub.length; i++) {
-                String fileName = dirEpub[i].toString();
-                if(!fileName.contains(".jpg")&&!fileName.contains(".mp4"))continue;
+            for (File value : dirEpub) {
+                String fileName = value.toString();
+                if (!fileName.contains(".jpg") && !fileName.contains(".mp4")) continue;
                 imageList.add(fileName);
                 //Log.i("File", "File name = " + fileName);
             }
@@ -447,7 +399,6 @@ public class S2TPresenter implements S2TContract.IS2TPresenter, SendAble {
         model.speak(s);
     }
 
-    @Override
     public void translateTo(String content){
        String targetLanguage =  sp.getString("language","zh");
        if(targetLanguage.equals("zh")){

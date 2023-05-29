@@ -11,7 +11,6 @@ public interface SettingContract {
 
         void setLanguage(String s);
 
-        String reSetLabelLanguage();
     }
 
     interface ISettingModel{

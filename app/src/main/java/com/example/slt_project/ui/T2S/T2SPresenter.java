@@ -11,8 +11,7 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 import java.io.File;
 
 public class T2SPresenter implements T2SContract.IT2SPresenter {
-    private T2SContract.IT2SModel model;
-    private T2SContract.IT2SFragment fragment;
+    private final T2SContract.IT2SFragment fragment;
 
     T2SPresenter(T2SContract.IT2SFragment fragment){
         this.fragment =  fragment;
@@ -25,13 +24,13 @@ public class T2SPresenter implements T2SContract.IT2SPresenter {
         format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
         format.setVCharType(HanyuPinyinVCharType.WITH_V);
         format.setCaseType(HanyuPinyinCaseType.LOWERCASE);
-        String out="";
+        StringBuilder out= new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             // is Chinese?
             if (Character.toString(c).matches("[\\u4E00-\\u9FA5]+")) {
                 // all possible pinyin
-                String[] pinyins = new String[0];
+                String[] pinyins;
                 try {
                     pinyins = PinyinHelper.toHanyuPinyinStringArray(c,format);
                 } catch (BadHanyuPinyinOutputFormatCombination e) {
@@ -39,13 +38,13 @@ public class T2SPresenter implements T2SContract.IT2SPresenter {
                 }
                 // get first
                 if (pinyins != null && pinyins.length > 0) {
-                    out+=pinyins[0];
+                    out.append(pinyins[0]);
                 }
             } else {
                 Log.e("Pinyin", "toPinIn: Failed");
             }
         }
-        return out;
+        return out.toString();
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -58,10 +57,8 @@ public class AlbumHelper {
         values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, createTime);
         values.put(MediaStore.Images.ImageColumns.ORIENTATION, 0);
         values.put(MediaStore.Images.ImageColumns.ORIENTATION, 0);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-            if (width > 0) values.put(MediaStore.Images.ImageColumns.WIDTH, 0);
-            if (height > 0) values.put(MediaStore.Images.ImageColumns.HEIGHT, 0);
-        }
+        if (width > 0) values.put(MediaStore.Images.ImageColumns.WIDTH, 0);
+        if (height > 0) values.put(MediaStore.Images.ImageColumns.HEIGHT, 0);
         values.put(MediaStore.MediaColumns.MIME_TYPE, getPhotoMimeType(filePath));
         context.getApplicationContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
@@ -75,10 +72,8 @@ public class AlbumHelper {
         values.put(MediaStore.Video.VideoColumns.DATE_TAKEN, createTime);
         if (duration > 0)
             values.put(MediaStore.Video.VideoColumns.DURATION, duration);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-            if (width > 0) values.put(MediaStore.Video.VideoColumns.WIDTH, width);
-            if (height > 0) values.put(MediaStore.Video.VideoColumns.HEIGHT, height);
-        }
+        if (width > 0) values.put(MediaStore.Video.VideoColumns.WIDTH, width);
+        if (height > 0) values.put(MediaStore.Video.VideoColumns.HEIGHT, height);
         values.put(MediaStore.MediaColumns.MIME_TYPE, getVideoMimeType(filePath));
         context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
     }

@@ -1,18 +1,11 @@
 package com.example.slt_project.ui.base;
 
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.tabs.TabItem;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutID();

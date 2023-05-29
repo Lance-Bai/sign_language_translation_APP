@@ -13,8 +13,8 @@ import com.example.slt_project.ui.activity.SendPreviousActivity;
 import java.util.List;
 
 public class PreviousAdapter extends RecyclerView.Adapter<PreviousHolder>{
-    private List<String> textList;
-    private SendPreviousActivity activity;
+    private final List<String> textList;
+    private final SendPreviousActivity activity;
     public PreviousAdapter(List<String> textList, SendPreviousActivity activity){
         this.textList=textList;
         this.activity=activity;

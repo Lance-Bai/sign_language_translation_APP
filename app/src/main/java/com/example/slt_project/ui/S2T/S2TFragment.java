@@ -18,17 +18,13 @@ import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.media.MediaMetadataRetriever;
-import android.os.Handler;
 import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +35,6 @@ import com.example.slt_project.R;
 import com.example.slt_project.ui.TextOutputAdapter;
 import com.example.slt_project.ui.activity.SendPreviousActivity;
 import com.example.slt_project.ui.base.BaseFragment;
-import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,7 +48,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     private RecyclerView s2t_recyclerView;
     private TextOutputAdapter adapter;
     List<String> textList = new ArrayList<>();
-    private Button takePhotoORVideo, changeCamera, playSound;
     public S2TContract.IS2TPresenter presenter;
     public Surface previewSurface;
     public SurfaceTexture surfaceTexture;
@@ -62,6 +56,9 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     protected ImageView mThumbnail;
 
     SharedPreferences sp;
+
+    public S2TFragment() {
+    }
 
 
     @Override
@@ -74,9 +71,9 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     protected void initViews() {
         presenter = new S2TPresenter(this);
 
-        takePhotoORVideo = find(R.id.s2t_take_photo_or_video);
+        Button takePhotoORVideo = find(R.id.s2t_take_photo_or_video);
         textureView = find(R.id.previewSurfaceView);
-        changeCamera = find(R.id.s2t_changeCamera);
+        Button changeCamera = find(R.id.s2t_changeCamera);
         mThumbnail = find(R.id.s2t_thumbnail);
         s2t_recyclerView = find(R.id.s2t_recycle);
 
@@ -101,7 +98,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 // 在滚动时更新滚动条的位置
-                int firstVisibleItemIndex = layoutManager.findFirstVisibleItemPosition();
                 int lastVisibleItemIndex = layoutManager.findLastVisibleItemPosition();
                 int itemCount = adapter.getItemCount();
                 float scrollPercentage = ((float) lastVisibleItemIndex / (float) itemCount) * 100;
@@ -109,45 +105,19 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
             }
         });
 
-        s2t_recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // 判断是否点击了滚动条
-                if (event.getAction() == MotionEvent.ACTION_DOWN && event.getX() >= s2t_recyclerView.getWidth() - 100) {
-                    // 点击滚动条，计算当前位置的内容位置,100是scrollbarWidth，但是不知道是什么单位
-                    float scrollBarPos = event.getY();
-                    int itemCount = adapter.getItemCount();
-                    int contentPos = (int) ((scrollBarPos / s2t_recyclerView.getHeight()) * itemCount);
-                    s2t_recyclerView.scrollToPosition(contentPos);
-                    return true;
-                }
-                return false;
+        s2t_recyclerView.setOnTouchListener((v, event) -> {
+            // 判断是否点击了滚动条
+            if (event.getAction() == MotionEvent.ACTION_DOWN && event.getX() >= s2t_recyclerView.getWidth() - 100) {
+                // 点击滚动条，计算当前位置的内容位置,100是scrollbarWidth，但是不知道是什么单位
+                float scrollBarPos = event.getY();
+                int itemCount = adapter.getItemCount();
+                int contentPos = (int) ((scrollBarPos / s2t_recyclerView.getHeight()) * itemCount);
+                s2t_recyclerView.scrollToPosition(contentPos);
+                return true;
             }
+            return false;
         });
-//
-//        // 加载布局文件
-//        View mainLayout = getLayoutInflater().inflate(R.layout.activity_main, null);
-//// 查找其中的视图
-//        TabLayout tabLayout = mainLayout.findViewById(R.id.tab_layout);
-//
-//        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                // 获取 TabLayout 的高度
-//                int height = tabLayout.getHeight();
-//
-//                // 将高度存储在变量中，供别的 XML 文件使用
-//                // ...
-//textureView.setPadding(0,height,0,0);
-//                ViewGroup.LayoutParams layoutParams = textureView.getLayoutParams();
-//                layoutParams.height = layoutParams.height + height;
-//                textureView.setLayoutParams(layoutParams);
-//                // 取消监听器
-//                tabLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//            }
-//        });
-//        adapter.addText("识别结果: 5 \n翻译结果:  五。");
-//        presenter.translateTo("识别结果: 5 \n翻译结果:  五。");
+
     }
 
 
@@ -156,7 +126,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.s2t_take_photo_or_video:
-                String t = sp.getString("videoOrPhoto", "video");
                 if (!sp.getBoolean("photo_mode", false)) {
                     if (!bStop) {
                         presenter.takeVideo();
@@ -189,11 +158,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
     @Override
     public void onResume() {
         super.onResume();
-        //presenter.checkPermission();
-//        createPreview();
-
-
-
     }
 
     @Override
@@ -240,11 +204,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
 
     @Override
-    public ImageView getThumbnail() {
-        return mThumbnail;
-    }
-
-    @Override
     public TextureView getTextureView() {
         return textureView;
     }
@@ -268,23 +227,11 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
 
     public void showThumbnail() {
         ArrayList<String> imageList = presenter.getImageFilePath();
-        String path = "";
-        for (int i = 1; i <= imageList.size(); i++) {
-            path = imageList.get(imageList.size() - i);
-            long size = 0;
-            try {
-                size = new FileInputStream(path).available();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            if (size > 0) break;
-        }
-
+        if(imageList.isEmpty())return;
+        String path = imageList.get(imageList.size() - 1);
         if (path.contains("jpg")) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             mThumbnail.setImageBitmap(toRoundBitmap(bitmap));
-//            int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
-//            mThumbnail.setRotation(ORIENTATION.get(rotation));
         } else if (path.contains("mp4")) {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(path);
@@ -326,8 +273,6 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
             left = 0;
             right = width;
             height = width;
-            dst_left = 0;
-            dst_top = 0;
             dst_right = width;
             dst_bottom = width;
         } else {
@@ -335,11 +280,8 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
             float clip = (width - height) / 2;
             left = clip;
             right = width - clip;
-            top = 0;
             bottom = height;
             width = height;
-            dst_left = 0;
-            dst_top = 0;
             dst_right = height;
             dst_bottom = height;
         }
@@ -349,8 +291,8 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         final int color = 0xff424242;
         final Paint paint = new Paint();
         final Rect src;
-        src = new Rect((int) left, (int) top, (int) right, (int) bottom);
-        final Rect dst = new Rect((int) dst_left, (int) dst_top, (int) dst_right, (int) dst_bottom);
+        src = new Rect((int) left, 0, (int) right, (int) bottom);
+        final Rect dst = new Rect(0, 0, (int) dst_right, (int) dst_bottom);
         final RectF rectF = new RectF(dst);
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
@@ -376,6 +318,7 @@ public class S2TFragment extends BaseFragment implements S2TContract.IS2TFragmen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==100){
             if(resultCode==RESULT_OK){
+                assert data != null;
                 String name = data.getStringExtra("data_return");
                 File file = new File(this.getMainActivity().getExternalFilesDir(null).toString()+"/"+name);
                 if(name.contains(".jpg")){

@@ -1,8 +1,5 @@
 package com.example.slt_project.ui.T2S;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class SendVoice extends AsyncTask<File,Void,String> {
     T2SContract.IT2SPresenter PRESENTER;
@@ -26,18 +24,21 @@ public class SendVoice extends AsyncTask<File,Void,String> {
 
     @Override
     protected String doInBackground(File... files) {
-        String post_result = null;
+        String post_result;
         String surl = "http://192.168.137.47:8000/";
         String node = "voice";
         theFile = files[0];
         try {
             post_result = submitPostData(theFile, surl+node);
             Log.i("POST_RESULT", post_result);
+            return post_result;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }finally {
+            return "语音识别失败";
         }
 
-        return post_result;
+
     }
 
     @Override
@@ -68,11 +69,11 @@ public class SendVoice extends AsyncTask<File,Void,String> {
             httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
             OutputStream outputStream = httpURLConnection.getOutputStream();
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), true);
 
             // 添加文件部分
             writer.append("--").append(boundary).append(end);
-            writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"").append(end);
+            writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"").append(file.getName()).append("\"").append(end);
             writer.append("Content-Type: image/jpg").append(end);
             writer.append(end).flush();
 
@@ -105,11 +106,11 @@ public class SendVoice extends AsyncTask<File,Void,String> {
     private static String dealResponseResult(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] data = new byte[1024];
-        int len = 0;
+        int len;
         while ((len = inputStream.read(data)) != -1) {
             byteArrayOutputStream.write(data, 0, len);
         }
-        return new String(byteArrayOutputStream.toByteArray(), "UTF-8");
+        return byteArrayOutputStream.toString("UTF-8");
     }
 
 }

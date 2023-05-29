@@ -1,20 +1,18 @@
 package com.example.slt_project.ui.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.slt_project.R;
-import com.example.slt_project.ui.S2T.PostData;
-import com.example.slt_project.ui.SendAble;
 import com.example.slt_project.ui.UserManager;
-import com.example.slt_project.ui.base.BaseActivity;
 import com.example.slt_project.ui.database.AppDataBase;
 import com.example.slt_project.ui.database.UserDao;
 import com.example.slt_project.ui.database.UserPO;
@@ -22,38 +20,35 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button skipButton, loginButton, registerButton;
     private TextInputEditText email, password;
     AppDataBase db;
     UserDao userDao;
     UserManager userManager;
-    Map<String, String> params = new HashMap<String, String>();
+    Map<String, String> params = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userManager = new UserManager(this);
 
         setContentView(R.layout.activity_login);
-        skipButton = findViewById(R.id.skip_button);
-        loginButton = findViewById(R.id.login_button);
+        Button skipButton = findViewById(R.id.skip_button);
+        Button loginButton = findViewById(R.id.login_button);
         email = findViewById(R.id.email_edittext);
         password = findViewById(R.id.password_edittext);
-        registerButton = findViewById(R.id.login_register_button);
+        Button registerButton = findViewById(R.id.login_register_button);
 
-        registerButton.setOnClickListener(this::onClick);
-        skipButton.setOnClickListener(this::onClick);
+        registerButton.setOnClickListener(this);
+        skipButton.setOnClickListener(this);
         db = AppDataBase.getInstance(this);
 //        db = Room.databaseBuilder(getApplicationContext(), AppDataBase.class, "mydatabase").build();
         userDao = db.userDao();
         loginButton.setOnClickListener(this);
     }
-    class NotTranslateSend implements SendAble {
-    @Override
-    public void translateTo(String s) {
-    }
-    }
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -68,8 +63,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.login_button:
-                String username_info = email.getText().toString();
-                String password_info = password.getText().toString();
+                String username_info = Objects.requireNonNull(email.getText()).toString();
+                String password_info = Objects.requireNonNull(password.getText()).toString();
 
                 if (!username_info.isEmpty() && !password_info.isEmpty()) {
                     params.put("username", username_info);
@@ -110,14 +105,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     Toast.makeText(LoginActivity.this, "用户名或密码不能为空!", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            default:
+                Log.w("click", "Unexpected click" );
         }
     }
 
 
     private static class QueryAsyncTask extends AsyncTask<String, Void, UserPO> {
 
-        private UserDao mUserDao;
-        private OnUsernameLoadedListener mListener;
+        private final UserDao mUserDao;
+        private final OnUsernameLoadedListener mListener;
 
         QueryAsyncTask(UserDao userDao, OnUsernameLoadedListener listener) {
             mUserDao = userDao;

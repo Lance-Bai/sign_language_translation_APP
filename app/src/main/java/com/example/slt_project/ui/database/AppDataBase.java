@@ -1,7 +1,6 @@
 package com.example.slt_project.ui.database;
 
 import android.content.Context;
-import android.os.Environment;
 
 import androidx.room.Database;
 import androidx.room.Room;

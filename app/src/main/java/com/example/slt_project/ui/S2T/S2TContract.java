@@ -9,7 +9,6 @@ import android.media.ImageReader;
 import android.os.Handler;
 import android.view.Surface;
 import android.view.TextureView;
-import android.widget.ImageView;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -24,7 +23,6 @@ public interface S2TContract {
         void createPreview();
         Surface getPreviewSurface();
         FragmentActivity getMainActivity();
-        ImageView getThumbnail();
 
         TextureView getTextureView();
 
@@ -50,10 +48,6 @@ public interface S2TContract {
 
         void broadcast();
 
-
-        void broadcast(String path);
-
-        void broadcastPhoto(String path);
 
         void broadcastVideo(String path);
 

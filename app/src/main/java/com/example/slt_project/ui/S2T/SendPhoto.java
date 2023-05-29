@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class SendPhoto extends AsyncTask<File,Void,String> {
     S2TContract.IS2TPresenter PRESENTER;
@@ -26,18 +27,21 @@ public class SendPhoto extends AsyncTask<File,Void,String> {
 
     @Override
     protected String doInBackground(File... files) {
-        String post_result = null;
+        String post_result;
         SharedPreferences sharedPreferences = PRESENTER.getFragment().getMainActivity().getSharedPreferences("my_prefs", MODE_PRIVATE);
         String surl = "http://192.168.137.47:8000/";
         String node = sharedPreferences.getBoolean("translate_mode",false)?"model":"upload";
         try {
             post_result = submitPostData(files[0], surl+node);
             Log.i("POST_RESULT", post_result);
+            return post_result;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }finally {
+            return "图片识别失败";
         }
 
-        return post_result;
+
     }
 
     @Override
@@ -67,11 +71,11 @@ public class SendPhoto extends AsyncTask<File,Void,String> {
             httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
             OutputStream outputStream = httpURLConnection.getOutputStream();
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), true);
 
             // 添加文件部分
             writer.append("--").append(boundary).append(end);
-            writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"").append(end);
+            writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"").append(file.getName()).append("\"").append(end);
             writer.append("Content-Type: image/jpg").append(end);
             writer.append(end).flush();
 
@@ -104,11 +108,11 @@ public class SendPhoto extends AsyncTask<File,Void,String> {
     private static String dealResponseResult(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] data = new byte[1024];
-        int len = 0;
+        int len;
         while ((len = inputStream.read(data)) != -1) {
             byteArrayOutputStream.write(data, 0, len);
         }
-        return new String(byteArrayOutputStream.toByteArray(), "UTF-8");
+        return byteArrayOutputStream.toString("UTF-8");
     }
 
 }

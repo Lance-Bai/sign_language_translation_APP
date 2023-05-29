@@ -6,11 +6,9 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
-import com.example.slt_project.R;
-
 public class SettingPresenter implements SettingContract.ISettingPresenter {
     SettingFragment fragment;
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     SettingPresenter(@NonNull SettingFragment fragment){
         this.fragment = fragment;
@@ -49,20 +47,6 @@ public class SettingPresenter implements SettingContract.ISettingPresenter {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("language", s);
         editor.commit();
-    }
-
-    @Override
-    public String reSetLabelLanguage() {
-        String s = sharedPreferences.getString("language", "zh");
-        int index = findIndex(fragment.getMainActivity().getResources().getStringArray(R.array.language_label), s);
-        return fragment.getMainActivity().getResources().getStringArray(R.array.language)[index];
-    }
-
-    private int findIndex(String[] strings, String target){
-        for(int i=0;i<strings.length;i++){
-            if(strings[i].equals(target))return i;
-        }
-        return -1;
     }
 
 }

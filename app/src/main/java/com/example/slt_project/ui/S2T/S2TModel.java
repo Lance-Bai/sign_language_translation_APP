@@ -8,7 +8,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
 import android.media.ImageReader;
-import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -27,9 +26,9 @@ import java.util.Locale;
 
 public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvailableListener, TextToSpeech.OnInitListener {
     private ImageReader imageReader = null;
-    private S2TContract.IS2TPresenter presenter;
+    private final S2TContract.IS2TPresenter presenter;
 
-    private TextToSpeech textToSpeech;
+    private final TextToSpeech textToSpeech;
 
     S2TModel(S2TContract.IS2TPresenter presenter){
         this.presenter = presenter;
@@ -119,40 +118,32 @@ public class S2TModel implements S2TContract.IS2TModel, ImageReader.OnImageAvail
     public void onImageAvailable(ImageReader imageReader) {
         Log.d(null,"photo saved");
         Image image = imageReader.acquireNextImage();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                byte[] data = new byte[buffer.remaining()];
-                buffer.get(data);
-                String path = presenter.getFragment().getMainActivity().getExternalFilesDir(null) +
-                        "/"
-                        + System.currentTimeMillis() + ".jpg";
-                File imageFile = new File(path);
-                FileOutputStream fos = null;
-                try {
-                    fos = new FileOutputStream(imageFile);
-                    fos.write(data, 0, data.length);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (fos != null) {
-                        try {
-                            fos.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+        new Thread(() -> {
+            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+            byte[] data = new byte[buffer.remaining()];
+            buffer.get(data);
+            String path = presenter.getFragment().getMainActivity().getExternalFilesDir(null) +
+                    "/"
+                    + System.currentTimeMillis() + ".jpg";
+            File imageFile = new File(path);
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(imageFile);
+                fos.write(data, 0, data.length);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    presenter.broadcast();
-                    image.close(); // MUST!!!!!
-                    presenter.showThumbnail();
-                    presenter.getFragment().getMainActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            new SendPhoto(presenter).execute(imageFile);
-                        }
-                    });
                 }
+                presenter.broadcast();
+                image.close(); // MUST!!!!!
+                presenter.showThumbnail();
+                presenter.getFragment().getMainActivity().runOnUiThread(() -> new SendPhoto(presenter).execute(imageFile));
             }
         }).start();
     }

@@ -1,11 +1,10 @@
 package com.example.slt_project.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.example.slt_project.ui.SendAble;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,6 +18,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 public class PostRegister extends AsyncTask<Map<String, String>,Void,String> {
+    @SuppressLint("StaticFieldLeak")
     RegisterActivity activity;
 
     public PostRegister(RegisterActivity activity){this.activity=activity;}
@@ -27,7 +27,7 @@ public class PostRegister extends AsyncTask<Map<String, String>,Void,String> {
 
     @Override
     protected String doInBackground(Map<String, String>... hashMaps) {
-        String post_result = null;
+        String post_result;
         try {
             post_result = submitPostData(hashMaps[0], "utf-8");
             Log.i("POST_RESULT", post_result);
@@ -85,6 +85,7 @@ public class PostRegister extends AsyncTask<Map<String, String>,Void,String> {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            assert httpURLConnection != null;
             httpURLConnection.disconnect();
         }
         return "";
@@ -108,10 +109,10 @@ public class PostRegister extends AsyncTask<Map<String, String>,Void,String> {
     }
 
     public static String dealResponseResult(InputStream inputStream) {
-        String resultData = null;
+        String resultData;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] data = new byte[1024];
-        int len = 0;
+        int len;
         try {
             while ((len = inputStream.read(data)) != -1) {
                 byteArrayOutputStream.write(data, 0, len);
@@ -119,7 +120,7 @@ public class PostRegister extends AsyncTask<Map<String, String>,Void,String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        resultData = new String(byteArrayOutputStream.toByteArray());
+        resultData = byteArrayOutputStream.toString();
         return resultData;
     }
 }
