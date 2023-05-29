@@ -29,7 +29,9 @@
     <string name="register_signup">sign up</string>
     <string name="register_tologin">already sign up？click login</string>
     <string name="setting_fontsize">font size = </string>
-
+    <string name="language_chinese"> Chinese</string>
+    <string name="language_english"> English</string>
+    <string name="language_back"> Back to main</string>
 
 
 

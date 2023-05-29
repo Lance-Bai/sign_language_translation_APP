@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -26,6 +27,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.example.slt_project.R;
 import com.example.slt_project.ui.Mode;
 import com.example.slt_project.ui.UserManager;
+import com.example.slt_project.ui.activity.LanguageActivity;
 import com.example.slt_project.ui.activity.LoginActivity;
 import com.example.slt_project.ui.activity.MainActivity;
 import com.example.slt_project.ui.activity.RegisterActivity;
@@ -50,6 +52,7 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
     private SharedPreferences.Editor editor;
     //    private int textSize;
     private Button logoutButton;
+    private ImageButton arrowButton;
     private static final String PREF_NAME = "user_pref";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     UserManager userManager;
@@ -77,12 +80,14 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
         logoutButton = find(R.id.log_out_button);
         selectoutputLanguage = find(R.id.selectLanguage);
         selectAppLanguage = find(R.id.select_app_Language);
-        appLanguageSpinner = find(R.id.spinner_app_language);
+//        appLanguageSpinner = find(R.id.spinner_app_language);
+        arrowButton=find(R.id.arrowButton);
 
         darkOrLight.setOnCheckedChangeListener(this);
         photoOrVideo.setOnCheckedChangeListener(this);
         logoutButton.setOnClickListener(this);
         translateMode.setOnCheckedChangeListener(this);
+        arrowButton.setOnClickListener(this);
 
         sharedPreferences = getContext().getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -130,6 +135,42 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
                     editor.apply();
                     getActivity().recreate();
                 }
+//        appLanguageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+//                String now = sharedPreferences.getString("applanguage", "");
+//                String selectedLanguage = "";
+//                switch (position) {
+//                    case 0:
+//                        selectedLanguage = now.equals("chinese") ? "" : "chinese";
+////
+//                        break;
+//                    case 1:
+//                        selectedLanguage = "chinese";
+//                        break;
+//                    case 2:
+//                        selectedLanguage = "english";
+//                        break;
+//                }
+//
+//                if (!selectedLanguage.isEmpty()) {
+//                    changeLanguage(selectedLanguage);
+//                    editor.putString("applanguage", selectedLanguage);
+//                    editor.apply();
+//                    if (!selectedLanguage.equals(now)) {
+////                        changeLanguage(now);
+//                        editor.putString("savelanguage", selectedLanguage);
+//                        editor.apply();
+//                        getActivity().recreate();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
             }
             @Override
@@ -223,13 +264,28 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
     }
 
 
+    private void changeLanguage(String languageCode) {
+        Locale locale;
+        if (languageCode.equals("chinese")) {
+            locale = new Locale("zh");
+        } else if (languageCode.equals("english")) {
+            locale = new Locale("en");
+        } else {
+            locale = Locale.getDefault();
+        }
 
-    private void changeLanguage(Locale locale) {
         Locale.setDefault(locale);
         Configuration config = new Configuration();
-        config.setLocale(locale);
+        config.locale = locale;
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
+
+//    private void changeLanguage(Locale locale) {
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.setLocale(locale);
+//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+//    }
 
     @Override
     public void onResume() {
@@ -289,6 +345,9 @@ public class SettingFragment extends BaseFragment implements SettingContract.ISe
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     getActivity().finish();
                 }
+            case R.id.arrowButton:
+                startActivity(new Intent(getActivity(), LanguageActivity.class));
+                getActivity().finish();
         }
     }
 
