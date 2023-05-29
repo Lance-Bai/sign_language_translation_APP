@@ -28,6 +28,9 @@
     <string name="register_signup">注册</string>
     <string name="register_tologin">已注册？点击登录</string>
     <string name="setting_fontsize"> 文字大小=</string>
+    <string name="language_chinese"> 中文简体</string>
+    <string name="language_english"> 英语</string>
+    <string name="language_back"> 返回主页面</string>
 
 
 
@@ -75,5 +78,14 @@
         <item>zh</item>
         <item>zh-tw</item>
     </string-array>
+    <string name="title_activity_login2">LoginActivity2</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
 </resources>

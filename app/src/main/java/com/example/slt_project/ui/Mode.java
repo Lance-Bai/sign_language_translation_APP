@@ -10,7 +10,9 @@ public class Mode {
     private Context context;
 
     private static final String PREF_NAME = "user_pref";
+
     private static final String KEY_IS_MODE = "Mode";
+    private static final String APP_LAN = "lan";
 
     public Mode(Context context) {
         this.context = context;
@@ -23,7 +25,14 @@ public class Mode {
         editor.apply();
     }
 
+    public void setAppLanguage(String s) {
+        editor.putString(APP_LAN, s);
+        editor.apply();
+    }
     public boolean isModeon() {
         return pref.getBoolean(KEY_IS_MODE, false);
+    }
+    public String whatlan() {
+        return pref.getString(APP_LAN, null);
     }
 }

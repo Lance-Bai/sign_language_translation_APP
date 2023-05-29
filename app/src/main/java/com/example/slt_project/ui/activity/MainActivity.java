@@ -1,5 +1,6 @@
 package com.example.slt_project.ui.activity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends BaseActivity {
@@ -36,7 +38,7 @@ public class MainActivity extends BaseActivity {
             "android.permission.ACCESS_WIFI_STATE"
 
     };
-//    private TabItem tabItem1,tabItem2,tabItem3;
+    //    private TabItem tabItem1,tabItem2,tabItem3;
 //    private BottomNavigationView bottomNavigationView;
     private MyFragmentAdapter fragmentAdapter;
     private int lastFragmentIndex = 0;
@@ -50,16 +52,24 @@ public class MainActivity extends BaseActivity {
     protected void initViews() {
         requestPermissions(REQUIRED_PERMISSIONS, 2);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 2) {
-            tabLayout=findViewById(R.id.tab_layout);
+            tabLayout = findViewById(R.id.tab_layout);
             viewPage = find(R.id.viewPage);
 
             tabLayout.setupWithViewPager(viewPage);
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
-
+            mode = new Mode(this);
+            if (mode.whatlan() != null) {
+                if (mode.whatlan().equals("english")) {
+                    changeLanguage("english");
+                } else if (mode.whatlan().equals("chinese")) {
+                    changeLanguage("chinese");
+                }
+            }
 
             fragments = new ArrayList<>();
             fragments.add(new S2TFragment());
@@ -68,59 +78,77 @@ public class MainActivity extends BaseActivity {
             fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, this);
             viewPage.setAdapter(fragmentAdapter);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.s2t_tab_icon_warm);
-        tabLayout.getTabAt(1).setIcon(R.drawable.t2s_tab_icon_warm);
-        tabLayout.getTabAt(2).setIcon(R.drawable.setting_cool);
+            tabLayout.getTabAt(0).setIcon(R.drawable.s2t_tab_icon_warm);
+            tabLayout.getTabAt(1).setIcon(R.drawable.t2s_tab_icon_warm);
+            tabLayout.getTabAt(2).setIcon(R.drawable.setting_cool);
 
-        mode = new Mode(this);
-        if (mode.isModeon()) {
-            tabLayout.setBackgroundResource(R.color.grey_DarkGrey);
+
+            if (mode.isModeon()) {
+                tabLayout.setBackgroundResource(R.color.grey_DarkGrey);
 //            DrawableCompat.setTint(drawable, Color.WHITE);
-        } else {
-            tabLayout.setBackgroundResource(R.color.grey_300);
-        }
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // 修改选中的 Tab 的图标
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.s2t_tab_icon_warm);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.t2s_tab_icon_warm);
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.setting_warm);
-                        break;
-                }
+            } else {
+                tabLayout.setBackgroundResource(R.color.grey_300);
             }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // 恢复未选中的 Tab 的图标
-                switch (tab.getPosition()) {
-                    case 0:
-                        tab.setIcon(R.drawable.s2t_tab_icon_warm);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.t2s_tab_icon_warm);
-                        break;
-                    case 2:
-                        tab.setIcon(R.drawable.setting_cool);
-                        break;
-                }
-            }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // do nothing
-            }
-        });
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    // 修改选中的 Tab 的图标
+                    switch (tab.getPosition()) {
+                        case 0:
+                            tab.setIcon(R.drawable.s2t_tab_icon_warm);
+                            break;
+                        case 1:
+                            tab.setIcon(R.drawable.t2s_tab_icon_warm);
+                            break;
+                        case 2:
+                            tab.setIcon(R.drawable.setting_warm);
+                            break;
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    // 恢复未选中的 Tab 的图标
+                    switch (tab.getPosition()) {
+                        case 0:
+                            tab.setIcon(R.drawable.s2t_tab_icon_warm);
+                            break;
+                        case 1:
+                            tab.setIcon(R.drawable.t2s_tab_icon_warm);
+                            break;
+                        case 2:
+                            tab.setIcon(R.drawable.setting_cool);
+                            break;
+                    }
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                    // do nothing
+                }
+            });
 
             getSupportFragmentManager().beginTransaction().show(fragmentAdapter.getItem(0)).commit();
         }
 
+    }
+
+    private void changeLanguage(String languageCode) {
+        Locale locale;
+        if (languageCode.equals("chinese")) {
+            locale = new Locale("zh");
+        } else if (languageCode.equals("english")) {
+            locale = new Locale("en");
+        } else {
+            locale = Locale.getDefault();
+        }
+
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 
     @Override
