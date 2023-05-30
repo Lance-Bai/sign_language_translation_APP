@@ -65,8 +65,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         Log.d("leo", "Insert user info: " + userPO.toString());
                         Toast.makeText(RegisterActivity.this, "注册成功！", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        //startActivity(intent);
+                        //finish();
                     } else {
                         Toast.makeText(RegisterActivity.this, "两次密码输入不相同！", Toast.LENGTH_SHORT).show();
                     }

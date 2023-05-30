@@ -24,20 +24,17 @@ public class SendVoice extends AsyncTask<File,Void,String> {
 
     @Override
     protected String doInBackground(File... files) {
-        String post_result;
+        String post_result="语音识别失败";
         String surl = "http://192.168.137.47:8000/";
         String node = "voice";
         theFile = files[0];
         try {
             post_result = submitPostData(theFile, surl+node);
             Log.i("POST_RESULT", post_result);
-            return post_result;
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }finally {
-            return "语音识别失败";
+            Log.e("send",e.toString());
         }
-
+        return post_result;
 
     }
 
